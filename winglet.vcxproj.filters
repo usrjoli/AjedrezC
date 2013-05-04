@@ -122,5 +122,8 @@
     <ClCompile Include="wingletx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="readpgn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

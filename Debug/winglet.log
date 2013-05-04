@@ -1,5 +1,5 @@
-﻿Build started 24/04/2013 09:39:25 PM.
-     1>Project "D:\Facultad\PROYECTO\winglet\winglet\winglet.vcxproj" on node 2 (Build target(s)).
+﻿Build started 01/05/2013 06:22:43 PM.
+     1>Project "D:\AjedrezC\winglet.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt bitops.cpp board.cpp command.cpp data.cpp displaymove.cpp eval.cpp hash.cpp makemove.cpp move.cpp movegen.cpp peek.cpp perft.cpp qsearch.cpp readfen.cpp search.cpp see.cpp setup.cpp sortmoves.cpp stdafx.cpp test.cpp timer.cpp winglet.cpp wingletx.cpp
          wingletx.cpp
@@ -29,7 +29,7 @@
          bitops.cpp
          Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Facultad\PROYECTO\winglet\winglet\Debug\winglet.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Facultad\PROYECTO\winglet\winglet\Debug\winglet.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Facultad\PROYECTO\winglet\winglet\Debug\winglet.lib" /MACHINE:X86 Debug\bitops.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\AjedrezC\Debug\winglet.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\AjedrezC\Debug\winglet.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\AjedrezC\Debug\winglet.lib" /MACHINE:X86 Debug\bitops.obj
          Debug\board.obj
          Debug\command.obj
          Debug\data.obj
@@ -53,9 +53,9 @@
          Debug\winglet.obj
          Debug\wingletx.obj
      1>LINK : warning LNK4067: ambiguous entry point; selected 'mainCRTStartup'
-         winglet.vcxproj -> D:\Facultad\PROYECTO\winglet\winglet\Debug\winglet.exe
-     1>Done Building Project "D:\Facultad\PROYECTO\winglet\winglet\winglet.vcxproj" (Build target(s)).
+         winglet.vcxproj -> D:\AjedrezC\Debug\winglet.exe
+     1>Done Building Project "D:\AjedrezC\winglet.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:09.83
+Time Elapsed 00:00:37.58

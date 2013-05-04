@@ -27,6 +27,9 @@ int           movegen(int);
 void		  mstostring(U64 dt, char *);
 U64           perft(int, int);
 BOOLTYPE      readFen(char *, int);
+// jose - inicio - lectura de archivo PGN
+BOOLTYPE      readPGN(char *, int);
+// jose - fin - lectura de archivo PGN
 void		  readIniFile();
 void          setup();
 void          setupFen(char *, char *, char *, char *, int , int );

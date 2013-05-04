@@ -106,6 +106,7 @@
     <ClCompile Include="perft.cpp" />
     <ClCompile Include="qsearch.cpp" />
     <ClCompile Include="readfen.cpp" />
+    <ClCompile Include="readpgn.cpp" />
     <ClCompile Include="search.cpp" />
     <ClCompile Include="see.cpp" />
     <ClCompile Include="setup.cpp" />

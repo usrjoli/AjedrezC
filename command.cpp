@@ -184,6 +184,9 @@ noPonder:
 			std::cout << "quit                : exit program " << std::endl;
 			std::cout << "r                   : rotate board " << std::endl;
 			std::cout << "readfen filename n  : reads #-th FEN position from filename" << std::endl;
+//jose - inicio - agregado para leer de .pgn
+			std::cout << "readPGN filename n  : lee hasta la jugada n-ésima del archivo pgn provisto" << std::endl;
+//jose - fin - agregado para leer de .pgn
 			std::cout << "sd n                : set the search depth to n" << std::endl;
 			std::cout << "setup               : setup board... " << std::endl;
 			std::cout << "test filename       : starts search on all FEN position in 'filename'" << std::endl;
@@ -738,7 +741,20 @@ noPonder:
 			board.display();
 			continue; 
 		}
+// jose - inicio - lectura de un archivo pgn
+		// =================================================================
+		// readpgn filename n: reads #-th FEN position from filename
+		// =================================================================
 
+		if (!XB_MODE && !strcmp(command, "readpgn"))  
+		{ 
+			sscanf(CMD_BUFF,"readpgn %s %d", userinput, &number);
+			board.init();
+			readPGN(userinput, number);
+			board.display();
+			continue; 
+		}
+// jose - fin - lectura de un archivo pgn
 		// =================================================================
 		// rejected: feature is rejected
 		// =================================================================
