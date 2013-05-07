@@ -185,7 +185,7 @@ noPonder:
 			std::cout << "r                   : rotate board " << std::endl;
 			std::cout << "readfen filename n  : reads #-th FEN position from filename" << std::endl;
 //jose - inicio - agregado para leer de .pgn
-			std::cout << "readPGN filename n  : lee hasta la jugada n-ésima del archivo pgn provisto" << std::endl;
+			std::cout << "readPGN filename n  : carga el tablero a partir de un archivo PGN" << std::endl;
 //jose - fin - agregado para leer de .pgn
 			std::cout << "sd n                : set the search depth to n" << std::endl;
 			std::cout << "setup               : setup board... " << std::endl;
@@ -748,14 +748,14 @@ noPonder:
 		}
 // jose - inicio - lectura de un archivo pgn
 		// =================================================================
-		// readpgn filename n: reads #-th FEN position from filename
+		// readpgn filename n: reads PGN from filename
 		// =================================================================
 
 		if (!XB_MODE && !strcmp(command, "readpgn"))  
 		{ 
 			sscanf(CMD_BUFF,"readpgn %s %d", userinput, &number);
 			board.init();
-			readPGN(userinput, number);
+			readPGN(userinput);
 			board.display();
 			continue; 
 		}
