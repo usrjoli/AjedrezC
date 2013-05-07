@@ -36,7 +36,7 @@ Piezas investigaPieza(char str[180], bool blancas){
 	if (primera == 'Q') {
 		pieza = BReina;
 	}
-	if (primera == 'K') {
+	if (primera == 'K') { 
 		pieza = BRey;
 	}
 	std::cout << "Pieza: " << pieza << std::endl;
