@@ -508,6 +508,11 @@ noPonder:
 					unmakeMove(board.moveBuffer[i]);
 					toSan(board.moveBuffer[i], sanMove);
 					std::cout << ++number << ". " << sanMove << std::endl;
+// jose inicio prueba para ver movimiento completo
+					std::cout << number << ". ";
+					displayFullMove(board.moveBuffer[i]);
+					std::cout<<std::endl;
+// jose fin prueba para ver movimiento completo
 				}
 			}
 			continue; 

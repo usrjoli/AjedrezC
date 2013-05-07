@@ -9,32 +9,35 @@
 #include "protos.h"
 #include "extglobals.h"
 
-typedef enum Piezas {Peon, Torre, Caballo, Alfil, Reina, Rey} Piezas;
+typedef enum Piezas {BPeon, NPeon, BTorre, NTorre, BCaballo, NCaballo, BAlfil, NAlfil, BReina, NReina, BRey, NRey} Piezas;
 
-Piezas investigaPieza(char str[180]){
+Piezas investigaPieza(char str[180], bool blancas){
 	Piezas pieza;
-	pieza = Peon;
+	pieza = BPeon;
 	char primera;
 
 	primera = str[0];
 	std::cout << "primera: " << primera << std::endl;
 	if ((primera >= 'a') && (primera <= 'z')){//esto es un peón
-		pieza = Peon;
+		if (blancas)
+			pieza = BPeon;
+		else
+			pieza = NPeon;
 	}
 	if (primera == 'R') {
-		pieza = Torre;
+		pieza = BTorre;
 	}
 	if (primera == 'N') {
-		pieza = Caballo;
+		pieza = BCaballo;
 	}
 	if (primera == 'B') {
-		pieza = Alfil;
+		pieza = BAlfil;
 	}
 	if (primera == 'Q') {
-		pieza = Reina;
+		pieza = BReina;
 	}
 	if (primera == 'K') {
-		pieza = Rey;
+		pieza = BRey;
 	}
 	std::cout << "Pieza: " << pieza << std::endl;
 	return pieza;
@@ -53,6 +56,9 @@ BOOLTYPE readPGN(char *filename, int number)
 	int posDestino;
 	int contador;
 	Piezas pieza;
+
+	Piezas tablero[9][9];
+
 
 	returnValue = false;
 	if (number <= 0) return returnValue;
@@ -83,7 +89,7 @@ BOOLTYPE readPGN(char *filename, int number)
 				}else {
 					std::cout << "resultado de negras: " << s << std::endl;
 				}
-				pieza = investigaPieza(s);
+				pieza = investigaPieza(s, blancas);
 				
 
 				if (!blancas){

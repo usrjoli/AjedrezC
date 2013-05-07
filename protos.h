@@ -40,5 +40,7 @@ void          unmakeBlackPromotion(unsigned int, unsigned int &);
 void          unmakeCapture(unsigned int &, unsigned int &);
 void          unmakeMove(Move &);
 void          unmakeWhitePromotion(unsigned int, unsigned int &);
-
+//jose inicio debug movimientos
+void displayFullMove(Move &move);
+//jose fin debug movimientos
 #endif 

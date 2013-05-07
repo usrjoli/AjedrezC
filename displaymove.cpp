@@ -35,6 +35,39 @@ void displayMove(Move &move)
        return;
 }
 
+// jose inicio visualización de movimiento completo
+void displayFullMove(Move &move){
+       std::cout << "origen - destino : ";
+	   if (((move.getPiec() == WHITE_KING) && (move.isCastleOO())) || ((move.getPiec() == BLACK_KING) && (move.isCastleOO()))){
+              std::cout << "O-O";
+              return;      
+       };
+       if (((move.getPiec() == WHITE_KING) && (move.isCastleOOO())) || ((move.getPiec() == BLACK_KING) && (move.isCastleOOO()))){
+              std::cout << "O-O-O";
+              return;      
+       };
+
+	   if (!move.isPawnmove()) std::cout << PIECECHARS[move.getPiec()];
+       if (move.isPawnmove() && move.isCapture()) std::cout << char('a' + FILES[move.getFrom()]-1);
+       if (move.isCapture()) std::cout << "x" ; 
+
+	   std::cout << char('a' + FILES[move.getFrom()]-1) << RANKS[move.getFrom()] << " - ";
+
+	   if (!move.isPawnmove()) std::cout << PIECECHARS[move.getPiec()];
+       if (move.isPawnmove() && move.isCapture()) std::cout << char('a' + FILES[move.getFrom()]-1);
+       if (move.isCapture()) std::cout << "x" ; 
+
+       std::cout << char('a' + FILES[move.getTosq()]-1);
+       std::cout << RANKS[move.getTosq()]; 
+       if (move.isPromotion()){
+		   std::cout << "=";
+		   std::cout << PIECECHARS[move.getProm()];
+	   }
+       std::cout.flush();
+       return;
+}
+// jose fin visualización de movimiento completo
+
 void displayPV()
 {
 	int i;
