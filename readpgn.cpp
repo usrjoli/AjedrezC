@@ -9,59 +9,100 @@
 #include "protos.h"
 #include "extglobals.h"
 
-typedef enum Piezas {BPeon, NPeon, BTorre, NTorre, BCaballo, NCaballo, BAlfil, NAlfil, BReina, NReina, BRey, NRey} Piezas;
+//typedef enum Piezas {BPeon, NPeon, BTorre, NTorre, BCaballo, NCaballo, BAlfil, NAlfil, BReina, NReina, BRey, NRey} Piezas;
 
-Piezas investigaPieza(char str[180], bool blancas){
-	Piezas pieza;
-	pieza = BPeon;
+Move obtenerMovimiento(char str[180], bool blancas){
+	// retorna el movimiento incluyendo: tipo de pieza, color y posición destino
+	Move mov;
 	char primera;
 
+	mov.clear();
 	primera = str[0];
 	std::cout << "primera: " << primera << std::endl;
 	if ((primera >= 'a') && (primera <= 'z')){//esto es un peón
-		if (blancas)
-			pieza = BPeon;
-		else
-			pieza = NPeon;
+		if (blancas) mov.setPiec(WHITE_PAWN);
+		else mov.setPiec(BLACK_PAWN);
 	}
 	if (primera == 'R') {
-		pieza = BTorre;
+		if (blancas) mov.setPiec(WHITE_ROOK);
+		else mov.setPiec(BLACK_ROOK);
 	}
 	if (primera == 'N') {
-		pieza = BCaballo;
+		if (blancas) mov.setPiec(WHITE_KNIGHT);
+		else mov.setPiec(BLACK_KNIGHT);
 	}
 	if (primera == 'B') {
-		pieza = BAlfil;
+		if (blancas) mov.setPiec(WHITE_BISHOP);
+		else mov.setPiec(BLACK_BISHOP);
 	}
 	if (primera == 'Q') {
-		pieza = BReina;
+		if (blancas) mov.setPiec(WHITE_QUEEN);
+		else mov.setPiec(BLACK_QUEEN);
 	}
 	if (primera == 'K') { 
-		pieza = BRey;
+		if (blancas) mov.setPiec(WHITE_KING);
+		else mov.setPiec(BLACK_KING);
 	}
-	std::cout << "Pieza: " << pieza << std::endl;
-	return pieza;
+
+	//TODO mov.setTosq(str); // ver cómo pasar del string e4 a la var global E4
+	std::cout << "Pieza: " << mov.getPiec() << std::endl;
+	return mov;
 }
 
-BOOLTYPE readPGN(char *filename, int number)
+void readTags(char pS[180], FILE *fp){
+	// lee todas las etiquetas del PGN
+	// supone que las etiquetas son correctas y son del tipo: [atributo "valor"]
+
+	bool termine = false;
+	int largo = (int)strlen(pS);
+	char atributo[80];
+	char valor[80];
+
+	while(pS[0] == '['){ // mientras sea una etiqueta
+		// obtengo el atributo
+		// elimino el primer ([) de s:
+        strcpy(atributo, "");
+        strncat(atributo, pS, strlen(pS));
+        strcpy(atributo, atributo+1);
+		std::cout << "atributo: " << atributo << std::endl;
+		
+		// obtengo el valor
+		fscanf(fp, "%s", pS);
+		// TODO considerar los espacios entre "" del valor
+		/*if (pS[largo-1] == ']'){
+			termine = true;
+			std::cout<<  "debera liquidar aca." << std::endl;
+		}else{
+			if (fscanf(fp, "%s",s) == EOF){
+			termine = true;
+			}*/
+
+        // elimino el primer (") y los últimos 2 ("]) de s:
+        strcpy(valor, "");
+        strncat(valor, pS, strlen(pS)-2);
+        strcpy(valor, valor+1);
+		std::cout << "valor: " << valor << std::endl;
+		fscanf(fp, "%s",pS);
+	}
+}
+
+
+BOOLTYPE readPGN(char *filename)
 {
 	int iNumJugada;
 	char s[180];
 	BOOLTYPE returnValue;
 	FILE * fp;
 	bool fin;
-	bool termine;
+
 	int largo;
 	bool blancas;
 	int posDestino;
 	int contador;
-	Piezas pieza;
-
-	Piezas tablero[9][9];
+	Move mov;
 
 
 	returnValue = false;
-	if (number <= 0) return returnValue;
 	iNumJugada=0;
 	fin = false;
 	// open the file for read and scan through until we find the number-th position:
@@ -69,57 +110,34 @@ BOOLTYPE readPGN(char *filename, int number)
 	blancas = true;
 	if (fp != NULL){//"move e2e4, or h7h8q
 		board.init(); 
-		while ((!fin) && (fscanf(fp, "%s", s) != EOF)){
-//			std::cout << " texto leido en el while: " << s << std::endl;
-			if (s[0] != '['){
-//			if (!strcmp(s, "[")){
-//acá empieza la parte de descifrar el pgn
-//hay que ver el tema de la jugada, porque si vienen varias en un mismo renglón puede dar problemas
-				std::cout << "se leyo: " << s << std::endl;
-//a menos que me cambien el tablero, la posición destino es del 1 al 8... o sea, el último char que se leyó
-				largo = (int)strlen(s);
-				posDestino = (int)s[largo-1];
-				if (blancas){
-					contador = 0;
-					while (s[contador] != '.'){
-						contador++;
-					}
-					strncpy(s, s+contador+1, (int)strlen(s));
-					std::cout << "resultado de blancas: " << s << std::endl;
-				}else {
-					std::cout << "resultado de negras: " << s << std::endl;
-				}
-				pieza = investigaPieza(s, blancas);
-				
+		while ((!fin) && (fscanf(fp, "%s", s) != EOF)){ // lee hasta el espacio
+			
+			readTags(s, fp);
 
-				if (!blancas){
-					iNumJugada++;
+			//acá empieza la parte de descifrar el pgn
+			//a menos que me cambien el tablero, la posición destino es del 1 al 8... o sea, el último char que se leyó
+			largo = (int)strlen(s);
+			posDestino = (int)s[largo-1];
+			if (blancas){
+				contador = 0;
+				while (s[contador] != '.'){
+					contador++;
 				}
-				blancas = !blancas;
-				if (iNumJugada == number){
-					fin = true;
-				}
-			}else{
-				std::cout << "comentario: ";
-				termine = false;
-//				std::cout << s;
-				while (!termine){
-					largo = (int)strlen(s);
-//					std::cout << "largo = " << largo << std::endl;
-//					std::cout << "es esto:" << s[largo-1] << std::endl;
-					std::cout << " " << s;
-					if (s[largo-1] == ']'){
-						termine = true;
-//						std::cout<<  "debería liquidar acá." << std::endl;
-					}else{
-						if (fscanf(fp, "%s",s) == EOF){
-							termine = true;
-						}
-					}
-				}
-				std::cout << std::endl;
+				strncpy(s, s+contador+1, (int)strlen(s));
+				std::cout << "resultado de blancas: " << s << std::endl;
+			}else {
+				std::cout << "resultado de negras: " << s << std::endl;
 			}
-        }
+			mov = obtenerMovimiento(s, blancas);
+			// TODO: obtengo todos los movimientos posibles del tablero, los recorro y cuando encuentro uno con posFinal = a la que busco y su pieza es la que busco -> retorno ese mov inicial
+			// mov.obtenerOrigen();
+			// move() realizo el movimiento en el tablero	
+			if (!blancas){
+				iNumJugada++;
+			}
+			blancas = !blancas;
+		}
+
 		fclose(fp);
 	}
 	else {

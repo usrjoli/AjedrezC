@@ -185,7 +185,7 @@ noPonder:
 			std::cout << "r                   : rotate board " << std::endl;
 			std::cout << "readfen filename n  : reads #-th FEN position from filename" << std::endl;
 //jose - inicio - agregado para leer de .pgn
-			std::cout << "readPGN filename n  : carga el tablero a partir de un archivo PGN" << std::endl;
+			std::cout << "readpgn filename n  : carga el tablero a partir de un archivo PGN" << std::endl;
 //jose - fin - agregado para leer de .pgn
 			std::cout << "sd n                : set the search depth to n" << std::endl;
 			std::cout << "setup               : setup board... " << std::endl;

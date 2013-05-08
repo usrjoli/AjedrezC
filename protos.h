@@ -28,7 +28,7 @@ void		  mstostring(U64 dt, char *);
 U64           perft(int, int);
 BOOLTYPE      readFen(char *, int);
 // jose - inicio - lectura de archivo PGN
-BOOLTYPE      readPGN(char *, int);
+BOOLTYPE      readPGN(char *);
 // jose - fin - lectura de archivo PGN
 void		  readIniFile();
 void          setup();
