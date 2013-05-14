@@ -9,42 +9,78 @@
 #include "protos.h"
 #include "extglobals.h"
 
-//typedef enum Piezas {BPeon, NPeon, BTorre, NTorre, BCaballo, NCaballo, BAlfil, NAlfil, BReina, NReina, BRey, NRey} Piezas;
 
 Move obtenerMovimiento(char str[180], bool blancas){
 	// retorna el movimiento incluyendo: tipo de pieza, color y posición destino
 	Move mov;
 	char primera;
+	unsigned char userTo;
+	char str_mov[10]; // movimiento sin nombre de piezas
 
 	mov.clear();
 	primera = str[0];
 	std::cout << "primera: " << primera << std::endl;
-	if ((primera >= 'a') && (primera <= 'z')){//esto es un peón
+	
+	strcpy(str_mov, "");
+    strncat(str_mov, str, strlen(str));
+
+	if ((primera >= 'a') && (primera <= 'z')){ //si es un peón
 		if (blancas) mov.setPiec(WHITE_PAWN);
 		else mov.setPiec(BLACK_PAWN);
-	}
-	if (primera == 'R') {
-		if (blancas) mov.setPiec(WHITE_ROOK);
-		else mov.setPiec(BLACK_ROOK);
-	}
-	if (primera == 'N') {
-		if (blancas) mov.setPiec(WHITE_KNIGHT);
-		else mov.setPiec(BLACK_KNIGHT);
-	}
-	if (primera == 'B') {
-		if (blancas) mov.setPiec(WHITE_BISHOP);
-		else mov.setPiec(BLACK_BISHOP);
-	}
-	if (primera == 'Q') {
-		if (blancas) mov.setPiec(WHITE_QUEEN);
-		else mov.setPiec(BLACK_QUEEN);
-	}
-	if (primera == 'K') { 
-		if (blancas) mov.setPiec(WHITE_KING);
-		else mov.setPiec(BLACK_KING);
+	}else { // es otra pieza != peón 
+		// si no es peón -> elimino la primer letra correspondiente a la pieza
+        strcpy(str_mov, str_mov+1);
+	
+		if (primera == 'R') {
+			if (blancas) mov.setPiec(WHITE_ROOK);
+			else mov.setPiec(BLACK_ROOK);
+		}
+		if (primera == 'N') {
+			if (blancas) mov.setPiec(WHITE_KNIGHT);
+			else mov.setPiec(BLACK_KNIGHT);
+		}
+		if (primera == 'B') {
+			if (blancas) mov.setPiec(WHITE_BISHOP);
+			else mov.setPiec(BLACK_BISHOP);
+		}
+		if (primera == 'Q') {
+			if (blancas) mov.setPiec(WHITE_QUEEN);
+			else mov.setPiec(BLACK_QUEEN);
+		}
+		if (primera == 'K') { 
+			if (blancas) mov.setPiec(WHITE_KING);
+			else mov.setPiec(BLACK_KING);
+		}
 	}
 
-	//TODO mov.setTosq(str); // ver cómo pasar del string e4 a la var global E4
+	// transformo el string ingresado en un movimiento
+	/*
+	sacar caracteres que no sean cadillero (por ejemplo x de comer, coronación, enroque)
+	si largo de str_mov == 2 -> sin ambiguedad
+	si largo de str_mov == 3 -> abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
+	si largo de str_mov == 4 -> ambiguedad y se tiene el origen en str_mov
+
+
+
+	/* AMBIGUEDADES 
+	When two (or more) identical pieces can move to the same square, the moving piece is uniquely identified by specifying the piece's letter, followed by (in descending order of preference)
+    1- the file of departure (if they differ); or
+    2- the rank of departure (if the files are the same but the ranks differ); or
+    3- both the file and rank (if neither alone is sufficient to identify the piece—which occurs only in rare cases where one or more pawns have promoted, resulting in a player having three or more identical pieces able to reach the same square).
+	
+	Ex:
+	- 2 knights on g1 and d2, either of which might move to f3, the move is specified as Ngf3 or Ndf3
+	- 2 knights on g5 and g1, the moves are N5f3 or N1f3
+	- an "x" can be inserted to indicate a capture, for example: N5xf3
+	- 2 rooks on d3 and h5, either one of which may move to d5. If the rook on d3 moves to d5,
+	  it is possible to disambiguate with either Rdd5 or R3d5, but the file takes precedence over the rank, so Rdd5 is correct. (And likewise if the move is a capture, Rdxd5 is correct.)
+	*/
+
+	
+
+	//userTo = str[0] - 97;
+    //userTo += 8 * (str[i+1] - 49);
+	//mov.setTosq(userTo); // ver cómo pasar del string e4 a la var global E4
 	std::cout << "Pieza: " << mov.getPiec() << std::endl;
 	return mov;
 }
@@ -131,7 +167,7 @@ BOOLTYPE readPGN(char *filename)
 			mov = obtenerMovimiento(s, blancas);
 			// TODO: obtengo todos los movimientos posibles del tablero, los recorro y cuando encuentro uno con posFinal = a la que busco y su pieza es la que busco -> retorno ese mov inicial
 			// mov.obtenerOrigen();
-			// move() realizo el movimiento en el tablero	
+			// makeMove(mov); realizo el movimiento en el tablero	
 			if (!blancas){
 				iNumJugada++;
 			}
