@@ -16,9 +16,12 @@ Move obtenerMovimiento(char str[180], bool blancas){
 	char primera;
 	unsigned char userTo;
 	char str_mov[10]; // movimiento sin nombre de piezas
-
+	int i, j;
+	char str_res[10];
+	unsigned char pieza_prom;
 	mov.clear();
-	primera = str[0];
+	primera = str[10];
+	bool hayEnroqueCorto, hayEnroqueLargo, hayPromocion;
 	std::cout << "primera: " << primera << std::endl;
 	
 	strcpy(str_mov, "");
@@ -52,13 +55,75 @@ Move obtenerMovimiento(char str[180], bool blancas){
 			else mov.setPiec(BLACK_KING);
 		}
 	}
-
-	// transformo el string ingresado en un movimiento
-	/*
-	sacar caracteres que no sean cadillero (por ejemplo x de comer, coronación, enroque)
+// transformo el string ingresado en un movimiento
+/*	sacar caracteres que no sean casillero (por ejemplo x de comer, coronación, enroque)
 	si largo de str_mov == 2 -> sin ambiguedad
 	si largo de str_mov == 3 -> abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
-	si largo de str_mov == 4 -> ambiguedad y se tiene el origen en str_mov
+	si largo de str_mov == 4 -> ambiguedad y se tiene el origen en str_mov*/
+	i = 0;
+	j = 0;
+	while (i < strlen(str_mov)){
+		if (((str_mov[i] >= 'a') && (str_mov[i] <= 'h')) || ((str_mov[i] >= '1') && (str_mov[i] <= '8'))){
+			str_res[j] = str_mov[i];
+			j++;
+		}
+		i++;
+	}
+
+	if(strlen(str_res) == 2){
+		
+	}else if (strlen(str_res) == 3){
+	
+	}else if (strlen(str_res) == 4){
+		
+	}
+	hayEnroqueCorto = str == "O-O";
+	hayEnroqueLargo = str == "O-O-O";
+	hayPromocion = false;
+	i = 0;
+	while (i < strlen(str_mov)){
+		if (str_mov[i] == '=') {
+			hayPromocion = true;
+		}
+		i++;
+	}
+	if (hayPromocion) {
+		i = 0;
+		while (str_mov[i] != '=') {
+			i++;
+		}
+		i++;
+/*Q = (queen) Dama
+R = (rook) Torre
+B = (bishop) Alfil
+N = (knight) Caballo*/
+		if (blancas) {
+			switch (str_mov[i]){
+			case 'Q': pieza_prom = WHITE_QUEEN;
+				break;
+			case 'R': pieza_prom = WHITE_ROOK;
+				break;
+			case 'B': pieza_prom = WHITE_BISHOP;
+				break;
+			case 'N': pieza_prom = WHITE_KNIGHT;
+				break;
+			default : break;
+			}
+		}else{
+			switch (str_mov[i]){
+				case 'Q': pieza_prom = BLACK_QUEEN;
+					break;
+				case 'R': pieza_prom = BLACK_ROOK;
+					break;
+				case 'B': pieza_prom = BLACK_BISHOP;
+					break;
+				case 'N': pieza_prom = BLACK_KNIGHT;
+					break;
+				default : break;
+				}
+		}
+	}
+	
 
 
 
