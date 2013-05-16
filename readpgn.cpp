@@ -10,26 +10,25 @@
 #include "extglobals.h"
 
 
-Move obtenerMovimiento(char str[180], bool blancas){
-	// retorna el movimiento incluyendo: tipo de pieza, color y posición destino
+Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
+	// retorna el movimiento incluyendo: tipo de pieza, color, posición origen (en caso de ambiguedad) y posición destino
+	msg_error = "";
 	Move mov;
 	char primera;
 	unsigned char userTo;
-	unsigned int mov_val;
 	char str_mov[10]; // movimiento sin nombre de piezas
-	unsigned int i, j;
+	unsigned int i, j, mov_to, mov_from,  col_from, row_from;
 	char str_res[10];
 	unsigned char pieza_prom;
 	mov.clear();
 	primera = str[10];
 	bool hayEnroqueCorto, hayEnroqueLargo, hayPromocion;
-	char str_to[2];
-	
-	//std::cout << "primera: " << primera << std::endl;
+	//char str_from[2];
+	//char str_to[2];
 	
 	strcpy(str_mov, "");
     strncat(str_mov, str, strlen(str));
-//determino la pieza que se mueve
+	/***********************  determino el tipo de pieza que se mueve ************************/
 	if ((primera >= 'a') && (primera <= 'z')){ //si es un peón
 		if (blancas) mov.setPiec(WHITE_PAWN);
 		else mov.setPiec(BLACK_PAWN);
@@ -58,13 +57,11 @@ Move obtenerMovimiento(char str[180], bool blancas){
 			else mov.setPiec(BLACK_KING);
 		}
 	}
-	// transformo el string ingresado en un movimiento
-	/*	sacar caracteres que no sean casillero (por ejemplo x de comer, coronación, enroque)
-	si largo de str_mov == 2 -> sin ambiguedad
-	si largo de str_mov == 3 -> abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
-	si largo de str_mov == 4 -> ambiguedad y se tiene el origen en str_mov*/
+	
+		
 	i = 0;
 	j = 0;
+	// obtengo en str_res sólo el movimiento -> elimino los caracteres que no sean casilleros (por ej. x, =, O-O, O-O-O, etc)
 	while (i < strlen(str_mov)){
 		if (((str_mov[i] >= 'a') && (str_mov[i] <= 'h')) || ((str_mov[i] >= '1') && (str_mov[i] <= '8'))){
 			str_res[j] = str_mov[i];
@@ -72,28 +69,87 @@ Move obtenerMovimiento(char str[180], bool blancas){
 		}
 		i++;
 	}
-	//std::cout << str[0] << " " << str[1] << std::endl;
-//calculo y seteo el casillero destino
-	mov_val = str[0] - 97;
-	mov_val += 8 * (str[1] - 49);
-	mov.setTosq(mov_val);
 
-	//std::cout << "str_res: " << str_res << " mov_val: " << mov_val << std::endl;
-	strcpy(str_to, "");
-	if(strlen(str_res) == 2){
-		strcpy(str_to, str_res);
-	}else if (strlen(str_res) == 3){
-		strcpy(str_to, str_res+1);
-	}else if (strlen(str_res) == 4){
-		strcpy(str_to, str_res+2);
+
+	/*************************  Decodifico el string ingresado en un movimiento  ************************
+	* si largo de str_mov == 2 -> sin ambiguedad
+	* si largo de str_mov == 3 -> abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
+	* si largo de str_mov == 4 -> ambiguedad y se tiene el origen en str_mov
+	**/
+
+	/* AMBIGUEDADES 
+	When two (or more) identical pieces can move to the same square, the moving piece is uniquely identified by specifying the piece's letter, followed by (in descending order of preference)
+    1- the file of departure (if they differ); or
+    2- the rank of departure (if the files are the same but the ranks differ); or
+    3- both the file and rank (if neither alone is sufficient to identify the piece—which occurs only in rare cases where one or more pawns have promoted, resulting in a player having three or more identical pieces able to reach the same square).
+	
+	Ex:
+	- 2 knights on g1 and d2, either of which might move to f3, the move is specified as Ngf3 or Ndf3
+	- 2 knights on g5 and g1, the moves are N5f3 or N1f3
+	- an "x" can be inserted to indicate a capture, for example: N5xf3
+	- 2 rooks on d3 and h5, either one of which may move to d5. If the rook on d3 moves to d5,
+	  it is possible to disambiguate with either Rdd5 or R3d5, but the file takes precedence over the rank, so Rdd5 is correct. (And likewise if the move is a capture, Rdxd5 is correct.)
+	*/
+	
+	switch ( strlen(str_res) ) {
+	case 2: // sin ambiguedad -> no hay pos origen
+		if (str_res[0] < 'a' || str_res[0] > 'h' || str_res[1] < '1' || str_res[1] > '8') {
+			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
+        }
+
+		mov_to = str_res[0] - 97;
+		mov_to += 8 * (str_res[1] - 49);
+		// TODO
+		//mov_from = obtenerPosOrigen(-1, -1, mov_to);
+
+		break;
+	case 3: // abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
+		if (str_res[0] >= 'a' && str_res[0] <= 'h') { // tengo la columna y no la fila -> debo buscar la fila
+			col_from   = str_res[0] - 97; //7 - (str_res[0] - 'a'); // TODO OJO VER LA FORMULA
+			row_from   = -1;
+		} else if (str_res[0] >= '1' && str_res[0] <= '8') { // tengo la fila y no la columna -> debo buscar la columna
+			col_from   = -1;
+			row_from   = 8 * (str_res[1] - 49); //(str_res[0] - '1'); // TODO OJO VER LA FORMULA
+		} else {
+			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
+		}
+		if (str_res[1] < 'a' || str_res[1] > 'h' || str_res[2] < '1' || str_res[2] > '8') {
+			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
+		}
+		mov_to = str_res[1] - 97; // TODO OJO VER LA FORMULA
+		mov_to += 8 * (str_res[2] - 49); // TODO OJO VER LA FORMULA
+		// TODO
+		//mov_from = obtenerPosOrigen(row_from, col_from, mov_to);
+
+		break;
+	case 4: // ambiguedad y se tiene el origen y el destino
+		if (str_res[0] < 'a' || str_res[0] > 'h' || str_res[1] < '1' || str_res[1] > '8' || str_res[2] < 'a' || str_res[2] > 'h' || str_res[3] < '1' || str_res[3] > '8') {
+			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
+		}
+		mov_from = str_res[0] - 97; // TODO OJO VER LA FORMULA
+		mov_from += 8 * (str_res[1] - 49); // TODO OJO VER LA FORMULA
+		
+		mov_to = str_res[2] - 97;
+		mov_to += 8 * (str_res[3] - 49);
+		break;
+	default:
+		strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
+		break;
 	}
-//chequeo los enroques
+
+	//calculo y seteo el casillero destino al movimiento
+	mov.setFrom(mov_from); // TODO OJO VER LA FORMULA
+	mov.setTosq(mov_to);
+
+	/*********************************** obtengo movimientos especiales **************************************/
+	//chequeo los enroques
 	hayEnroqueCorto = str == "O-O";
 	hayEnroqueLargo = str == "O-O-O";
 	hayPromocion = false;
 	i = 0;
-//chequeo si hay promoción de algún peón
-	hayPromocion = find(str, '=') != -1;
+	//chequeo si hay promoción de algún peón
+	i = find(str_mov, '=');
+	hayPromocion = i != -1;
 	if (hayPromocion) {
 		i = 0;
 		while (str_mov[i] != '=') {
@@ -125,27 +181,10 @@ Move obtenerMovimiento(char str[180], bool blancas){
 				default : break;
 				}
 		}
-	}
-	
-	/* AMBIGUEDADES 
-	When two (or more) identical pieces can move to the same square, the moving piece is uniquely identified by specifying the piece's letter, followed by (in descending order of preference)
-    1- the file of departure (if they differ); or
-    2- the rank of departure (if the files are the same but the ranks differ); or
-    3- both the file and rank (if neither alone is sufficient to identify the piece—which occurs only in rare cases where one or more pawns have promoted, resulting in a player having three or more identical pieces able to reach the same square).
-	
-	Ex:
-	- 2 knights on g1 and d2, either of which might move to f3, the move is specified as Ngf3 or Ndf3
-	- 2 knights on g5 and g1, the moves are N5f3 or N1f3
-	- an "x" can be inserted to indicate a capture, for example: N5xf3
-	- 2 rooks on d3 and h5, either one of which may move to d5. If the rook on d3 moves to d5,
-	  it is possible to disambiguate with either Rdd5 or R3d5, but the file takes precedence over the rank, so Rdd5 is correct. (And likewise if the move is a capture, Rdxd5 is correct.)
-	*/
+	}	
 
-	
+	// TODO ejecuto movimiento especial (enroque, coronación, etc)
 
-	//userTo = str[0] - 97;
-    //userTo += 8 * (str[i+1] - 49);
-	//mov.setTosq(userTo); // ver cómo pasar del string e4 a la var global E4
 	std::cout << "Pieza: " << mov.getPiec() << std::endl;
 	system("pause");
 	return mov;
@@ -202,6 +241,7 @@ BOOLTYPE readPGN(char *filename)
 	int posDestino;
 	int contador;
 	Move mov;
+	char* msg_error;
 
 
 	returnValue = false;
@@ -230,7 +270,7 @@ BOOLTYPE readPGN(char *filename)
 			}else {
 				std::cout << "resultado de negras: " << s << std::endl;
 			}
-			mov = obtenerMovimiento(s, blancas);
+			mov = obtenerMovimiento(s, blancas, msg_error);
 			// TODO: obtengo todos los movimientos posibles del tablero, los recorro y cuando encuentro uno con posFinal = a la que busco y su pieza es la que busco -> retorno ese mov inicial
 			// mov.obtenerOrigen();
 			// makeMove(mov); realizo el movimiento en el tablero	
@@ -250,119 +290,45 @@ return returnValue;
 }
 
 
-//void setupFen(char *fen, char *fencolor, char *fencastling, char *fenenpassant, int fenhalfmoveclock, int fenfullmovenumber)
-//{
-//       int i, file, rank, counter, piece;
-//       int whiteCastle, blackCastle, next, epsq;
-// 
-//       piece = 0;
-//       for (i = 0; i < 64; i++) {
-//			board.square[i] = EMPTY;
-//       }
-// 
-//       // loop over the FEN string characters, and populate board.square[]
-//       // i is used as index for the FEN string
-//       // counter is the index for board.square[], 0..63
-//       // file and rank relate to the position on the chess board, 1..8
-//       // There is no error/legality checking on the FEN string!!
-//       file = 1;
-//       rank = 8;
-//       i = 0;
-//       counter = 0;
-//       while ((counter < 64) && (fen[i] != '\0')){
-//              // '1'  through '8':
-//              if (((int) fen[i] > 48) && ((int) fen[i] < 57)){
-//                     file+= (int) fen[i] - 48;
-//                     counter+= (int) fen[i] - 48;
-//              }
-//              else{ //  other characters:
-//                     switch (fen[i]){
-//                           case '/':
-//                                  rank--;
-//                                  file = 1;
-//                                  break;
-//                           case 'P':
-//                                  board.square[BOARDINDEX[file][rank]] = WHITE_PAWN;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           case 'N':
-//                                  board.square[BOARDINDEX[file][rank]] = WHITE_KNIGHT;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           case 'B':
-//                                  board.square[BOARDINDEX[file][rank]] = WHITE_BISHOP;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           case 'R':
-//                                  board.square[BOARDINDEX[file][rank]] = WHITE_ROOK;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           case 'Q':
-//                                  board.square[BOARDINDEX[file][rank]] = WHITE_QUEEN;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           case 'K':
-//                                  board.square[BOARDINDEX[file][rank]] = WHITE_KING;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           case 'p':
-//                                  board.square[BOARDINDEX[file][rank]] = BLACK_PAWN;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           case 'n':
-//                                  board.square[BOARDINDEX[file][rank]] = BLACK_KNIGHT;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           case 'b':
-//                                  board.square[BOARDINDEX[file][rank]] = BLACK_BISHOP;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           case 'r':
-//                                  board.square[BOARDINDEX[file][rank]] = BLACK_ROOK;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           case 'q':
-//                                  board.square[BOARDINDEX[file][rank]] = BLACK_QUEEN;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           case 'k':
-//                                  board.square[BOARDINDEX[file][rank]] = BLACK_KING;
-//                                  file += 1;
-//                                  counter += 1;
-//                                  break;
-//                           default:
-//                                  break;
-//                     }
-//              }
-//              i++;
-//       }
-//       next = WHITE_MOVE;
-//       if (fencolor[0] == 'b') next = BLACK_MOVE;
-// 
-//       whiteCastle = 0;
-//       blackCastle = 0;
-//       if (strstr(fencastling, "K")) whiteCastle += CANCASTLEOO;
-//       if (strstr(fencastling, "Q")) whiteCastle += CANCASTLEOOO;
-//       if (strstr(fencastling, "k")) blackCastle += CANCASTLEOO;
-//       if (strstr(fencastling, "q")) blackCastle += CANCASTLEOOO;
-//       if (strstr(fenenpassant, "-"))
-//       {
-//              epsq = 0;
-//       }
-//       else{
-//              // translate a square coordinate (as string) to int (eg 'e3' to 20):
-//              epsq = ((int) fenenpassant[0] - 96) + 8 * ((int) fenenpassant[1] - 48) - 9;
-//       }
-//       board.initFromSquares(board.square, next, fenhalfmoveclock, whiteCastle , blackCastle , epsq);
-//}
+
+
+///// TODO ENROQUE 
+
+
+ /// <summary>
+        /// Find a castle move
+        /// </summary>
+        /// <param name="ePlayerColor">     Color moving</param>
+        /// <param name="bShortCastling">   true for short, false for long</param>
+        /// <param name="iTruncated">       Truncated count</param>
+        /// <param name="strMove">          Move</param>
+        /// <param name="movePos">          Returned moved if found</param>
+        /// <returns>
+        /// Moving position or -1 if error
+        /// </returns>
+        //private int FindCastling(ChessBoard.PlayerColorE ePlayerColor, bool bShortCastling, ref int iTruncated, string strMove, ref ChessBoard.MovePosS movePos) {
+        //    int                         iRetVal = -1;
+        //    int                         iWantedDelta;
+        //    int                         iDelta;
+        //    List<ChessBoard.MovePosS>   arrMovePos;
+
+        //    arrMovePos      = m_chessBoard.EnumMoveList(ePlayerColor);
+        //    iWantedDelta    = bShortCastling ? 2 : -2;
+        //    foreach (ChessBoard.MovePosS move in arrMovePos) {
+        //        if ((move.Type & ChessBoard.MoveTypeE.MoveTypeMask) == ChessBoard.MoveTypeE.Castle) {
+        //            iDelta = ((int)move.StartPos & 7) - ((int)move.EndPos & 7);
+        //            if (iDelta == iWantedDelta) {
+        //                iRetVal = (int)move.StartPos + ((int)move.EndPos << 8);
+        //                movePos = move;
+        //                m_chessBoard.DoMove(move);
+        //            }
+        //        }
+        //    }
+        //    if (iRetVal == -1) {
+        //        if (m_bDiagnose) {
+        //            throw new PgnParserException("Unable to find compatible move - " + strMove, GetCodeInError());
+        //        }
+        //        iTruncated++;
+        //    }
+        //    return(iRetVal);
+        //}
