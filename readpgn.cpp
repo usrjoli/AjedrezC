@@ -15,18 +15,21 @@ Move obtenerMovimiento(char str[180], bool blancas){
 	Move mov;
 	char primera;
 	unsigned char userTo;
+	unsigned int mov_val;
 	char str_mov[10]; // movimiento sin nombre de piezas
-	int i, j;
+	unsigned int i, j;
 	char str_res[10];
 	unsigned char pieza_prom;
 	mov.clear();
 	primera = str[10];
 	bool hayEnroqueCorto, hayEnroqueLargo, hayPromocion;
-	std::cout << "primera: " << primera << std::endl;
+	char str_to[2];
+	
+	//std::cout << "primera: " << primera << std::endl;
 	
 	strcpy(str_mov, "");
     strncat(str_mov, str, strlen(str));
-
+//determino la pieza que se mueve
 	if ((primera >= 'a') && (primera <= 'z')){ //si es un peón
 		if (blancas) mov.setPiec(WHITE_PAWN);
 		else mov.setPiec(BLACK_PAWN);
@@ -55,8 +58,8 @@ Move obtenerMovimiento(char str[180], bool blancas){
 			else mov.setPiec(BLACK_KING);
 		}
 	}
-// transformo el string ingresado en un movimiento
-/*	sacar caracteres que no sean casillero (por ejemplo x de comer, coronación, enroque)
+	// transformo el string ingresado en un movimiento
+	/*	sacar caracteres que no sean casillero (por ejemplo x de comer, coronación, enroque)
 	si largo de str_mov == 2 -> sin ambiguedad
 	si largo de str_mov == 3 -> abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
 	si largo de str_mov == 4 -> ambiguedad y se tiene el origen en str_mov*/
@@ -69,34 +72,34 @@ Move obtenerMovimiento(char str[180], bool blancas){
 		}
 		i++;
 	}
+	//std::cout << str[0] << " " << str[1] << std::endl;
+//calculo y seteo el casillero destino
+	mov_val = str[0] - 97;
+	mov_val += 8 * (str[1] - 49);
+	mov.setTosq(mov_val);
 
+	//std::cout << "str_res: " << str_res << " mov_val: " << mov_val << std::endl;
+	strcpy(str_to, "");
 	if(strlen(str_res) == 2){
-		
+		strcpy(str_to, str_res);
 	}else if (strlen(str_res) == 3){
-	
+		strcpy(str_to, str_res+1);
 	}else if (strlen(str_res) == 4){
-		
+		strcpy(str_to, str_res+2);
 	}
+//chequeo los enroques
 	hayEnroqueCorto = str == "O-O";
 	hayEnroqueLargo = str == "O-O-O";
 	hayPromocion = false;
 	i = 0;
-	while (i < strlen(str_mov)){
-		if (str_mov[i] == '=') {
-			hayPromocion = true;
-		}
-		i++;
-	}
+//chequeo si hay promoción de algún peón
+	hayPromocion = find(str, '=') != -1;
 	if (hayPromocion) {
 		i = 0;
 		while (str_mov[i] != '=') {
 			i++;
 		}
 		i++;
-/*Q = (queen) Dama
-R = (rook) Torre
-B = (bishop) Alfil
-N = (knight) Caballo*/
 		if (blancas) {
 			switch (str_mov[i]){
 			case 'Q': pieza_prom = WHITE_QUEEN;
@@ -124,9 +127,6 @@ N = (knight) Caballo*/
 		}
 	}
 	
-
-
-
 	/* AMBIGUEDADES 
 	When two (or more) identical pieces can move to the same square, the moving piece is uniquely identified by specifying the piece's letter, followed by (in descending order of preference)
     1- the file of departure (if they differ); or
@@ -147,6 +147,7 @@ N = (knight) Caballo*/
     //userTo += 8 * (str[i+1] - 49);
 	//mov.setTosq(userTo); // ver cómo pasar del string e4 a la var global E4
 	std::cout << "Pieza: " << mov.getPiec() << std::endl;
+	system("pause");
 	return mov;
 }
 

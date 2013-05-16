@@ -42,5 +42,6 @@ void          unmakeMove(Move &);
 void          unmakeWhitePromotion(unsigned int, unsigned int &);
 //jose inicio debug movimientos
 void displayFullMove(Move &move);
+int find(char* source, char element);
 //jose fin debug movimientos
 #endif 

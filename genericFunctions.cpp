@@ -16,7 +16,7 @@ int find(char* source, char element){
 		if (source[j] == element){
 			fin = true;
 		}else {
-			j++;
+			j++; 
 		}
 	}
 	if (fin) {
