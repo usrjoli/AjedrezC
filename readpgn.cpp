@@ -9,6 +9,41 @@
 #include "protos.h"
 #include "extglobals.h"
 
+unsigned int obtenerPosOrigen(unsigned int row_from, unsigned int col_from, Move mov_to){
+	unsigned int res;
+	Move movimientosAProcesar[1000];
+	int i, pos, number;
+
+	i = 0;
+	res = 0;
+	//copiado del comando "moves" que viene de origen.
+	board.moveBufLen[0] = 0;
+	board.moveBufLen[1] = movegen(board.moveBufLen[0]);
+	//std::cout << std::endl << "moves from this position:" << std::endl;
+	number = 0;
+	for (i = board.moveBufLen[0]; i < board.moveBufLen[1]; i++)
+	{
+		makeMove(board.moveBuffer[i]);
+		if (isOtherKingAttacked())
+		{
+			unmakeMove(board.moveBuffer[i]);
+		}
+		else
+		{
+			unmakeMove(board.moveBuffer[i]);
+			// no se precisa toSan(board.moveBuffer[i], sanMove);
+			//std::cout << ++number << ". " << sanMove << std::endl;
+	// jose inicio prueba para ver movimiento completo
+			std::cout << number << ". ";
+			displayFullMove(board.moveBuffer[i]);
+			std::cout<<std::endl;
+	// jose fin prueba para ver movimiento completo
+		}
+}
+
+
+	return res;
+}
 
 Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 	// retorna el movimiento incluyendo: tipo de pieza, color, posición origen (en caso de ambiguedad) y posición destino
@@ -58,7 +93,6 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 		}
 	}
 	
-		
 	i = 0;
 	j = 0;
 	// obtengo en str_res sólo el movimiento -> elimino los caracteres que no sean casilleros (por ej. x, =, O-O, O-O-O, etc)
@@ -69,8 +103,6 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 		}
 		i++;
 	}
-
-
 	/*************************  Decodifico el string ingresado en un movimiento  ************************
 	* si largo de str_mov == 2 -> sin ambiguedad
 	* si largo de str_mov == 3 -> abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
