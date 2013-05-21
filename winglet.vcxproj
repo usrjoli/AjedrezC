@@ -98,6 +98,7 @@
     <ClCompile Include="data.cpp" />
     <ClCompile Include="displaymove.cpp" />
     <ClCompile Include="eval.cpp" />
+    <ClCompile Include="genericFunctions.cpp" />
     <ClCompile Include="hash.cpp" />
     <ClCompile Include="makemove.cpp" />
     <ClCompile Include="move.cpp" />

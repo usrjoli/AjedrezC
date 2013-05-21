@@ -37,7 +37,8 @@ void displayMove(Move &move)
 
 // jose inicio visualización de movimiento completo
 void displayFullMove(Move &move){
-       std::cout << "origen - destino : ";
+
+	   fprintf(stderr, "origen - destino :");
 	   if (((move.getPiec() == WHITE_KING) && (move.isCastleOO())) || ((move.getPiec() == BLACK_KING) && (move.isCastleOO()))){
               std::cout << "O-O";
               return;      

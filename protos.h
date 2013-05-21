@@ -3,6 +3,7 @@
 
 #include "board.h"
 #include "move.h"
+#include <string>
 
 unsigned int  bitCnt(BitMap);
 int           captgen(int);
@@ -42,6 +43,6 @@ void          unmakeMove(Move &);
 void          unmakeWhitePromotion(unsigned int, unsigned int &);
 //jose inicio debug movimientos
 void displayFullMove(Move &move);
-int find(char* source, char element);
+int find(char* source, std::string element);
 //jose fin debug movimientos
 #endif 
