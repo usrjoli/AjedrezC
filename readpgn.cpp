@@ -10,7 +10,11 @@
 #include "extglobals.h"
 
 unsigned int obtenerPosOrigen(int row_from, int col_from, unsigned int mov_to, unsigned int pieza){
-
+/**
+* obtengo todos los movimientos posibles del tablero, los recorro y cuando encuentro uno con posFinal = a la que busco y su pieza es la que busco 
+* -> retorno ese mov inicial
+*
+**/
 	unsigned int res;
 	Move movimiento;
 	int i, mov_col, mov_row;
@@ -19,39 +23,29 @@ unsigned int obtenerPosOrigen(int row_from, int col_from, unsigned int mov_to, u
 	i = 0;
 	res = 0;
 	//copiado del comando "moves" que viene de origen.
-	board.moveBufLen[0] = 0;
-	board.moveBufLen[1] = movegen(board.moveBufLen[0]);
-	//std::cout << std::endl << "moves from this position:" << std::endl;
-	
+	/*board.moveBufLen[0] = 0;
+	board.moveBufLen[1] = movegen(board.moveBufLen[0]);*/
+
 	fin = false;
 	movimiento.clear();
-	std::cout << std::endl << "row_from: " << row_from << std::endl;
-	std::cout << std::endl << "col_from: " << col_from << std::endl;
-	std::cout << std::endl << "mov_to: " << mov_to << std::endl;
-//	mov_to = str_res[1] - 97; 
-// 97 es la a/98-b/99c
-//	mov_to += 8 * (str_res[2] - 49); 
-// 49 es 0 50 es 1
 	if ((row_from != -1) && (col_from != -1)){
 		return (row_from + (8 * col_from));
 	}
 
-/*	board.moveBufLen[0] = 0;
-	board.moveBufLen[1] = movegen(board.moveBufLen[0]);
-	number = 0;
-	for (i = board.moveBufLen[0]; i < board.moveBufLen[1]; i++)*/
 	i = board.moveBufLen[0];
-	while ((i < board.moveBufLen[1]) && (!fin)) { //for (i = board.moveBufLen[0]; i < board.moveBufLen[1]; i++)
+	while ((i < board.moveBufLen[1]) && (!fin)) {
 		movimiento = board.moveBuffer[i];
 		mov_col = movimiento.getFrom() % 8;
 		mov_row = ((movimiento.getFrom() / 8) - mov_col) * 8;
 		
+		if(movimiento.getPiec() == 9 || movimiento.getTosq() == 30){
+			int algo = 2;
+		}
 		if ((movimiento.getTosq() == mov_to) && (pieza == movimiento.getPiec())) {
+ /*************************  ya se que tengo a la pieza correcta, entonces solo calcular las columnas ******************************************/
 			if ((row_from == -1) && (col_from == -1)){
-
 				fin = true;
-			} else if ((row_from == -1) && (mov_col == col_from)){ //tengo la columna
-	//ya se que tengo a la pieza correcta, entonces solo calcular las columnas
+			} else if ((row_from == -1) && (mov_col == col_from)){ //tengo la columna			
 				fin = true;
 			} else if ((col_from == -1) && (mov_row == row_from)){ //tengo la fila
 				fin = true;
@@ -62,18 +56,6 @@ unsigned int obtenerPosOrigen(int row_from, int col_from, unsigned int mov_to, u
 		if (!fin){
 			i++;
 		}
-/*		makeMove(board.moveBuffer[i]);
-		if (isOtherKingAttacked()){
-			unmakeMove(board.moveBuffer[i]);
-		} else {
-			unmakeMove(board.moveBuffer[i]);
-			// no se precisa toSan(board.moveBuffer[i], sanMove);
-			//std::cout << ++number << ". " << sanMove << std::endl;
-	// jose inicio prueba para ver movimiento completo
-			std::cout << number << ". ";
-			displayFullMove(board.moveBuffer[i]);
-			std::cout<<std::endl;
-	// jose fin prueba para ver movimiento completo*/
 	}
 	if (fin){
 		return movimiento.getFrom();
@@ -82,12 +64,12 @@ unsigned int obtenerPosOrigen(int row_from, int col_from, unsigned int mov_to, u
 	}
 }
 
-Move obtenerMovimientoEnroque(bool corto, bool blancas, char * msg_error){
+Move obtenerMovimientoEnroque(BOOLTYPE corto, bool blancas, char * msg_error){
 	/**
      * corto = true para enroque corto y false para enroque largo
 	 * blancas = true para pieza blanca
      * mov = movimiento incluyendo pieza y color
-	 * msg_error si hubo error contiene el msg de error y sino ""
+	 * msg_error si hubo error contiene el msg de error y sino NULL
 	 * retorna el mov con las posiciones iniciales y finales de movimiento correspondiente al enroque
 	 * TODO validar que el rey y la torre estan en las posiciones correctas para realizar el enroque
 	 **/
@@ -100,7 +82,7 @@ Move obtenerMovimientoEnroque(bool corto, bool blancas, char * msg_error){
 	board.moveBufLen[1] = movegen(board.moveBufLen[0]);
 	i = board.moveBufLen[0];
 	movimiento.clear();
-	while ((i < board.moveBufLen[1]) && (!fin)) { //for (i = board.moveBufLen[0]; i < board.moveBufLen[1]; i++)
+	while ((i < board.moveBufLen[1]) && (!fin)) {
 		movimiento = board.moveBuffer[i];
 		if (movimiento.isCastle()) {
 			if (movimiento.isCastleOO() == corto){
@@ -125,7 +107,7 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 * retorna el movimiento incluyendo: tipo de pieza, color, posición origen (en caso de ambiguedad) y posición destino
 * str: texto con un movimiento
 * blancas: true si el movimiento corresponde al jugador blanco
-* msg_error: "", si hay error retornará el msg correspondiente
+* msg_error: NULL, si hay error retornará el msg correspondiente
 **/
 
 	Move mov;
@@ -139,128 +121,129 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 	strcpy(str_mov, "");
     strncat(str_mov, str, strlen(str));
 
-	/*************************  si el movimiento es un enroque --> obtengo posiciones origen y destino del movimiento ************************/
+	/*************************  si el movimiento es un enroque --> obtengo posiciones origen y destino del movimiento ****************************/
 
 	posEnroqueLargo = find(str_mov, std::string("O-O-O"));
 	if (posEnroqueLargo!=std::string::npos){ // es enroque largo
 		return obtenerMovimientoEnroque(false, blancas, msg_error);
 	}
-	else { // es enroque corto
-		posEnroqueCorto = find(str_mov, std::string("O-O"));
-		if (posEnroqueCorto!=std::string::npos){
-			return obtenerMovimientoEnroque(true, blancas, msg_error);
-		}else { // el movimiento NO es un enroque -> --> calculo posiciones origen y destino del movimiento
+	
+	posEnroqueCorto = find(str_mov, std::string("O-O"));
+	if (posEnroqueCorto!=std::string::npos){ // es enroque corto
+		return obtenerMovimientoEnroque(true, blancas, msg_error);
+	}
+	
+	/*********************************************  el movimiento NO es un enroque -> calculo posiciones origen y destino del movimiento *********/
 		
-		/*********************************************  determino el tipo de pieza que se mueve ****************************************************/
-			if ((primera >= 'a') && (primera <= 'z')){ //si es un peón
-				if (blancas) mov.setPiec(WHITE_PAWN);
-				else mov.setPiec(BLACK_PAWN);
-			}else { // es otra pieza != peón 
-				// si no es peón -> elimino la primer letra correspondiente a la pieza
-				strcpy(str_mov, str_mov+1);
+	/*********************************************  determino el tipo de pieza que se mueve ******************************************************/
+	if ((primera >= 'a') && (primera <= 'z')){ //si es un peón
+		if (blancas) mov.setPiec(WHITE_PAWN);
+		else mov.setPiec(BLACK_PAWN);
+	}else { // es otra pieza != peón 
+		// si no es peón -> elimino la primer letra correspondiente a la pieza
+		strcpy(str_mov, str_mov+1);
 	
-				if (primera == 'R') {
-					if (blancas) mov.setPiec(WHITE_ROOK);
-					else mov.setPiec(BLACK_ROOK);
-				}
-				if (primera == 'N') {
-					if (blancas) mov.setPiec(WHITE_KNIGHT);
-					else mov.setPiec(BLACK_KNIGHT);
-				}
-				if (primera == 'B') {
-					if (blancas) mov.setPiec(WHITE_BISHOP);
-					else mov.setPiec(BLACK_BISHOP);
-				}
-				if (primera == 'Q') {
-					if (blancas) mov.setPiec(WHITE_QUEEN);
-					else mov.setPiec(BLACK_QUEEN);
-				}
-				if (primera == 'K') { 
-					if (blancas) mov.setPiec(WHITE_KING);
-					else mov.setPiec(BLACK_KING);
-				}
-			}
-	
-			i = 0;
-			j = 0;
-			// obtengo en str_res sólo el movimiento -> elimino los caracteres que no sean casilleros (por ej. x, =, O-O, O-O-O, etc)
-			while (i < strlen(str_mov)){
-				if (((str_mov[i] >= 'a') && (str_mov[i] <= 'h')) || ((str_mov[i] >= '1') && (str_mov[i] <= '8'))){
-					str_res[j] = str_mov[i];
-					j++;
-
-				}
-				i++;
-			}
-			str_res[j] = '\0';
-			/*************************************  Decodifico el string ingresado en un movimiento  ***********************************************
-			* si largo de str_mov == 2 -> sin ambiguedad
-			* si largo de str_mov == 3 -> abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
-			* si largo de str_mov == 4 -> ambiguedad y se tiene el origen en str_mov
-			**/
-
-			/* AMBIGUEDADES 
-			When two (or more) identical pieces can move to the same square, the moving piece is uniquely identified by specifying the piece's letter, followed by (in descending order of preference)
-			1- the file of departure (if they differ); or
-			2- the rank of departure (if the files are the same but the ranks differ); or
-			3- both the file and rank (if neither alone is sufficient to identify the piece—which occurs only in rare cases where one or more pawns have promoted, resulting in a player having three or more identical pieces able to reach the same square).
-			Ex:
-			- 2 knights on g1 and d2, either of which might move to f3, the move is specified as Ngf3 or Ndf3
-			- 2 knights on g5 and g1, the moves are N5f3 or N1f3
-			- an "x" can be inserted to indicate a capture, for example: N5xf3
-			- 2 rooks on d3 and h5, either one of which may move to d5. If the rook on d3 moves to d5,
-			  it is possible to disambiguate with either Rdd5 or R3d5, but the file takes precedence over the rank, so Rdd5 is correct. (And likewise if the move is a capture, Rdxd5 is correct.)
-			*/
-	
-			switch ( strlen(str_res) ) {
-			case 2: // sin ambiguedad -> no hay pos origen
-				if (str_res[0] < 'a' || str_res[0] > 'h' || str_res[1] < '1' || str_res[1] > '8') {
-					strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
-				}
-
-				mov_to = str_res[0] - 97; 
-				mov_to += 8 * (str_res[1] - 49); 
-				mov_from = obtenerPosOrigen(-1, -1, mov_to, mov.getPiec());
-
-				break;
-			case 3: // abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
-				if (str_res[0] >= 'a' && str_res[0] <= 'h') { // tengo la columna y no la fila -> debo buscar la fila
-					col_from   = str_res[0] - 97; //7 - (str_res[0] - 'a'); // TODO OJO VER LA FORMULA
-					row_from   = -1;
-				} else if (str_res[0] >= '1' && str_res[0] <= '8') { // tengo la fila y no la columna -> debo buscar la columna
-					col_from   = -1;
-					row_from   = str_res[1] - 49; //(str_res[0] - '1'); // TODO OJO VER LA FORMULA
-				} else {
-					strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
-				}
-				if (str_res[1] < 'a' || str_res[1] > 'h' || str_res[2] < '1' || str_res[2] > '8') {
-					strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
-				}
-				mov_to = str_res[1] - 97; // TODO OJO VER LA FORMULA
-				mov_to += 8 * (str_res[2] - 49); // TODO OJO VER LA FORMULA
-				mov_from = obtenerPosOrigen(row_from, col_from, mov_to, mov.getPiec());
-
-				break;
-			case 4: // ambiguedad y se tiene el origen y el destino
-				if (str_res[0] < 'a' || str_res[0] > 'h' || str_res[1] < '1' || str_res[1] > '8' || str_res[2] < 'a' || str_res[2] > 'h' || str_res[3] < '1' || str_res[3] > '8') {
-					strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
-				}
-				mov_from = str_res[0] - 97; // TODO OJO VER LA FORMULA
-				mov_from += 8 * (str_res[1] - 49); // TODO OJO VER LA FORMULA
-		
-				mov_to = str_res[2] - 97;
-				mov_to += 8 * (str_res[3] - 49);
-				break;
-			default:
-				strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
-				break;
-			}
-
-			//seteo posición origne y destino al movimiento
-			mov.setFrom(mov_from);
-			mov.setTosq(mov_to);
+		if (primera == 'R') {
+			if (blancas) mov.setPiec(WHITE_ROOK);
+			else mov.setPiec(BLACK_ROOK);
+		}
+		if (primera == 'N') {
+			if (blancas) mov.setPiec(WHITE_KNIGHT);
+			else mov.setPiec(BLACK_KNIGHT);
+		}
+		if (primera == 'B') {
+			if (blancas) mov.setPiec(WHITE_BISHOP);
+			else mov.setPiec(BLACK_BISHOP);
+		}
+		if (primera == 'Q') {
+			if (blancas) mov.setPiec(WHITE_QUEEN);
+			else mov.setPiec(BLACK_QUEEN);
+		}
+		if (primera == 'K') { 
+			if (blancas) mov.setPiec(WHITE_KING);
+			else mov.setPiec(BLACK_KING);
 		}
 	}
+	
+	i = 0;
+	j = 0;
+	// obtengo en str_res sólo el movimiento -> elimino los caracteres que no sean casilleros (por ej. x, =, O-O, O-O-O, etc)
+	while (i < strlen(str_mov)){
+		if (((str_mov[i] >= 'a') && (str_mov[i] <= 'h')) || ((str_mov[i] >= '1') && (str_mov[i] <= '8'))){
+			str_res[j] = str_mov[i];
+			j++;
+
+		}
+		i++;
+	}
+	str_res[j] = '\0';
+	/*************************************  Decodifico el string ingresado en un movimiento  ***********************************************
+	* si largo de str_mov == 2 -> sin ambiguedad
+	* si largo de str_mov == 3 -> abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
+	* si largo de str_mov == 4 -> ambiguedad y se tiene el origen en str_mov
+	**/
+
+	/* AMBIGUEDADES 
+	When two (or more) identical pieces can move to the same square, the moving piece is uniquely identified by specifying the piece's letter, followed by (in descending order of preference)
+	1- the file of departure (if they differ); or
+	2- the rank of departure (if the files are the same but the ranks differ); or
+	3- both the file and rank (if neither alone is sufficient to identify the piece—which occurs only in rare cases where one or more pawns have promoted, resulting in a player having three or more identical pieces able to reach the same square).
+	Ex:
+	- 2 knights on g1 and d2, either of which might move to f3, the move is specified as Ngf3 or Ndf3
+	- 2 knights on g5 and g1, the moves are N5f3 or N1f3
+	- an "x" can be inserted to indicate a capture, for example: N5xf3
+	- 2 rooks on d3 and h5, either one of which may move to d5. If the rook on d3 moves to d5,
+		it is possible to disambiguate with either Rdd5 or R3d5, but the file takes precedence over the rank, so Rdd5 is correct. (And likewise if the move is a capture, Rdxd5 is correct.)
+	*/
+	
+	switch ( strlen(str_res) ) {
+	case 2: // sin ambiguedad -> no hay pos origen
+		if (str_res[0] < 'a' || str_res[0] > 'h' || str_res[1] < '1' || str_res[1] > '8') {
+			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
+		}
+
+		mov_to = str_res[0] - 97; 
+		mov_to += 8 * (str_res[1] - 49); 
+		mov_from = obtenerPosOrigen(-1, -1, mov_to, mov.getPiec());
+
+		break;
+	case 3: // abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
+		if (str_res[0] >= 'a' && str_res[0] <= 'h') { // tengo la columna y no la fila -> debo buscar la fila
+			col_from   = str_res[0] - 97; //7 - (str_res[0] - 'a'); // TODO OJO VER LA FORMULA
+			row_from   = -1;
+		} else if (str_res[0] >= '1' && str_res[0] <= '8') { // tengo la fila y no la columna -> debo buscar la columna
+			col_from   = -1;
+			row_from   = str_res[1] - 49; //(str_res[0] - '1'); // TODO OJO VER LA FORMULA
+		} else {
+			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
+		}
+		if (str_res[1] < 'a' || str_res[1] > 'h' || str_res[2] < '1' || str_res[2] > '8') {
+			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
+		}
+		mov_to = str_res[1] - 97; // TODO OJO VER LA FORMULA
+		mov_to += 8 * (str_res[2] - 49); // TODO OJO VER LA FORMULA
+		mov_from = obtenerPosOrigen(row_from, col_from, mov_to, mov.getPiec());
+
+		break;
+	case 4: // ambiguedad y se tiene el origen y el destino
+		if (str_res[0] < 'a' || str_res[0] > 'h' || str_res[1] < '1' || str_res[1] > '8' || str_res[2] < 'a' || str_res[2] > 'h' || str_res[3] < '1' || str_res[3] > '8') {
+			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
+		}
+		mov_from = str_res[0] - 97; // TODO OJO VER LA FORMULA
+		mov_from += 8 * (str_res[1] - 49); // TODO OJO VER LA FORMULA
+		
+		mov_to = str_res[2] - 97;
+		mov_to += 8 * (str_res[3] - 49);
+		break;
+	default:
+		strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
+		break;
+	}
+
+	//seteo posición origne y destino al movimiento
+	mov.setFrom(mov_from);
+	mov.setTosq(mov_to);
+
 	
 	/**************************************************** Busco si hay promoción ****************************************************************/
 
@@ -347,8 +330,10 @@ BOOLTYPE readPGN(char *filename)
 	bool blancas;
 	int contador;
 	Move mov;
-	char* msg_error = "";
+	char* msg_error = NULL;
 
+	char nro[180];
+	int n;
 
 
 	returnValue = false;
@@ -368,16 +353,52 @@ BOOLTYPE readPGN(char *filename)
 
 			if (blancas){
 				contador = find(s, std::string("."));
+
+				strncpy(nro, s, contador);
+				nro[contador] = '\0';
+				
+				if(strcmp(nro, "21") == 0){
+					n= 21;
+				}
+
 				strncpy(s, s+contador+1, (int)strlen(s));
+
+				if(strcmp(s, "g4") == 0){
+					n= 21;
+				}
+				
 				fprintf(stderr, "resultado de blancas: %s", s);
 			}else {
 				fprintf(stderr, "resultado de negras: %s", s);
 			}
-			mov = obtenerMovimiento(s, blancas, msg_error);
-			// TODO: obtengo todos los movimientos posibles del tablero, los recorro y cuando encuentro uno con posFinal = a la que busco y su pieza es la que busco -> retorno ese mov inicial
-			
-			makeMove(mov); //realizo el movimiento en el tablero	
-			board.display();
+
+			board.moveBufLen[0] = 0;
+			board.moveBufLen[1] = movegen(board.moveBufLen[0]);
+
+			mov = obtenerMovimiento(s, blancas, msg_error); 
+			if(msg_error != NULL){
+				fprintf(stderr, msg_error);
+				fclose(fp);
+				return false;
+			}
+
+			//realizo el movimiento en el tablero	
+			makeMove(mov);
+ 
+			if (isOtherKingAttacked())              // post-move check to see if we are leaving our king in check
+			{
+				unmakeMove(mov);
+				strcpy (msg_error,"invalid move, leaving king in check: ");
+				fprintf(stderr, msg_error);
+				fclose(fp);
+				return false;
+			}
+			else
+			{
+				board.endOfGame++;
+				board.endOfSearch = board.endOfGame;
+				board.display();
+			}
 				
 			if (!blancas){
 				iNumJugada++;
