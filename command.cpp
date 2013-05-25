@@ -204,6 +204,7 @@ noPonder:
 			std::cout << "dup                 : muestra las jugadas duplicadas" << std::endl;
 			std::cout << "movSPawn            : jugadas sin mover o tomar un peon" << std::endl;
 			std::cout << "reachables          : da el número total de casilleros a los que se puede acceder" << std::endl;
+			std::cout << "enpassantMoves      : muestra las capturas al paso posibles" << std::endl;
 			std::cout << "readpgn filename    : carga el tablero a partir de un archivo PGN" << std::endl;
 //jose - fin - agregado para leer de .pgn
 			std::cout << std::endl;
@@ -565,6 +566,11 @@ noPonder:
 			std::cout << "Se puede ocupar 1 de " << number << " casillero(s) distinto(s)" << std::endl;
 			continue; 
 		}
+		if (!XB_MODE && !strcmp(command, "enpassantMoves")){ 
+			enpassantMoves();
+			continue; 
+		}
+		
 // jose -  fin
 		// =================================================================
 		// move: enter a move (use this format: move e2e4, or h7h8q)

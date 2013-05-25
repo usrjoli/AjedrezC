@@ -72,6 +72,7 @@ void displayFullMove(Move &move){
 	
 	//if (move.isPawnmove() && move.isCapture()) std::cout << char('a' + FILES[move.getFrom()]-1);
 	if (move.isCapture()) std::cout << "Hay Captura" << std::endl;
+	if (move.isEnpassant()) std::cout << "Enpassant" << std::endl;
 	std::cout.flush();
 	return;
 }

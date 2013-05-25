@@ -51,6 +51,7 @@ void material();
 int duplicatedPositions(bool show, bool blancas);
 int movSPawn();
 int reachableSquares(bool display);
+void enpassantMoves();
 int find(char* source, std::string element);
 //jose fin debug movimientos
 #endif 
