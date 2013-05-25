@@ -229,7 +229,7 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 		if (str_res[0] < 'a' || str_res[0] > 'h' || str_res[1] < '1' || str_res[1] > '8' || str_res[2] < 'a' || str_res[2] > 'h' || str_res[3] < '1' || str_res[3] > '8') {
 			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
 		}
-		mov_from = str_res[0] - 97; // TODO OJO VER LA FORMULA
+		mov_from = str_res[0] - 97;
 		mov_from += 8 * (str_res[1] - 49); // TODO OJO VER LA FORMULA
 		
 		mov_to = str_res[2] - 97;
@@ -277,45 +277,57 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 		}
 	}
 
-	std::cout << "Pieza: " << mov.getPiec() << std::endl;
+	//std::cout << "Pieza: " << mov.getPiec() << std::endl;
 	return mov;
 }
 
-void readTags(char pS[180], FILE *fp){
+void salterEspacios(char ps[180], int posLeida){
+
+	while (ps[posLeida] == ' '){
+		posLeida++;
+	}
+}
+
+std::string readTags(char pS[180], FILE *fp, int &esEOF){
+	// en ps tengo lo leido hasta el espacio
 	// lee todas las etiquetas del PGN
 	// supone que las etiquetas son correctas y son del tipo: [atributo "valor"]
 
 	bool termine = false;
 	int largo = (int)strlen(pS);
-	char atributo[80];
-	char valor[80];
+	char *atributo = new char();
+	char *valor = new char();
+	std::string cabezal = "";
 
 	while(pS[0] == '['){ // mientras sea una etiqueta
-		// obtengo el atributo
+		/******************************** obtengo el atributo ***********************/
 		// elimino el primer ([) de s:
         strcpy(atributo, "");
         strncat(atributo, pS, strlen(pS));
         strcpy(atributo, atributo+1);
-		std::cout << "atributo: " << atributo << std::endl;
-		
-		// obtengo el valor
-		fscanf(fp, "%s", pS);
-		// TODO considerar los espacios entre "" del valor
-		/*if (pS[largo-1] == ']'){
-			termine = true;
-			std::cout<<  "debera liquidar aca." << std::endl;
-		}else{
-			if (fscanf(fp, "%s",s) == EOF){
-			termine = true;
-			}*/
+		//std::cout << "atributo: " << atributo << std::endl;
 
-        // elimino el primer (") y los últimos 2 ("]) de s:
-        strcpy(valor, "");
+		/******************************** obtengo el valor ***********************/
+		fscanf(fp, "%s", pS); // ej "Informal Game"] espacios"]
+        // elimino el primer (") de pS:
+		strcpy(pS, pS+1);
+		strcpy(valor, "");
+
+		while (pS[strlen(pS)-1] != ']' ){ // si no cierra la etiqueta -> continuo armando el valor
+			strncat(valor, pS, strlen(pS));			
+			strncat(valor, " ", 1);
+			fscanf(fp, "%s", pS);
+		}
+		
+		// elimino los últimos 2 ("]) de s:
         strncat(valor, pS, strlen(pS)-2);
-        strcpy(valor, valor+1);
-		std::cout << "valor: " << valor << std::endl;
-		fscanf(fp, "%s",pS);
+		//std::cout << "valor: " << valor << std::endl;
+
+		cabezal += "[" + std::string(atributo) +  " \"" + std::string(valor) + "\"]\n";
+		esEOF = fscanf(fp, "%s",pS);
 	}
+	//cabezal += "\0";
+	return cabezal;
 }
 
 
@@ -329,132 +341,96 @@ BOOLTYPE readPGN(char *filename)
 
 	bool blancas;
 	int contador;
-	Move mov;
+	Move mov, dummy;
 	char* msg_error = NULL;
-
-	char nro[180];
-	int n;
-
+	std::string cabezal;
 
 	returnValue = false;
 	iNumJugada=0;
-	fin = false;
+
+	int leer;
+	
 	// open the file for read and scan through until we find the number-th position:
-	fp=fopen(filename, "rt");
-	blancas = true;
+	fp=fopen(filename, "rt");	
 	if (fp != NULL){//"move e2e4, or h7h8q
-		board.init(); 
-		while ((!fin) && (fscanf(fp, "%s", s) != EOF)){ // lee hasta el espacio
-			
-			readTags(s, fp);
+		leer = fscanf(fp, "%s", s);
+		if(leer != EOF){
+			cabezal = readTags(s, fp, leer);
+			std::cout << "---------------------------------------" << std::endl << cabezal << std::endl << "---------------------------------------" << std::endl;
+			board.init();
+			fin = false;
+			blancas = true;
+			while ((!fin) && (leer != EOF)){ // lee hasta el espacio				
+				//acá empieza la parte de descifrar el pgn
+				//a menos que me cambien el tablero, la posición destino es del 1 al 8... o sea, el último char que se leyó
 
-			//acá empieza la parte de descifrar el pgn
-			//a menos que me cambien el tablero, la posición destino es del 1 al 8... o sea, el último char que se leyó
+				if (blancas){
+					contador = find(s, std::string("."));
 
-			if (blancas){
-				contador = find(s, std::string("."));
-
-				strncpy(nro, s, contador);
-				nro[contador] = '\0';
+					strncpy(s, s+contador+1, (int)strlen(s));
 				
-				if(strcmp(nro, "21") == 0){
-					n= 21;
+					//fprintf(stderr, "resultado de blancas: %s", s);
+				}else {
+					//fprintf(stderr, "resultado de negras: %s", s);
 				}
 
-				strncpy(s, s+contador+1, (int)strlen(s));
+				board.moveBufLen[0] = 0;
+				board.moveBufLen[1] = movegen(board.moveBufLen[0]);
 
-				if(strcmp(s, "g4") == 0){
-					n= 21;
+				mov = obtenerMovimiento(s, blancas, msg_error); 
+				if(msg_error != NULL){
+					fprintf(stderr, msg_error);
+					fclose(fp);
+					return false;
 				}
-				
-				fprintf(stderr, "resultado de blancas: %s", s);
-			}else {
-				fprintf(stderr, "resultado de negras: %s", s);
-			}
 
-			board.moveBufLen[0] = 0;
-			board.moveBufLen[1] = movegen(board.moveBufLen[0]);
-
-			mov = obtenerMovimiento(s, blancas, msg_error); 
-			if(msg_error != NULL){
-				fprintf(stderr, msg_error);
-				fclose(fp);
-				return false;
-			}
-
-			//realizo el movimiento en el tablero	
-			makeMove(mov);
+				//realizo el movimiento en el tablero	
+				makeMove(mov);
  
-			if (isOtherKingAttacked())              // post-move check to see if we are leaving our king in check
-			{
-				unmakeMove(mov);
-				strcpy (msg_error,"invalid move, leaving king in check: ");
-				fprintf(stderr, msg_error);
-				fclose(fp);
-				return false;
-			}
-			else
-			{
-				board.endOfGame++;
-				board.endOfSearch = board.endOfGame;
-				board.display();
-			}
-				
-			if (!blancas){
-				iNumJugada++;
-			}
-			blancas = !blancas;
-		}
+				if (isOtherKingAttacked())              // post-move check to see if we are leaving our king in check
+				{
+					unmakeMove(mov);
+					strcpy (msg_error,"invalid move, leaving king in check: ");
+					fprintf(stderr, msg_error);
+					fclose(fp);
+					return false;
+				}
+				else
+				{
+					board.endOfGame++;
+					board.endOfSearch = board.endOfGame;
+					//board.display();
+				}
 
-		fclose(fp);
+				if (!blancas){
+					iNumJugada++;
+				}
+
+				blancas = !blancas;
+
+				leer = fscanf(fp, "%s", s);
+			}
+
+			if(find(s, std::string("#"))!= std::string::npos || find(s, std::string("++"))!= std::string::npos){ // si el movimiento es mate (# o ++) -> finaliza la partida
+					fprintf(stderr, "Partida terminada!\n");
+					if(board.nextMove == BLACK_MOVE){
+						fprintf(stderr, "Ganador: blancas\n"); 
+					}else {
+						fprintf(stderr, "Ganador: negras\n");
+					}
+				}else{
+					fprintf(stderr, "Partida en curso\n");
+				}
+				int i=2;
+				fprintf(stderr, "--------------------------------------\n");
+				board.isEndOfgame(i, dummy);
+				fprintf(stderr, "--------------------------------------\n");
+			fclose(fp);
+		}
 	}
 	else {
-	printf("winglet> error opening file: %s\n", filename);
-	returnValue = false;
+		printf("winglet> error opening file: %s\n", filename);
+		returnValue = false;
 	}
 return returnValue;
 }
-
-
-
-
-///// TODO ENROQUE 
-
-
- /// <summary>
-        /// Find a castle move
-        /// </summary>
-        /// <param name="ePlayerColor">     Color moving</param>
-        /// <param name="bShortCastling">   true for short, false for long</param>
-        /// <param name="iTruncated">       Truncated count</param>
-        /// <param name="strMove">          Move</param>
-        /// <param name="movePos">          Returned moved if found</param>
-        /// <returns>
-        /// Moving position or -1 if error
-        /// </returns>
-        //private int FindCastling(ChessBoard.PlayerColorE ePlayerColor, bool bShortCastling, ref int iTruncated, string strMove, ref ChessBoard.MovePosS movePos) {
-        //    int                         iRetVal = -1;
-        //    int                         iWantedDelta;
-        //    int                         iDelta;
-        //    List<ChessBoard.MovePosS>   arrMovePos;
-
-        //    arrMovePos      = m_chessBoard.EnumMoveList(ePlayerColor);
-        //    iWantedDelta    = bShortCastling ? 2 : -2;
-        //    foreach (ChessBoard.MovePosS move in arrMovePos) {
-        //        if ((move.Type & ChessBoard.MoveTypeE.MoveTypeMask) == ChessBoard.MoveTypeE.Castle) {
-        //            iDelta = ((int)move.StartPos & 7) - ((int)move.EndPos & 7);
-        //            if (iDelta == iWantedDelta) {
-        //                iRetVal = (int)move.StartPos + ((int)move.EndPos << 8);
-        //                movePos = move;
-        //                m_chessBoard.DoMove(move);
-        //            }
-        //        }
-        //    }
-        //    if (iRetVal == -1) {
-        //        if (m_bDiagnose) {
-        //            throw new PgnParserException("Unable to find compatible move - " + strMove, GetCodeInError());
-        //        }
-        //        iTruncated++;
-        //    }
-        //    return(iRetVal);
-        //}
