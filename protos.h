@@ -42,7 +42,15 @@ void          unmakeCapture(unsigned int &, unsigned int &);
 void          unmakeMove(Move &);
 void          unmakeWhitePromotion(unsigned int, unsigned int &);
 //jose inicio debug movimientos
+bool isCheckMate();
+bool isCheck();
 void displayFullMove(Move &move);
+void moves();
+void castles();
+void material();
+int duplicatedPositions(bool show, bool blancas);
+int movSPawn();
+int reachableSquares(bool display);
 int find(char* source, std::string element);
 //jose fin debug movimientos
 #endif 

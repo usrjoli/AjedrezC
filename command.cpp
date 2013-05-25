@@ -32,6 +32,9 @@ void commands()
 	U64 msStart,msStop, perftcount;
 	Timer timer;
 	Move move, dummy;
+//jose
+	bool ret;
+//jose
 
 	// =================================================================
 	// infinite loop:
@@ -184,9 +187,6 @@ noPonder:
 			std::cout << "quit                : exit program " << std::endl;
 			std::cout << "r                   : rotate board " << std::endl;
 			std::cout << "readfen filename n  : reads #-th FEN position from filename" << std::endl;
-//jose - inicio - agregado para leer de .pgn
-			std::cout << "readpgn filename n  : carga el tablero a partir de un archivo PGN" << std::endl;
-//jose - fin - agregado para leer de .pgn
 			std::cout << "sd n                : set the search depth to n" << std::endl;
 			std::cout << "setup               : setup board... " << std::endl;
 			std::cout << "test filename       : starts search on all FEN position in 'filename'" << std::endl;
@@ -195,6 +195,17 @@ noPonder:
 			std::cout << "time s              : time per move in seconds" << std::endl;
 			std::cout << "undo                : take back last move" << std::endl;
 			std::cout << "white               : WHITE to move" << std::endl;
+//jose - inicio - agregado para leer de .pgn
+			std::cout << "isCheck             : i am in check?" << std::endl;
+			std::cout << "isMate              : is a check mate?" << std::endl;
+			std::cout << "#moves              : número total de movimientos disponibles para este tablero" << std::endl;
+			std::cout << "castles             : enroques posibles para el jugador de turno" << std::endl;
+			std::cout << "material            : da el valor total de las fichas para cada jugador" << std::endl;
+			std::cout << "dup                 : muestra las jugadas duplicadas" << std::endl;
+			std::cout << "movSPawn            : jugadas sin mover o tomar un peon" << std::endl;
+			std::cout << "reachables          : da el número total de casilleros a los que se puede acceder" << std::endl;
+			std::cout << "readpgn filename    : carga el tablero a partir de un archivo PGN" << std::endl;
+//jose - fin - agregado para leer de .pgn
 			std::cout << std::endl;
 			continue; 
 		}
@@ -490,8 +501,7 @@ noPonder:
 		// moves: show all legal moves
 		// =================================================================
 
-		if (!XB_MODE && !strcmp(command, "moves"))    
-		{ 
+		if (!XB_MODE && !strcmp(command, "moves")){ 
 			board.moveBufLen[0] = 0;
 			board.moveBufLen[1] = movegen(board.moveBufLen[0]);
 			std::cout << std::endl << "moves from this position:" << std::endl;
@@ -517,7 +527,45 @@ noPonder:
 			}
 			continue; 
 		}
+// jose -  inicio
+		if (!XB_MODE && !strcmp(command, "isMate"))  
+		{ 
+			ret = isCheckMate();
+			continue; 
+		}
 
+		if (!XB_MODE && !strcmp(command, "isCheck"))  
+		{ 
+			ret = isCheck();
+			continue; 
+		}
+		if (!XB_MODE && !strcmp(command, "#moves")){ 
+			moves();
+		}
+		if (!XB_MODE && !strcmp(command, "castles")){ 
+			castles();
+			continue; 
+		}
+
+		if (!XB_MODE && !strcmp(command, "material")){ 
+			material();
+			continue; 
+		}
+		if (!XB_MODE && !strcmp(command, "dup")){ 
+			number = duplicatedPositions(true, board.nextMove == WHITE_MOVE);
+			continue; 
+		}
+		if (!XB_MODE && !strcmp(command, "movSPawn")){ 
+			number = movSPawn();
+			std::cout << "Se han realizado " << number << " jugada(s) sin mover o tomar un peon" << std::endl;
+			continue; 
+		}
+		if (!XB_MODE && !strcmp(command, "reachables")){ 
+			number = reachableSquares(false);
+			std::cout << "Se puede ocupar 1 de " << number << " casillero(s) distinto(s)" << std::endl;
+			continue; 
+		}
+// jose -  fin
 		// =================================================================
 		// move: enter a move (use this format: move e2e4, or h7h8q)
 		// =================================================================
@@ -543,6 +591,14 @@ noPonder:
 					board.endOfGame++;
 					board.endOfSearch = board.endOfGame;
 					board.display();
+/**********************/
+/*funcion para ver si estoy en mate*/
+/**********************/
+					/*if (isCheckMate()){
+						std::cout << "bueno, se acabó la papa; a jugar uno nuevo" << std::endl;
+					} else {
+						std::cout << "que siga la ronda!!" << std::endl;
+					}*/
 				}
 			}
 			else

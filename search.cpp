@@ -387,8 +387,8 @@ BOOLTYPE Board::isEndOfgame(int &legalmoves, Move &singlemove)
 	// are we checkmating the other side?
 	if (isOtherKingAttacked()) 
 	{
-		if (nextMove) std::cout << "1-0 {Black mates}" << std::endl;
-		else std::cout << "1-0 {White mates}" << std::endl;
+		if (nextMove) std::cout << "0-1 {Jaque Mate Negro}" << std::endl;
+		else std::cout << "1-0 {Jaque Mate Blanco}" << std::endl;
 		return true;
 	}
 
@@ -412,8 +412,8 @@ BOOLTYPE Board::isEndOfgame(int &legalmoves, Move &singlemove)
 	{
 		if (isOwnKingAttacked()) 
 		{
-			if (nextMove) std::cout << "1-0 {White mates}" << std::endl;
-			else std::cout << "1-0 {Black mates}" << std::endl;
+			if (nextMove) std::cout << "1-0 {Jaque Mate Blanco}" << std::endl;
+			else std::cout << "0-1 {Jaque Mate Negro}" << std::endl;
 		}
 		else std::cout << "1/2-1/2 {stalemate}" << std::endl;
 		return true;

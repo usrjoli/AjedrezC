@@ -92,6 +92,7 @@
     <ClInclude Include="timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="auxiliarFunctions.cpp" />
     <ClCompile Include="bitops.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="command.cpp" />
