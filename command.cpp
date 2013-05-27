@@ -20,6 +20,7 @@ void commands()
 // =================================================================
 
 	int i, j, number;
+	char d;
 	int fenhalfmoveclock;
 	int fenfullmovenumber;
 	char fen[100];
@@ -205,7 +206,7 @@ noPonder:
 			std::cout << "movSPawn            : jugadas sin mover o tomar un peon" << std::endl;
 			std::cout << "reachables          : da el número total de casilleros a los que se puede acceder" << std::endl;
 			std::cout << "enpassantMoves      : muestra las capturas al paso posibles" << std::endl;
-			std::cout << "readpgn filename    : carga el tablero a partir de un archivo PGN" << std::endl;
+			std::cout << "readpgn filename n  : carga el tablero a partir de un archivo PGN, n es opcional e indica hasta que paso ejecutar el pgn" << std::endl;
 //jose - fin - agregado para leer de .pgn
 			std::cout << std::endl;
 			continue; 
@@ -810,14 +811,19 @@ noPonder:
 		}
 // jose - inicio - lectura de un archivo pgn
 		// =================================================================
-		// readpgn filename n: reads PGN from filename
+		// readpgn filename n d: reads PGN from filename
 		// =================================================================
 
 		if (!XB_MODE && !strcmp(command, "readpgn"))  
 		{ 
-			sscanf(CMD_BUFF,"readpgn %s %d", userinput, &number);
-			board.init();
-			readPGN(userinput);
+			number = 0;
+			d = 'n';
+			sscanf(CMD_BUFF,"readpgn %s %d", userinput, &number); 
+			fprintf(stderr, "desplegar todos los movimientos? s, n ");
+			std::cin >> d;
+			sscanf(CMD_BUFF,"desplegar todos los movimientos? s, n %c", &d);
+			//board.init();
+			readPGN(userinput, number, d);
 			board.display();
 			continue; 
 		}

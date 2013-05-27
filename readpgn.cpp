@@ -9,7 +9,7 @@
 #include "protos.h"
 #include "extglobals.h"
 
-unsigned int obtenerPosOrigen(int row_from, int col_from, unsigned int mov_to, unsigned int pieza){
+unsigned int obtenerPosOrigen(char row_from, char col_from, unsigned int mov_to, unsigned int pieza){
 /**
 * obtengo todos los movimientos posibles del tablero, los recorro y cuando encuentro uno con posFinal = a la que busco y su pieza es la que busco 
 * -> retorno ese mov inicial
@@ -17,47 +17,40 @@ unsigned int obtenerPosOrigen(int row_from, int col_from, unsigned int mov_to, u
 **/
 	unsigned int res;
 	Move movimiento;
-	int i, mov_col, mov_row;
+	int i;
 	bool fin;
 
 	i = 0;
 	res = 0;
 	//copiado del comando "moves" que viene de origen.
-	/*board.moveBufLen[0] = 0;
-	board.moveBufLen[1] = movegen(board.moveBufLen[0]);*/
 
 	fin = false;
 	movimiento.clear();
-	if ((row_from != -1) && (col_from != -1)){
+	if ((row_from != '\0') && (col_from != '\0')){
 		return (row_from + (8 * col_from));
 	}
 
+	board.moveBufLen[0] = 0;
+	board.moveBufLen[1] = movegen(board.moveBufLen[0]);
+
 	i = board.moveBufLen[0];
+	
 	while ((i < board.moveBufLen[1]) && (!fin)) {
 		movimiento = board.moveBuffer[i];
-		mov_col = movimiento.getFrom() % 8;
-		mov_row = ((movimiento.getFrom() / 8) - mov_col) * 8;
 		
-		if(movimiento.getPiec() == 9 || movimiento.getTosq() == 30){
-			int algo = 2;
-		}
 		if ((movimiento.getTosq() == mov_to) && (pieza == movimiento.getPiec())) {
  /*************************  ya se que tengo a la pieza correcta, entonces solo calcular las columnas ******************************************/
-			if ((row_from == -1) && (col_from == -1)){
+			if ((row_from == '\0') && (col_from == '\0')){
 				fin = true;
-			} else if ((row_from == -1) && (mov_col == col_from)){ //tengo la columna			
+			} else if ((row_from == '\0') && (col_from == SQUARENAME[movimiento.getFrom()][0])){ //tengo la columna		
 				fin = true;
-			} else if ((col_from == -1) && (mov_row == row_from)){ //tengo la fila
+			} else if ((col_from == '\0') && (row_from == SQUARENAME[movimiento.getFrom()][1])){ //tengo la fila
 				fin = true;
 			}
-		} else {//no se si va algo, pero por las dudas lo pongo
-		
 		}
-		if (!fin){
-			i++;
-		}
+		i++;
 	}
-	if (fin){
+	if (fin){ // si encontro
 		return movimiento.getFrom();
 	} else {
 		return 0;
@@ -102,7 +95,15 @@ Move obtenerMovimientoEnroque(BOOLTYPE corto, bool blancas, char * msg_error){
 	return movimiento;
 }
 
-Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
+char* decodeMove(Move pMov){
+	char* usermov = new char();
+
+	strcpy(usermov, SQUARENAME[pMov.getFrom()]);
+	strcat (usermov,SQUARENAME[pMov.getTosq()]);
+	return usermov;
+}
+
+Move obtenerMovimiento(char str[180], bool blancas, char* &usermov, char* &msg_error){
 /**
 * retorna el movimiento incluyendo: tipo de pieza, color, posición origen (en caso de ambiguedad) y posición destino
 * str: texto con un movimiento
@@ -113,8 +114,9 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 	Move mov;
 	char primera;
 	char str_mov[10]; // movimiento sin nombre de piezas
-	unsigned int i, j, mov_to, mov_from,  col_from, row_from, posEnroqueCorto, posEnroqueLargo;
+	unsigned int i, j, mov_to, mov_from, posEnroqueCorto, posEnroqueLargo;
 	char str_res[10];
+	char col_from, row_from;
 	mov.clear();
 	primera = str[0];
 	
@@ -125,12 +127,16 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 
 	posEnroqueLargo = find(str_mov, std::string("O-O-O"));
 	if (posEnroqueLargo!=std::string::npos){ // es enroque largo
-		return obtenerMovimientoEnroque(false, blancas, msg_error);
+		mov = obtenerMovimientoEnroque(false, blancas, msg_error);
+		usermov = decodeMove(mov);
+		return mov;
 	}
 	
 	posEnroqueCorto = find(str_mov, std::string("O-O"));
 	if (posEnroqueCorto!=std::string::npos){ // es enroque corto
-		return obtenerMovimientoEnroque(true, blancas, msg_error);
+		mov = obtenerMovimientoEnroque(true, blancas, msg_error);
+		usermov = decodeMove(mov);
+		return mov;
 	}
 	
 	/*********************************************  el movimiento NO es un enroque -> calculo posiciones origen y destino del movimiento *********/
@@ -204,24 +210,28 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 
 		mov_to = str_res[0] - 97; 
 		mov_to += 8 * (str_res[1] - 49); 
-		mov_from = obtenerPosOrigen(-1, -1, mov_to, mov.getPiec());
+		mov_from = obtenerPosOrigen('\0', '\0', mov_to, mov.getPiec());
 
 		break;
 	case 3: // abmiguedad obtener el origen y ver cual corresponde a la columna o fila indicada en str_mov
 		if (str_res[0] >= 'a' && str_res[0] <= 'h') { // tengo la columna y no la fila -> debo buscar la fila
-			col_from   = str_res[0] - 97; //7 - (str_res[0] - 'a'); // TODO OJO VER LA FORMULA
-			row_from   = -1;
+			//col_from   = str_res[0] - 97; //7 - (str_res[0] - 'a'); // TODO OJO VER LA FORMULA
+			//row_from   = -1;
+			col_from   = str_res[0];
+			row_from   = '\0';
 		} else if (str_res[0] >= '1' && str_res[0] <= '8') { // tengo la fila y no la columna -> debo buscar la columna
-			col_from   = -1;
-			row_from   = str_res[1] - 49; //(str_res[0] - '1'); // TODO OJO VER LA FORMULA
+			//col_from   = -1;
+			//row_from   = str_res[1] - 49; //(str_res[0] - '1'); // TODO OJO VER LA FORMULA
+			col_from   = '\0';
+			row_from   = str_res[1];
 		} else {
 			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
 		}
 		if (str_res[1] < 'a' || str_res[1] > 'h' || str_res[2] < '1' || str_res[2] > '8') {
 			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
 		}
-		mov_to = str_res[1] - 97; // TODO OJO VER LA FORMULA
-		mov_to += 8 * (str_res[2] - 49); // TODO OJO VER LA FORMULA
+		mov_to = str_res[1] - 97;
+		mov_to += 8 * (str_res[2] - 49);
 		mov_from = obtenerPosOrigen(row_from, col_from, mov_to, mov.getPiec());
 
 		break;
@@ -230,7 +240,7 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 			strcpy (msg_error,"No se pudo decodificar la posición destino: "); strcat (msg_error,str_res);
 		}
 		mov_from = str_res[0] - 97;
-		mov_from += 8 * (str_res[1] - 49); // TODO OJO VER LA FORMULA
+		mov_from += 8 * (str_res[1] - 49);
 		
 		mov_to = str_res[2] - 97;
 		mov_to += 8 * (str_res[3] - 49);
@@ -244,7 +254,7 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 	mov.setFrom(mov_from);
 	mov.setTosq(mov_to);
 
-	
+	usermov = decodeMove(mov);
 	/**************************************************** Busco si hay promoción ****************************************************************/
 
 	i = find(str_mov, std::string("="));
@@ -275,6 +285,8 @@ Move obtenerMovimiento(char str[180], bool blancas, char* msg_error){
 				default : break;
 			}
 		}
+
+		strncat(usermov, str_mov + i, 1);
 	}
 
 	//std::cout << "Pieza: " << mov.getPiec() << std::endl;
@@ -331,22 +343,24 @@ std::string readTags(char pS[180], FILE *fp, int &esEOF){
 }
 
 
-BOOLTYPE readPGN(char *filename)
+BOOLTYPE readPGN(char *filename, int number, char display)
 {
 	int iNumJugada;
 	char s[180];
 	BOOLTYPE returnValue;
 	FILE * fp;
 	bool fin;
+	bool display_all = false;
 
 	bool blancas;
 	int contador;
 	Move mov, dummy;
 	char* msg_error = NULL;
+	char * userinput = NULL;
 	std::string cabezal;
 
 	returnValue = false;
-	iNumJugada=0;
+	iNumJugada=1;
 
 	int leer;
 	
@@ -357,6 +371,11 @@ BOOLTYPE readPGN(char *filename)
 		if(leer != EOF){
 			cabezal = readTags(s, fp, leer);
 			std::cout << "---------------------------------------" << std::endl << cabezal << std::endl << "---------------------------------------" << std::endl;
+
+			if(display == 's'){
+				display_all = true;
+			}
+
 			board.init();
 			fin = false;
 			blancas = true;
@@ -366,9 +385,7 @@ BOOLTYPE readPGN(char *filename)
 
 				if (blancas){
 					contador = find(s, std::string("."));
-
 					strncpy(s, s+contador+1, (int)strlen(s));
-				
 					//fprintf(stderr, "resultado de blancas: %s", s);
 				}else {
 					//fprintf(stderr, "resultado de negras: %s", s);
@@ -377,33 +394,51 @@ BOOLTYPE readPGN(char *filename)
 				board.moveBufLen[0] = 0;
 				board.moveBufLen[1] = movegen(board.moveBufLen[0]);
 
-				mov = obtenerMovimiento(s, blancas, msg_error); 
+				mov = obtenerMovimiento(s, blancas, userinput, msg_error); 
 				if(msg_error != NULL){
 					fprintf(stderr, msg_error);
 					fclose(fp);
 					return false;
 				}
 
-				//realizo el movimiento en el tablero	
-				makeMove(mov);
+				if (isValidTextMove(userinput, mov))        // check to see if the user move is also found in the pseudo-legal move list
+				{
+					//realizo el movimiento en el tablero	
+					makeMove(mov);
  
-				if (isOtherKingAttacked())              // post-move check to see if we are leaving our king in check
-				{
-					unmakeMove(mov);
-					strcpy (msg_error,"invalid move, leaving king in check: ");
-					fprintf(stderr, msg_error);
-					fclose(fp);
-					return false;
-				}
-				else
-				{
-					board.endOfGame++;
-					board.endOfSearch = board.endOfGame;
-					//board.display();
+					if (isOtherKingAttacked())              // post-move check to see if we are leaving our king in check
+					{
+						unmakeMove(mov);
+						strcpy (msg_error,"invalid move, leaving king in check: ");
+						fprintf(stderr, msg_error);
+						fclose(fp);
+						return false;
+					}
+					else
+					{
+						board.endOfGame++;
+						board.endOfSearch = board.endOfGame;					
+					}
 				}
 
+				if(display_all) {
+					fprintf(stderr, userinput);
+				}
 				if (!blancas){
+					if(iNumJugada == number){
+						fin = true;
+					}					
+					if(display_all) {
+						board.display();
+					}
 					iNumJugada++;
+					if(iNumJugada == 6){
+						iNumJugada = 6;
+					}
+				}else {
+					if(display_all) {
+						fprintf(stderr, " ");
+					}
 				}
 
 				blancas = !blancas;
@@ -421,10 +456,13 @@ BOOLTYPE readPGN(char *filename)
 				}else{
 					fprintf(stderr, "Partida en curso\n");
 				}
-				int i=2;
+
+				int i;
 				fprintf(stderr, "--------------------------------------\n");
 				board.isEndOfgame(i, dummy);
 				fprintf(stderr, "--------------------------------------\n");
+
+
 			fclose(fp);
 		}
 	}
