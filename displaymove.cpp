@@ -47,32 +47,32 @@ void displayFullMove(Move &move){
 		std::cout << "Pieza: " << PIECECHARS[move.getPiec()] << std::endl;
 	}
 	if (((move.getPiec() == WHITE_KING) && (move.isCastleOO())) || ((move.getPiec() == BLACK_KING) && (move.isCastleOO()))){
-		std::cout << "O-O";
+		std::cout << "  O-O - Enroque corto";
 		return;      
 	};
 	if (((move.getPiec() == WHITE_KING) && (move.isCastleOOO())) || ((move.getPiec() == BLACK_KING) && (move.isCastleOOO()))){
-		std::cout << "O-O-O";
+		std::cout << "  O-O-O - Enroque largo";
 		return;      
 	};
+	if (move.isCapture()) std::cout << "  Hay Captura" << std::endl;
+	if (move.isEnpassant()) std::cout << "  Hay Captura al paso" << std::endl;
+	if (move.isPromotion()){
+		std::cout << "  Hay promocion = ";
+		std::cout << PIECECHARS[move.getProm()] << std::endl;
+	}
 	std::cout << "  origen : ";
 	
 	//if (!move.isPawnmove()) std::cout << PIECECHARS[move.getPiec()];
-	if (move.isPawnmove() && move.isCapture()) std::cout << char('a' + FILES[move.getFrom()]-1);
-	if (move.isCapture()) std::cout << "x" ; 
+	//if (move.isPawnmove() && move.isCapture()) std::cout << char('a' + FILES[move.getFrom()]-1);
+	//if (move.isCapture()) std::cout << "x" ; 
 
 	std::cout << char('a' + FILES[move.getFrom()]-1) << RANKS[move.getFrom()] <<std::endl;
 	
 	std::cout << "  destino: ";
 	std::cout << char('a' + FILES[move.getTosq()]-1);
-	std::cout << RANKS[move.getTosq()]; 
-	if (move.isPromotion()){
-		std::cout << "=";
-		std::cout << PIECECHARS[move.getProm()] << std::endl;
-	}
+	std::cout << RANKS[move.getTosq()] << std::endl; 
 	
 	//if (move.isPawnmove() && move.isCapture()) std::cout << char('a' + FILES[move.getFrom()]-1);
-	if (move.isCapture()) std::cout << "Hay Captura" << std::endl;
-	if (move.isEnpassant()) std::cout << "Enpassant" << std::endl;
 	std::cout.flush();
 	return;
 }

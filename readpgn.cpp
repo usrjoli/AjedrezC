@@ -352,7 +352,7 @@ BOOLTYPE readPGN(char *filename, int number, char display)
 	bool fin;
 	bool display_all = false;
 
-	bool blancas;
+	bool blancas, partidaFinalizada;
 	int contador;
 	Move mov, dummy;
 	char* msg_error = NULL;
@@ -360,6 +360,7 @@ BOOLTYPE readPGN(char *filename, int number, char display)
 	std::string cabezal;
 
 	returnValue = false;
+	partidaFinalizada = false;
 	iNumJugada=1;
 
 	int leer;
@@ -383,70 +384,84 @@ BOOLTYPE readPGN(char *filename, int number, char display)
 				//acá empieza la parte de descifrar el pgn
 				//a menos que me cambien el tablero, la posición destino es del 1 al 8... o sea, el último char que se leyó
 
-				if (blancas){
-					contador = find(s, std::string("."));
-					strncpy(s, s+contador+1, (int)strlen(s));
-					//fprintf(stderr, "resultado de blancas: %s", s);
+				if (strcmp(s, "1-0") == 0 ||
+                        strcmp(s, "0-1") == 0||
+                        strcmp(s, "1/2-1/2") == 0 ||
+                        strcmp(s, "*") == 0){
+							fin = true;
 				}else {
-					//fprintf(stderr, "resultado de negras: %s", s);
-				}
+					if (blancas){
+						contador = find(s, std::string("."));
+						strncpy(s, s+contador+1, (int)strlen(s));
+						//fprintf(stderr, "resultado de blancas: %s", s);
+					}else {
+						//fprintf(stderr, "resultado de negras: %s", s);
+					}
 
-				board.moveBufLen[0] = 0;
-				board.moveBufLen[1] = movegen(board.moveBufLen[0]);
-
-				mov = obtenerMovimiento(s, blancas, userinput, msg_error); 
-				if(msg_error != NULL){
-					fprintf(stderr, msg_error);
-					fclose(fp);
-					return false;
-				}
-
-				if (isValidTextMove(userinput, mov))        // check to see if the user move is also found in the pseudo-legal move list
-				{
-					//realizo el movimiento en el tablero	
-					makeMove(mov);
- 
-					if (isOtherKingAttacked())              // post-move check to see if we are leaving our king in check
-					{
-						unmakeMove(mov);
-						strcpy (msg_error,"invalid move, leaving king in check: ");
+					board.moveBufLen[0] = 0;
+					board.moveBufLen[1] = movegen(board.moveBufLen[0]);
+					if(iNumJugada == 22){
+						iNumJugada = iNumJugada;
+					}
+					mov = obtenerMovimiento(s, blancas, userinput, msg_error); 
+					if(msg_error != NULL){
 						fprintf(stderr, msg_error);
 						fclose(fp);
 						return false;
 					}
-					else
+
+					if (isValidTextMove(userinput, mov))        // check to see if the user move is also found in the pseudo-legal move list
 					{
-						board.endOfGame++;
-						board.endOfSearch = board.endOfGame;					
+						//realizo el movimiento en el tablero	
+						makeMove(mov);
+ 
+						if (isOtherKingAttacked())              // post-move check to see if we are leaving our king in check
+						{
+							unmakeMove(mov);
+							strcpy (msg_error,"invalid move, leaving king in check: ");
+							fprintf(stderr, msg_error);
+							fclose(fp);
+							return false;
+						}
+						else
+						{
+							board.endOfGame++;
+							board.endOfSearch = board.endOfGame;					
+						}
 					}
-				}
 
-				if(display_all) {
-					fprintf(stderr, userinput);
-				}
-				if (!blancas){
-					if(iNumJugada == number){
+					if(display_all) {
+						fprintf(stderr, "--> %d: \n",iNumJugada);
+						fprintf(stderr, userinput);
+					}
+					if (!blancas){
+						if(iNumJugada == number){
+							fin = true;
+						}					
+						if(display_all) {
+							board.display();
+						}
+						iNumJugada++;
+						if(iNumJugada == 6){
+							iNumJugada = 6;
+						}
+					}else {
+						if(display_all) {
+							fprintf(stderr, " ");
+						}
+					}
+
+					blancas = !blancas;
+					if(find(s, std::string("#"))!= std::string::npos || find(s, std::string("++"))!= std::string::npos){ // si el movimiento es mate (# o ++) -> finaliza la partida
 						fin = true;
-					}					
-					if(display_all) {
-						board.display();
-					}
-					iNumJugada++;
-					if(iNumJugada == 6){
-						iNumJugada = 6;
-					}
-				}else {
-					if(display_all) {
-						fprintf(stderr, " ");
+						partidaFinalizada = true;
+					}else{
+						leer = fscanf(fp, "%s", s);
 					}
 				}
-
-				blancas = !blancas;
-
-				leer = fscanf(fp, "%s", s);
 			}
 
-			if(find(s, std::string("#"))!= std::string::npos || find(s, std::string("++"))!= std::string::npos){ // si el movimiento es mate (# o ++) -> finaliza la partida
+			if(partidaFinalizada){ // si el movimiento es mate (# o ++) -> finaliza la partida
 					fprintf(stderr, "Partida terminada!\n");
 					if(board.nextMove == BLACK_MOVE){
 						fprintf(stderr, "Ganador: blancas\n"); 

@@ -197,16 +197,21 @@ noPonder:
 			std::cout << "undo                : take back last move" << std::endl;
 			std::cout << "white               : WHITE to move" << std::endl;
 //jose - inicio - agregado para leer de .pgn
-			std::cout << "isCheck             : i am in check?" << std::endl;
-			std::cout << "isMate              : is a check mate?" << std::endl;
-			std::cout << "#moves              : número total de movimientos disponibles para este tablero" << std::endl;
+			std::cout << " -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --" << std::endl;
+			std::cout << "isCheck             : estoy en jaque?" << std::endl;
+			std::cout << "isMate              : es jaque mate?" << std::endl;
+			std::cout << "#moves              : n\243mero total de movimientos disponibles para el jugador" << std::endl;
+			std::cout << "                      de turno" << std::endl;
 			std::cout << "castles             : enroques posibles para el jugador de turno" << std::endl;
-			std::cout << "material            : da el valor total de las fichas para cada jugador" << std::endl;
-			std::cout << "dup                 : muestra las jugadas duplicadas" << std::endl;
-			std::cout << "movSPawn            : jugadas sin mover o tomar un peon" << std::endl;
-			std::cout << "reachables          : da el número total de casilleros a los que se puede acceder" << std::endl;
-			std::cout << "enpassantMoves      : muestra las capturas al paso posibles" << std::endl;
-			std::cout << "readpgn filename n  : carga el tablero a partir de un archivo PGN, n es opcional e indica hasta que paso ejecutar el pgn" << std::endl;
+			std::cout << "material            : muestra el valor total de las fichas para cada jugador" << std::endl;
+			std::cout << "dup                 : muestra las jugadas duplicadas del jugador de turno" << std::endl;
+			std::cout << "movSPawn            : n\243mero de jugadas sin mover o tomar un pe\242n" << std::endl;
+			std::cout << "reachables          : muestra el n\243mero total de casilleros a los que se puede" << std::endl;
+			std::cout << "                      acceder para el jugador de turno" << std::endl;
+			std::cout << "enpassantMoves      : muestra las capturas al paso posibles para el jugador de" << std::endl;
+			std::cout << "                      turno" << std::endl;
+			std::cout << "readpgn filename n  : carga el tablero a partir de un archivo PGN, " << std::endl;
+			std::cout << "                      n es opcional e indica hasta que jugada cargar del pgn" << std::endl;
 //jose - fin - agregado para leer de .pgn
 			std::cout << std::endl;
 			continue; 
@@ -519,7 +524,8 @@ noPonder:
 				{
 					unmakeMove(board.moveBuffer[i]);
 					toSan(board.moveBuffer[i], sanMove);
-					std::cout << ++number << ". " << sanMove << std::endl;
+					//std::cout << ++number << ". " << sanMove << std::endl;
+					number++;
 // jose inicio prueba para ver movimiento completo
 					std::cout << number << ". ";
 					displayFullMove(board.moveBuffer[i]);
@@ -543,6 +549,7 @@ noPonder:
 		}
 		if (!XB_MODE && !strcmp(command, "#moves")){ 
 			moves();
+			continue;
 		}
 		if (!XB_MODE && !strcmp(command, "castles")){ 
 			castles();
@@ -559,7 +566,7 @@ noPonder:
 		}
 		if (!XB_MODE && !strcmp(command, "movSPawn")){ 
 			number = movSPawn();
-			std::cout << "Se han realizado " << number << " jugada(s) sin mover o tomar un peon" << std::endl;
+			std::cout << "Se han realizado " << number << " jugada(s) sin mover o tomar un pe\242n" << std::endl;
 			continue; 
 		}
 		if (!XB_MODE && !strcmp(command, "reachables")){ 
@@ -825,6 +832,7 @@ noPonder:
 			//board.init();
 			readPGN(userinput, number, d);
 			board.display();
+			for (CMD_BUFF_COUNT = 0; (CMD_BUFF[CMD_BUFF_COUNT] = getchar()) != '\n'; CMD_BUFF_COUNT++);
 			continue; 
 		}
 // jose - fin - lectura de un archivo pgn
