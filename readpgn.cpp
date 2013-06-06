@@ -285,7 +285,7 @@ Move obtenerMovimiento(char str[180], bool blancas, char* &usermov, char* &msg_e
 				default : break;
 			}
 		}
-
+		str_mov[i] = tolower(str_mov[i]);
 		strncat(usermov, str_mov + i, 1);
 	}
 
@@ -293,11 +293,12 @@ Move obtenerMovimiento(char str[180], bool blancas, char* &usermov, char* &msg_e
 	return mov;
 }
 
-void salterEspacios(char ps[180], int posLeida){
+void salterComentarios(char ps[180], FILE *fp, int &esEOF){
 
-	while (ps[posLeida] == ' '){
-		posLeida++;
+	while (ps[strlen(ps)-1] != '}' && esEOF != EOF){// mientras no cierren los comentarios
+		esEOF = fscanf(fp, "%s", ps);
 	}
+	esEOF = fscanf(fp, "%s", ps);
 }
 
 std::string readTags(char pS[180], FILE *fp, int &esEOF){
@@ -431,7 +432,9 @@ BOOLTYPE readPGN(char *filename, int number, char display)
 					}
 
 					if(display_all) {
-						fprintf(stderr, "--> %d: \n",iNumJugada);
+						if(blancas){
+							fprintf(stderr, "--> %d: \n",iNumJugada);
+						}
 						fprintf(stderr, userinput);
 					}
 					if (!blancas){
@@ -442,9 +445,7 @@ BOOLTYPE readPGN(char *filename, int number, char display)
 							board.display();
 						}
 						iNumJugada++;
-						if(iNumJugada == 6){
-							iNumJugada = 6;
-						}
+						
 					}else {
 						if(display_all) {
 							fprintf(stderr, " ");
@@ -455,8 +456,11 @@ BOOLTYPE readPGN(char *filename, int number, char display)
 					if(find(s, std::string("#"))!= std::string::npos || find(s, std::string("++"))!= std::string::npos){ // si el movimiento es mate (# o ++) -> finaliza la partida
 						fin = true;
 						partidaFinalizada = true;
-					}else{
+					}else{						
 						leer = fscanf(fp, "%s", s);
+						if(s[0] == '{'){
+							salterComentarios(s, fp, leer);
+						}
 					}
 				}
 			}
