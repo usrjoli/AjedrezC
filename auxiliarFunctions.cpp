@@ -196,3 +196,25 @@ void enpassantMoves(){
 		std::cout << "No hay capturas al paso para este tablero" << std::endl;
 	}
 }
+
+bool checkMateInN(int movesLeft){
+	Move *toCheckMoves;
+	Move dummy;
+	int i;
+
+	movesLeft--;
+	if (movesLeft == 0){//no debo seguir buscando más abajo, recorrer los movimientos posibles y ver si alguno da mate.
+		board.moveBufLen[0] = 0;
+		board.moveBufLen[1] = movegen(board.moveBufLen[0]);
+		
+		i = board.moveBufLen[0];
+		while (i < board.moveBufLen[1]){
+			dummy = board.moveBuffer[i];
+			if (dummy.isKingcaptured()){
+				
+			}
+			i++;
+		}
+	
+	}
+}
