@@ -1,4 +1,3 @@
-// jose
 // módulo creado para leer archivos PGN
 
 #ifndef _CRT_SECURE_NO_DEPRECATE  // suppress MS security warnings
@@ -365,129 +364,144 @@ BOOLTYPE readPGN(char *filename, int number, char display)
 	iNumJugada=1;
 
 	int leer;
-	
-	// open the file for read and scan through until we find the number-th position:
-	fp=fopen(filename, "rt");	
-	if (fp != NULL){//"move e2e4, or h7h8q
-		leer = fscanf(fp, "%s", s);
-		if(leer != EOF){
-			cabezal = readTags(s, fp, leer);
-			std::cout << "---------------------------------------" << std::endl << cabezal << std::endl << "---------------------------------------" << std::endl;
 
-			if(display == 's'){
-				display_all = true;
-			}
+	 //if (number <= 0) return returnValue;
+	try{
+		// open the file for read and scan through until we find the number-th position:
+		fp=fopen(filename, "rt");	
+		if (fp != NULL){//"move e2e4, or h7h8q
+			leer = fscanf(fp, "%s", s);
+			if(leer != EOF){
+				cabezal = readTags(s, fp, leer);
+				std::cout << "---------------------------------------" << std::endl << cabezal << std::endl << "---------------------------------------" << std::endl;
 
-			board.init();
-			fin = false;
-			blancas = true;
-			while ((!fin) && (leer != EOF)){ // lee hasta el espacio				
-				//acá empieza la parte de descifrar el pgn
-				//a menos que me cambien el tablero, la posición destino es del 1 al 8... o sea, el último char que se leyó
+				if(display == 's'){
+					display_all = true;
+				}
 
-				if (strcmp(s, "1-0") == 0 ||
-                        strcmp(s, "0-1") == 0||
-                        strcmp(s, "1/2-1/2") == 0 ||
-                        strcmp(s, "*") == 0){
-							fin = true;
-				}else {
-					if (blancas){
-						contador = find(s, std::string("."));
-						strncpy(s, s+contador+1, (int)strlen(s));
-						//fprintf(stderr, "resultado de blancas: %s", s);
+				//board.init();
+				fin = false;
+				blancas = true;
+				while ((!fin) && (leer != EOF)){ // lee hasta el espacio				
+					//acá empieza la parte de descifrar el pgn
+					//a menos que me cambien el tablero, la posición destino es del 1 al 8... o sea, el último char que se leyó
+
+					if (strcmp(s, "1-0") == 0 ||
+							strcmp(s, "0-1") == 0||
+							strcmp(s, "1/2-1/2") == 0 ||
+							strcmp(s, "*") == 0){
+								fin = true;
 					}else {
-						//fprintf(stderr, "resultado de negras: %s", s);
-					}
+						if (blancas){
+							contador = find(s, std::string("."));
+							strncpy(s, s+contador+1, (int)strlen(s));
+							//fprintf(stderr, "resultado de blancas: %s", s);
+						}else {
+							//fprintf(stderr, "resultado de negras: %s", s);
+						}
 
-					board.moveBufLen[0] = 0;
-					board.moveBufLen[1] = movegen(board.moveBufLen[0]);
-					if(iNumJugada == 22){
-						iNumJugada = iNumJugada;
-					}
-					mov = obtenerMovimiento(s, blancas, userinput, msg_error); 
-					if(msg_error != NULL){
-						fprintf(stderr, msg_error);
-						fclose(fp);
-						return false;
-					}
+						board.moveBufLen[0] = 0;
+						board.moveBufLen[1] = movegen(board.moveBufLen[0]);
+						if(iNumJugada == 22){
+							iNumJugada = iNumJugada;
+						}
+						
+						mov = obtenerMovimiento(s, blancas, userinput, msg_error); 
 
-					if (isValidTextMove(userinput, mov))        // check to see if the user move is also found in the pseudo-legal move list
-					{
-						//realizo el movimiento en el tablero	
-						makeMove(mov);
- 
-						if (isOtherKingAttacked())              // post-move check to see if we are leaving our king in check
-						{
-							unmakeMove(mov);
-							strcpy (msg_error,"invalid move, leaving king in check: ");
+						if(msg_error != NULL){
 							fprintf(stderr, msg_error);
 							fclose(fp);
 							return false;
 						}
-						else
+
+						if (isValidTextMove(userinput, mov))        // check to see if the user move is also found in the pseudo-legal move list
 						{
-							board.endOfGame++;
-							board.endOfSearch = board.endOfGame;					
+							//realizo el movimiento en el tablero	
+							makeMove(mov);
+ 
+							if (isOtherKingAttacked())              // post-move check to see if we are leaving our king in check
+							{
+								unmakeMove(mov);
+								strcpy (msg_error,"invalid move, leaving king in check: ");
+								fprintf(stderr, msg_error);
+								fclose(fp);
+								return false;
+							}
+							else
+							{
+								board.endOfGame++;
+								board.endOfSearch = board.endOfGame;					
+							}
 						}
-					}
 
-					if(display_all) {
-						if(blancas){
-							fprintf(stderr, "--> %d: \n",iNumJugada);
-						}
-						fprintf(stderr, userinput);
-					}
-					if (!blancas){
-						if(iNumJugada == number){
-							fin = true;
-						}					
 						if(display_all) {
-							board.display();
+							if(blancas){
+								fprintf(stderr, "--> %d: \n",iNumJugada);
+							}
+							fprintf(stderr, userinput);
 						}
-						iNumJugada++;
 						
-					}else {
-						if(display_all) {
-							fprintf(stderr, " ");
+						if (!blancas){
+							if(iNumJugada == number){
+								fin = true;
+							}					
+							if(display_all) {
+								board.display();
+							}
+							iNumJugada++;
+						
+						}else {
+							if(display_all) {
+								fprintf(stderr, " ");
+							}
 						}
-					}
 
-					blancas = !blancas;
-					if(find(s, std::string("#"))!= std::string::npos || find(s, std::string("++"))!= std::string::npos){ // si el movimiento es mate (# o ++) -> finaliza la partida
-						fin = true;
-						partidaFinalizada = true;
-					}else{						
-						leer = fscanf(fp, "%s", s);
-						if(s[0] == '{'){
-							salterComentarios(s, fp, leer);
+						blancas = !blancas;
+						if(find(s, std::string("#"))!= std::string::npos || find(s, std::string("++"))!= std::string::npos){ // si el movimiento es mate (# o ++) -> finaliza la partida
+							fin = true;
+							partidaFinalizada = true;
+						}else{						
+							leer = fscanf(fp, "%s", s);
+							if(s[0] == '{'){
+								salterComentarios(s, fp, leer);
+							}
 						}
+						
 					}
 				}
+
+				if(partidaFinalizada){ // si el movimiento es mate (# o ++) -> finaliza la partida
+						fprintf(stderr, "Partida terminada!\n");
+						if(board.nextMove == BLACK_MOVE){
+							fprintf(stderr, "Ganador: blancas\n"); 
+						}else {
+							fprintf(stderr, "Ganador: negras\n");
+						}
+					}else{
+						fprintf(stderr, "Partida en curso\n");
+					}
+
+					int i;
+					fprintf(stderr, "--------------------------------------\n");
+					board.isEndOfgame(i, dummy);
+					fprintf(stderr, "--------------------------------------\n");
+			
 			}
-
-			if(partidaFinalizada){ // si el movimiento es mate (# o ++) -> finaliza la partida
-					fprintf(stderr, "Partida terminada!\n");
-					if(board.nextMove == BLACK_MOVE){
-						fprintf(stderr, "Ganador: blancas\n"); 
-					}else {
-						fprintf(stderr, "Ganador: negras\n");
-					}
-				}else{
-					fprintf(stderr, "Partida en curso\n");
-				}
-
-				int i;
-				fprintf(stderr, "--------------------------------------\n");
-				board.isEndOfgame(i, dummy);
-				fprintf(stderr, "--------------------------------------\n");
-
-
-			fclose(fp);
 		}
+		else {
+			printf("winglet> error opening file: %s\n", filename);
+			returnValue = false;
+		}
+		fclose(fp);
 	}
-	else {
-		printf("winglet> error opening file: %s\n", filename);
-		returnValue = false;
+	catch(const std::exception& e){
+		//cout << "An exception occurred. Exception Nr. " << e.what() << endl;
+
+		fprintf(stderr, "HA OCURRIDO UN ERROR INESPERADO \n");
+		fprintf(stderr, e.what());
+		fprintf(stderr, "\n");
+
 	}
+	
 return returnValue;
 }
