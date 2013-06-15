@@ -41,6 +41,7 @@ void          unmakeBlackPromotion(unsigned int, unsigned int &);
 void          unmakeCapture(unsigned int &, unsigned int &);
 void          unmakeMove(Move &);
 void          unmakeWhitePromotion(unsigned int, unsigned int &);
+bool          checkMateInN(int movesLeft);
 //jose inicio debug movimientos
 bool isCheckMate();
 bool isCheck();

@@ -196,7 +196,7 @@ noPonder:
 			std::cout << "time s              : time per move in seconds" << std::endl;
 			std::cout << "undo                : take back last move" << std::endl;
 			std::cout << "white               : WHITE to move" << std::endl;
-//jose - inicio - agregado para leer de .pgn
+//jose - inicio - agregado para leer de .pgn y otras funcionalidades
 			std::cout << " -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --" << std::endl;
 			std::cout << "isCheck             : estoy en jaque?" << std::endl;
 			std::cout << "isMate              : es jaque mate?" << std::endl;
@@ -212,7 +212,8 @@ noPonder:
 			std::cout << "                      turno" << std::endl;
 			std::cout << "readpgn filename n  : carga el tablero a partir de un archivo PGN, " << std::endl;
 			std::cout << "                      n es opcional e indica hasta que jugada cargar del pgn" << std::endl;
-//jose - fin - agregado para leer de .pgn
+			std::cout << "mateIn n            : chequea si hay jaque mate en menos de n movimientos" << std::endl;
+//jose - fin - agregado para leer de .pgn y otras funcionalidades
 			std::cout << std::endl;
 			continue; 
 		}
@@ -578,7 +579,16 @@ noPonder:
 			enpassantMoves();
 			continue; 
 		}
-		
+		if (!XB_MODE && !strcmp(command, "mateIn")){
+			sscanf(CMD_BUFF,"mateIn %d", &number);
+			ret = checkMateInN(number);
+			if (ret) {
+				std::cout << "Se puede hacer un jaque mate en " << number << " movimientos o menos" << std::endl;
+			} else {
+				std::cout << "No se puede hacer un jaque mate en " << number << " movimientos o menos" << std::endl;
+			}
+			continue;
+		}
 // jose -  fin
 		// =================================================================
 		// move: enter a move (use this format: move e2e4, or h7h8q)
@@ -829,7 +839,7 @@ noPonder:
 			fprintf(stderr, "desplegar todos los movimientos? s, n ");
 			std::cin >> d;
 			sscanf(CMD_BUFF,"desplegar todos los movimientos? s, n %c", &d);
-			//board.init();
+			board.init();
 			readPGN(userinput, number, d);
 			board.display();
 			for (CMD_BUFF_COUNT = 0; (CMD_BUFF[CMD_BUFF_COUNT] = getchar()) != '\n'; CMD_BUFF_COUNT++);

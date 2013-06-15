@@ -198,23 +198,88 @@ void enpassantMoves(){
 }
 
 bool checkMateInN(int movesLeft){
-	Move *toCheckMoves;
-	Move dummy;
-	int i;
+	Move toCheckMoves[1024];
+	Move *oponentToCheckMoves;
+	Move dummy, mov;
+	int i, j, number, movsToCheck;
+	bool isMate;
+	char sanMove[12];
 
 	movesLeft--;
+	isMate = false;
 	if (movesLeft == 0){//no debo seguir buscando más abajo, recorrer los movimientos posibles y ver si alguno da mate.
 		board.moveBufLen[0] = 0;
 		board.moveBufLen[1] = movegen(board.moveBufLen[0]);
 		
-		i = board.moveBufLen[0];
-		while (i < board.moveBufLen[1]){
-			dummy = board.moveBuffer[i];
-			if (dummy.isKingcaptured()){
-				
-			}
-			i++;
+		number = 0;
+//		toCheckMoves = new Move[board.moveBufLen[1]];
+		j = 0;
+		movsToCheck = board.moveBufLen[1];
+		for (i = board.moveBufLen[0]; i < movsToCheck; i++){
+			toCheckMoves[j] = board.moveBuffer[i];
+			toSan(toCheckMoves[j], sanMove);
+			std::cout << ++number << ". " << sanMove << " | ";
+			j++;
 		}
+		std::cout << std::endl;
+		j = 0;
+		for (i = board.moveBufLen[0]; i < movsToCheck; i++){
+			toSan(toCheckMoves[j], sanMove);
+			std::cout << ++number << ". " << sanMove << " | ";
+			makeMove(toCheckMoves[j]);
+			board.display();
+			if (isOtherKingAttacked()){
+				unmakeMove(toCheckMoves[j]);
+			} else {
+				if (board.isEndOfgame(j, dummy)){
+					isMate = true;
+				}
+				board.moveBufLen[1] = movegen(board.moveBufLen[1]);
+				unmakeMove(toCheckMoves[j]);
+				toSan(toCheckMoves[j], sanMove);
+				std::cout << ++number << ". " << sanMove << " | ";
+			}
+			j++;
+			board.display();
+		}
+		std::cout << std::endl;
+/*		for (i = board.moveBufLen[0];i < board.moveBufLen[1]; i++){
+			mov = board.moveBuffer[i];
+//////////////////////////////////////////////////////////
+			if (board.nextMove == BLACK_MOVE){
+				std::cout << "mueven negras"<<std::endl;
+			} else {
+				std::cout << "mueven blancas"<<std::endl;
+			}
+//////////////////////////////////////////////////////////
+			makeMove(mov);
+			board.display();
+			if (!isOtherKingAttacked()){
+				if (board.isEndOfgame(j, dummy)){
+					isMate = true;
+				}
+			}
+//////////////////////////////////////////////////////////
+			if (board.nextMove == BLACK_MOVE){
+				std::cout << "mueven negras"<<std::endl;
+			} else {
+				std::cout << "mueven blancas"<<std::endl;
+			}
+//////////////////////////////////////////////////////////
+			unmakeMove(mov);
+//////////////////////////////////////////////////////////
+			if (board.nextMove == BLACK_MOVE){
+				std::cout << "mueven negras"<<std::endl;
+			} else {
+				std::cout << "mueven blancas"<<std::endl;
+			}
+//////////////////////////////////////////////////////////
+			board.display();
+/////////////////////////////////////////////////////////
+		}*/
 	
+	} else {
+		std::cout << "Aguanta el pichi papi, que esto no está pronto todavia" << std::endl;
 	}
+	return isMate;
 }
