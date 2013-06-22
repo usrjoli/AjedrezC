@@ -15,6 +15,32 @@ bool isCheckMate(){
 		return true;
 	}
 }
+
+bool isCheckMateG(int indexBuffer){
+	int i;
+	Move dummy;
+	if (!board.isEndOfgameMate(i, dummy, indexBuffer)) { // no es jaque mate
+		return false;
+	} else {
+		return true;
+	}
+}
+
+int generarMovimientosPosibles(int pIndexMoveBufLen){
+	int posLibre;
+	if(pIndexMoveBufLen == 0){
+		board.moveBufLen[pIndexMoveBufLen] = 0;
+	}else {
+		posLibre = board.moveBufLen[pIndexMoveBufLen];
+		pIndexMoveBufLen ++;
+		board.moveBufLen[pIndexMoveBufLen] = posLibre;
+	}
+	// carga en moveBuffer todos los movimientos posibles (legales o no) desde pIndex hasta board.moveBufLen[pIndex + 1]
+	board.moveBufLen[pIndexMoveBufLen + 1] = movegen(board.moveBufLen[pIndexMoveBufLen]); 
+	return pIndexMoveBufLen;
+}
+
+
 bool isCheck(){
 	if (isOwnKingAttacked()){
 		std::cout << "hay un jaque" << std::endl;

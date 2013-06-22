@@ -65,6 +65,7 @@ struct Board
 	int qsearch(int ply, int alpha, int beta);
 	void displaySearchStats(int mode, int depth, int score);
 	BOOLTYPE isEndOfgame(int &legalmoves, Move &singlemove);
+	BOOLTYPE isEndOfgameMate(int &legalmoves, Move &singlemove, int pIndex);
 	int repetitionCount();
 	void mirror();
 	void initFromSquares(int input[64], unsigned char next, int fiftyM, int castleW, int castleB, int epSq);

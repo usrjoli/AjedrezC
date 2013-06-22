@@ -95,6 +95,7 @@
     <ClCompile Include="auxiliarFunctions.cpp" />
     <ClCompile Include="bitops.cpp" />
     <ClCompile Include="board.cpp" />
+    <ClCompile Include="checkMate.cpp" />
     <ClCompile Include="command.cpp" />
     <ClCompile Include="data.cpp" />
     <ClCompile Include="displaymove.cpp" />
