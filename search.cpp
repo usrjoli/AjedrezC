@@ -487,8 +487,8 @@ BOOLTYPE Board::isEndOfgameMate(int &legalmoves, Move &singlemove, int pIndex)
 	// Checks if the current position is end-of-game to:
 	// checkmate
 
-	int whiteknights, whitebishops, whiterooks, whitequeens, whitetotalmat;
-	int blackknights, blackbishops, blackrooks, blackqueens, blacktotalmat;
+	//int whiteknights, whitebishops, whiterooks, whitequeens, whitetotalmat;
+	//int blackknights, blackbishops, blackrooks, blackqueens, blacktotalmat;
 	int i;
 
 	// are we checkmating the other side?
@@ -502,9 +502,15 @@ BOOLTYPE Board::isEndOfgameMate(int &legalmoves, Move &singlemove, int pIndex)
 	//moveBufLen[1] = movegen(moveBufLen[0]);
 	//for (i = moveBufLen[0]; i < moveBufLen[1]; i++)
 
-	moveBufLen[pIndex] = pIndex;
-	moveBufLen[pIndex + 1] = movegen(moveBufLen[pIndex]);
-	for (i = moveBufLen[pIndex]; i < moveBufLen[pIndex + 1]; i++){
+	/*moveBufLen[pIndex] = pIndex;
+	moveBufLen[pIndex + 1] = movegen(moveBufLen[pIndex]);*/
+	
+	/************ obtengo todos los movimientos posibles del turno actual **********************/
+	int lIndexMoveBufLen = generarMovimientosPosibles(pIndex);
+	/************ FIN obtengo todos los movimientos posibles del turno actual **********************/
+
+	// i = índice donde comienzan los movimientos generados
+	for (i = board.moveBufLen[lIndexMoveBufLen]; i < board.moveBufLen[lIndexMoveBufLen + 1]; i++){
 		makeMove(moveBuffer[i]);
 		if (!isOtherKingAttacked()){ 
 			legalmoves++;

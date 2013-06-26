@@ -19,7 +19,7 @@ bool isCheckMate(){
 bool isCheckMateG(int indexBuffer){
 	int i;
 	Move dummy;
-	if (!board.isEndOfgameMate(i, dummy, indexBuffer)) { // no es jaque mate
+	if (!board.isEndOfgameMate(i, dummy, indexBuffer)) { // si no es jaque mate
 		return false;
 	} else {
 		return true;

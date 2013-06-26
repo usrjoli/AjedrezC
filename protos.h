@@ -28,9 +28,9 @@ int           movegen(int);
 void		  mstostring(U64 dt, char *);
 U64           perft(int, int);
 BOOLTYPE      readFen(char *, int);
-// jose - inicio - lectura de archivo PGN
+//inicio - lectura de archivo PGN
 BOOLTYPE      readPGN(char *, int, char);
-// jose - fin - lectura de archivo PGN
+//fin - lectura de archivo PGN
 void		  readIniFile();
 void          setup();
 void          setupFen(char *, char *, char *, char *, int , int );
@@ -42,11 +42,13 @@ void          unmakeCapture(unsigned int &, unsigned int &);
 void          unmakeMove(Move &);
 void          unmakeWhitePromotion(unsigned int, unsigned int &);
 bool          checkMateInN(int movesLeft);
-//jose inicio debug movimientos
+//inicio debug movimientos
 bool isCheckMate();
+bool isCheckMateG(int indexBuffer);
 bool isCheck();
 void displayFullMove(Move &move);
 void moves();
+int generarMovimientosPosibles(int pIndexMoveBufLen);
 void castles();
 void material();
 int duplicatedPositions(bool show, bool blancas);
@@ -54,5 +56,8 @@ int movSPawn();
 int reachableSquares(bool display);
 void enpassantMoves();
 int find(char* source, std::string element);
-//jose fin debug movimientos
+//fin debug movimientos
+
+bool isMateInN(int pDepth, int pIndexMoveBufLen, bool pArmarLista);
+
 #endif 

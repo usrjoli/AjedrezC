@@ -581,12 +581,20 @@ noPonder:
 		}
 		if (!XB_MODE && !strcmp(command, "mateIn")){
 			sscanf(CMD_BUFF,"mateIn %d", &number);
-			ret = checkMateInN(number);
+
+			board.topeMovesMateInN = -1;
+			ret = isMateInN(number, 0, true);
+
 			if (ret) {
 				std::cout << "Se puede hacer un jaque mate en " << number << " movimientos o menos" << std::endl;
 			} else {
 				std::cout << "No se puede hacer un jaque mate en " << number << " movimientos o menos" << std::endl;
 			}
+
+			for (i = 0; i <= board.topeMovesMateInN; i++){
+				displayFullMove(board.movesMateInN[i]);
+			}
+
 			continue;
 		}
 // jose -  fin
