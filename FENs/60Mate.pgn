@@ -1,0 +1,859 @@
+﻿[Event "#1 Chess: 5334 Problems, Combinations, "]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "3q1rk1/5pbp/5Qp1/8/8/2B5/5PPP/6K1 w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Qxg7#,"",10]} 1. Qxg7# 1-0
+
+[Event "#2 Chess: 5334 Problems, Combinations, "]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "2r2rk1/2q2p1p/6pQ/4P1N1/8/8/PPP5/2KR4 w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Qxh7#,"",10]} 1. Qxh7# 1-0
+
+[Event "#3 Chess: 5334 Problems, Combinations, "]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r2q1rk1/pp1p1p1p/5PpQ/8/4N3/8/PP3PPP/R5K1 w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Qg7#,"",10]} 1. Qg7# 1-0
+
+[Event "#4 Chess: 5334 Problems, Combinations, "]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "6r1/7k/2p1pPp1/3p4/8/1R6/5PPP/5K2 w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Rh3#,"",10]} 1. Rh3# 1-0
+
+[Event "#5 Chess: 5334 Problems, Combinations, "]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "1r4k1/1q3p2/5Bp1/8/8/8/PP6/1K5R w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Rh8#,"",10]} 1. Rh8# 1-0
+
+[Event "#6 Chess: 5334 Problems, Combinations, "]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r4rk1/5p1p/8/8/8/8/1BP5/2KR4 w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Rg1#,"",10]} 1. Rg1# 1-0
+
+[Event "#7 Chess: 5334 Problems, Combinations, "]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "4r2k/4r1p1/6p1/8/2B5/8/1PP5/2KR4 w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Rh1#,"",10]} 1. Rh1# 1-0
+
+[Event "#8 Chess: 5334 Problems, Combinations, "]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/2r1N1pk/8/8/8/2q2p2/2P5/2KR4 w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Rh1#,"",10]} 1. Rh1# 1-0
+
+[Event "#9 Chess: 5334 Problems, Combinations, "]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r7/4KNkp/8/8/b7/8/8/1R6 w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Rg1#,"",10]} 1. Rg1# 1-0
+
+[Event "#10 Chess: 5334 Problems, Combinations,"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "2kr4/3n4/2p5/8/5B2/8/6PP/5B1K w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Ba6#,"",10]} 1. Ba6# 1-0
+
+[Event "#11 Chess: 5334 Problems, Combinations,"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r1b1kb1r/5ppp/8/6B1/8/8/5PPP/3R3K w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Rd8#,"",10]} 1. Rd8# 1-0
+
+[Event "#12 Chess: 5334 Problems, Combinations,"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r4rk1/p6p/1n6/6N1/3B4/3B4/6PP/7K w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Bxh7#,"",10]} 1. Bxh7# 1-0
+
+[Event "#13 Chess: 5334 Problems, Combinations,"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5Q2/PPPP1PPP/RNB1K1NR w KQkq - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Qxf7#,"",10]} 1. Qxf7# 1-0
+
+[Event "#14 Chess: 5334 Problems, Combinations,"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "rnbqkbnr/ppppp2p/5p2/6p1/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Qh5#,"",10]} 1. Qh5# 1-0
+
+[Event "#15 Chess: 5334 Problems, Combinations,"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "6k1/5ppp/r1p5/3b4/8/1pB5/1Pr2PPP/3RR1K1 w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Re8#,"",10]} 1. Re8# 1-0
+
+[Event "#16 Chess: 5334 Problems, Combinations,"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "rnbq1rk1/ppp1nppp/3bp3/3p3Q/3P4/3BPN2/PPP2PPP/RNB1K2R w KQ - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Qxh7#,"",10]} 1. Qxh7# 1-0
+
+[Event "#17 Chess: 5334 Problems, Combinations,"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "6k1/p1p2rpp/1q6/2p5/4P3/PQ6/1P4PP/3R3K w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Rd8#,"",10]} 1. Rd8# 1-0
+
+[Event "#18 Chess: 5334 Problems, Combinations,"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "rnb4k/p5pp/8/4N3/8/1B6/PPP5/2K4R w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",Ng6#,"",10]} 1. Ng6# 1-0
+
+[Event "#19 Chess: 5334 Problems, Combinations,"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "6r1/2Q2P2/5k2/5P2/5K2/8/8/8 w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",fxg8=N#,"",10]} 1. fxg8=N# $3 1-0
+
+[Event "#20 Chess: 5334 Problems, Combinations,"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in one"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/3pkP2/4p3/8/8/3K4/8/5R2 w - - 0 1"]
+[PlyCount "1"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 1","","",f8=Q#,"",10]} 1. f8=Q# 1-0
+
+[Event "#21 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "1Q6/8/8/8/8/k2K4/8/8 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Kc3,"",10]} 1. Kc3 {[%cal Rb8a7,Rb8b4,Rb4b2]}
+Ka2 (1... Ka4 2. Qb4#) 2. Qb2# 1-0
+
+[Event "#22 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/8/8/8/k2K4/7Q/8 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Kc4,"",10]} 1. Kc4 Ka4 $8 2. Qa2# 1-0
+
+[Event "#23 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/k1K3Q1/8/8/8/8/8 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Qb1,"threatening Qa2#(#1)",10]} 1. Qb1 {
+[%cal Rb1a2] threatening Qa2#(#1)} Ka5 (1... Ka7 2. Qb7#) 2. Qb5# 1-0
+
+[Event "#24 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/8/8/8/6KQ/8/4n1k1 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Qh2+,"",10]} 1. Qh2+ Kf1 2. Qf2# 1-0
+
+[Event "#25 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/2p5/2Q5/7k/5K2/8/8 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Qf5,"threatening Qg4#(#1)",10]} 1. Qf5 $1 {
+threatening Qg4#(#1)} c5 2. Qg4# 1-0
+
+[Event "#26 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "4K2k/8/5N2/4Q3/8/8/8/8 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Nh5+,"",10]} 1. Nh5+ Kg8 2. Qg7# 1-0
+
+[Event "#27 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "5K1k/8/8/6NN/8/3p4/8/1B6 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Nf7+,"",10,Nf4,"threatening Ng6#(#1)",0,Nf6,
+"threatening Nf7#(#1)",0,Ng3,"",0,Ng7,"",0]} 1. Nf7+ (1. Nf4 {threatening Ng6#
+(#1)} d2 2. Ng6# (2. Nf7#)) (1. Nf6 {threatening Nf7#(#1)} d2 2. Nf7#) (1. Ng3
+d2 2. Nf7#) (1. Ng7 d2 2. Nf7#) 1... Kh7 2. Bxd3# 1-0
+
+[Event "#314 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/8/6N1/8/4K3/7k/5Q2 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Qh3+,"",10]} 1. Qh3+ Kg1 2. Nf3# 1-0
+
+[Event "#315 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/8/8/8/K3Q3/B1k5/8 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Bb3+,"",10]} 1. Bb3+ Kb1 2. Qg1# (2. Qe1#)
+1-0
+
+[Event "#316 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/5Q2/8/8/5p2/5K2/8/5k2 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Qa2,"threatening Qb1#(#1)",10]} 1. Qa2 {
+threatening Qb1#(#1)} Ke1 (1... Kg1 2. Qg2#) 2. Qe2# 1-0
+
+[Event "#317 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/8/8/1N6/6K1/1P1k4/5Q2 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Qd3+,"",10]} 1. Qd3+ Kc1 (1... Ke1 2. Nc2#)
+2. Qc2# 1-0
+
+[Event "#318 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/5p2/5B2/8/1K1R4/8/2k5 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Bg4,"threatening Rd1#(#1)",10]} 1. Bg4 {
+[%cal Rd3d1] threatening Rd1#(#1)} Kb1 2. Rd1# 1-0
+
+[Event "#319 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/4Q3/8/6rp/7k/8/7K/8 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2  (Two variants, depending on Black's reply)","","",
+Qe1+,"",10]} 1. Qe1+ Rg3 (1... Kg4 2. Qe4#) 2. Qxg3# 1-0
+
+[Event "#320 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/8/8/2N1p2Q/5k2/8/5K2 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Ne5+,"",10]} 1. Ne5+ Ke3 2. Qf2# 1-0
+
+[Event "#321 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/8/2p5/2K5/Q7/N7/1k6 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Kc3,"threatening Qb2#(#1)",10]} 1. Kc3 {
+[%cal Ra3b2] threatening Qb2#(#1)} Ka1 (1... c4 2. Qb2#) 2. Qb2# 1-0
+
+[Event "#322 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/8/8/8/6Kp/8/5Qnk w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Kf2,"threatening Qxg1#(#1)",10]} 1. Kf2 {
+[%cal Rf2g1] threatening Qxg1#(#1)} Kh2 (1... h2 2. Qg2#) 2. Qxg1# 1-0
+
+[Event "#323 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/1pQ5/8/1k6/1N6/1K6/8/8 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Nd5,"threatening Qb6#(#1)",10]} 1. Nd5 {
+[%cal Rc7b6] threatening Qb6#(#1)} Ka6 (1... b6 2. Qxb6#) 2. Qb6# 1-0
+
+[Event "#324 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/5KN1/8/6k1/6p1/6Q1/8/8 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Ne6+,"",10]} 1. Ne6+ Kf5 (1... Kh5 2. Qh2#)
+2. Qf4# 1-0
+
+[Event "#325 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/4N1K1/8/8/5k2/8/8/3BQ3 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Ng6+,"",10]} 1. Ng6+ Kf5 (1... Kg5 2. Qa5# (
+2. Qe5#)) 2. Qe5# 1-0
+
+[Event "#326 Chess: 5334 Problems, Combinations"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in two"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "8/8/8/8/5K2/6B1/4p1k1/4Q3 w - - 0 1"]
+[PlyCount "3"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 2","","",Qf2+,"",10]} 1. Qf2+ Kh1 (1... Kh3 2. Qh2#)
+2. Qh2# 1-0
+
+[Event "#3719 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "1-0"]
+[SetUp "1"]
+[FEN "4rr2/2p1n1R1/pq1pkp2/1N6/BpppN1P1/b5B1/8/3K3Q w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+{[%tqu "White to mate in 3","","",Nc5+,"",10]} 1. Nc5+ Qxc5 (1... dxc5 2. Nxd4+
+cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
+
+[Event "#3720 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "4rr2/q1p1n1R1/p3kp2/1N1p4/B1ppN1P1/6B1/bp6/3K3Q w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Nxc7+ Qxc7 2. Nc5+ Qxc5 3. Qe1# *
+
+[Event "#3721 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "rn1q1b1r/pp2kppp/3np3/1B2NQ2/P2p4/2N5/1P3PPP/R1B1K2R w KQ - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Nd5+ (1. Ng6+ hxg6 2. Nd5+ exd5 3. Qe5#) 1... exd5 2. Ng6+ fxg6 (2... hxg6
+3. Qe5#) 3. Bg5# *
+
+[Event "#3722 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "r2qr1k1/ppp1bp1p/2n3pB/4R1P1/8/2PB1Q1P/P1P2P2/R5K1 w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Qxf7+ Kxf7 2. Bc4+ Qd5 3. Bxd5# *
+
+[Event "#3723 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "2q5/1r2Bp1k/4pQpN/1pp1P2p/2p5/6P1/1P2PPKP/3r4 w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Qxf7+ Kxh6 2. Bg5+ Kxg5 3. Qf4# *
+
+[Event "#3724 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "rnb1kb1r/pp3ppp/2p5/4q3/4n3/3Q4/PPPB1PPP/2KR1BNR w kq - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Qd8+ Kxd8 2. Bg5+ Kc7 (2... Ke8 3. Rd8#) 3. Bd8# *
+
+[Event "#3725 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "1r3r1k/2pbq1n1/p3p1nN/1p1P4/2P5/3BP2R/6PP/B4RK1 w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Nf7+ Kg8 2. Rh8+ Nxh8 3. Nh6# *
+
+[Event "#3726 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "5rk1/3p1ppp/2p5/2RN3R/8/Q7/P1P5/1K6 w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Ne7+ Kh8 2. Rxh7+ Kxh7 3. Rh5# *
+
+[Event "#3727 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "rq3rk1/pbp3pp/1p1b4/3N1p2/2B5/P3PPn1/1P3P1P/2RQK2R w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Ne7+ Kh8 2. Ng6+ hxg6 3. hxg3# *
+
+[Event "#3728 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "2R4R/p4pp1/1p2p1kp/8/nP4NP/5PK1/q3P3/8 w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Rxh6+ gxh6 2. Rg8+ Kf5 3. e4# *
+
+[Event "#3729 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "8/5Q2/1p5k/2b1p1p1/P3P2p/2P1BPPP/1P2n2K/3q4 w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Bxg5+ Kxg5 2. Qg7+ Kh5 3. g4# *
+
+[Event "#3730 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "r6r/4ppk1/2bp1R2/6N1/p2pP1PQ/3P3P/PPq5/3R3K w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Ne6+ fxe6 2. Qg5+ Kh7 3. Rh6# *
+
+[Event "#3731 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "rn4k1/pp2p3/1qppPrn1/3P3R/4Q1p1/P1P2P2/2PB4/2K4R w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Rh8+ Nxh8 2. Qh7+ Kf8 3. Qxh8# *
+
+[Event "#3732 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "6k1/6p1/3Np2p/2P1P3/1p2Q1Pb/1P5P/1qr5/5RK1 w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Rf8+ Kxf8 2. Qa8+ Ke7 3. Qe8# *
+
+[Event "#3733 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "r6k/pp2BpRp/8/8/4N3/7P/qPP5/2KR4 w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Rg8+ Kxg8 2. Rg1+ Kh8 3. Bf6# *
+
+[Event "#3734 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "6kr/1q2r1p1/1p2N1Q1/5p2/1P1p4/6R1/7P/2R3K1 w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Rc8+ Qxc8 2. Qxg7+ Rxg7 3. Rxg7# *
+
+[Event "#3735 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "r6k/ppp4r/3pqNP1/6Q1/3P4/8/PPP3P1/2K5 w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. g7+ Rxg7 2. Qh6+ Rh7 3. Qxh7# *
+
+[Event "#3736 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "r6Q/1b2rk2/pp1q1p2/2np1B2/P1n2R2/2N5/1PP3PP/4R2K w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Bg6+ Kxg6 2. Rg4+ Kf5 3. Qh5# *
+
+[Event "#3737 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "rqbnkb1r/p3p1pp/2p2p2/4N3/Q1B1PP2/8/PP4PP/R1B2K1R w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Bf7+ Nxf7 2. Qxc6+ Kd8 3. Nxf7# *
+
+[Event "#3738 Chess: 5334 Problems, Combination"]
+[Site "Copyright 1994 Könemann"]
+[Date "1994.??.??"]
+[Round "?"]
+[White "Mate in three"]
+[Black "White to move"]
+[Result "*"]
+[SetUp "1"]
+[FEN "5Q2/p6p/6p1/2R2p1k/7P/1P4P1/P1p2P2/3qrBK1 w - - 0 1"]
+[PlyCount "5"]
+[EventDate "1994.??.??"]
+
+1. Rxf5+ gxf5 2. Qxf5+ Kh6 3. Qg5# *
+
