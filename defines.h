@@ -13,6 +13,7 @@
 #define MAX_MOV_BUFF    4096   // Max number of moves that we can store (all plies)
 #define MAX_PLY           64   // Max search depth
 #define MAX_GAME_LINE   1024   // Max number of moves in the (game + search) line that we can store
+#define MAX_PATH_MOVES	256
 
 typedef unsigned long long U64;
 typedef unsigned long long BitMap;

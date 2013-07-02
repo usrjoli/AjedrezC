@@ -27,6 +27,8 @@ bool isCheckMateG(int indexBuffer){
 }
 
 int generarMovimientosPosibles(int pIndexMoveBufLen){
+//recibe si pIndexMoveBufLen = 0 -> almaceno en board.moveBufLen[pIndexMoveBufLen] el indice 0 de board.moveBuffer
+//	 si pIndexMoveBufLen > 0 -> copio lo que esta en board.moveBufLen[pIndexMoveBufLen]
 	int posLibre;
 	if(pIndexMoveBufLen == 0){
 		board.moveBufLen[pIndexMoveBufLen] = 0;
@@ -225,8 +227,8 @@ void enpassantMoves(){
 
 bool checkMateInN(int movesLeft){
 	Move toCheckMoves[1024];
-	Move *oponentToCheckMoves;
-	Move dummy, mov;
+	
+	Move dummy;
 	int i, j, number, movsToCheck;
 	bool isMate;
 	char sanMove[12];

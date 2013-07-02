@@ -583,16 +583,18 @@ noPonder:
 			sscanf(CMD_BUFF,"mateIn %d", &number);
 
 			board.topeMovesMateInN = -1;
-			ret = isMateInN(number, 0, true);
+			char path[MAX_PATH_MOVES];
+			path[0]	 = '\0';
+			ret = isMateInN(number, 0, 1, path);
 
 			if (ret) {
 				std::cout << "Se puede hacer un jaque mate en " << number << " movimientos o menos" << std::endl;
 			} else {
 				std::cout << "No se puede hacer un jaque mate en " << number << " movimientos o menos" << std::endl;
 			}
-
+			
 			for (i = 0; i <= board.topeMovesMateInN; i++){
-				displayFullMove(board.movesMateInN[i]);
+				std::cout << board.movesMateInN[i] << std::endl;
 			}
 
 			continue;

@@ -34,7 +34,7 @@ struct Board
 	// storing moves:
 	Move moveBuffer[MAX_MOV_BUFF]; // all generated moves of the current search tree are stored in this array.
 	int moveBufLen[MAX_PLY];       // this arrays keeps track of which moves belong to which ply
-	Move movesMateInN[MAX_MOV_BUFF];
+	char movesMateInN[MAX_MOV_BUFF][MAX_PATH_MOVES];
 	int topeMovesMateInN;
 	int endOfGame;                 // index for board.gameLine
 	int endOfSearch;               // index for board.gameLine
