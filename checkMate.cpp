@@ -11,6 +11,8 @@
 //- lista de movimientos en string (usando toSan(board.moveBuffer[i], sanMove) o similar )
 //- Verificar si usar isOtherKingAttacked o isOwnKingAttacked
 
+bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath);
+
 bool CheckOppTurn(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath){
 	// Check if all opponents moves lead to Mate-in-(N-1)
 	int mates = 0;
@@ -116,5 +118,30 @@ bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath){
 		return false;
 	}
 }
+
+bool mateInN(char* pPathFen, int pNroFen, int pDepth){
+	// carga el tablero dado el archivo fen indicado en pPathFen
+	
+			board.init();
+			readFen(pPathFen, pNroFen);
+			board.display();
+
+			int i;
+			board.topeMovesMateInN = -1;
+			char path[MAX_PATH_MOVES];
+			path[0]	 = '\0';
+			bool ret = isMateInN(pDepth, 0, 1, path);
+
+			if (ret) {
+				std::cout << "Se puede hacer un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
+			} else {
+				std::cout << "No se puede hacer un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
+			}
+			
+			for (i = 0; i <= board.topeMovesMateInN; i++){
+				std::cout << board.movesMateInN[i] << std::endl;
+			}
+}
+
 
  

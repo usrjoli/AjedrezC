@@ -58,6 +58,6 @@ void enpassantMoves();
 int find(char* source, std::string element);
 //fin debug movimientos
 
-bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath);
+bool mateInN(char* pPathFen, int pNroFen, int pDepth);
 BOOLTYPE toSanBuffFrom(Move &move, char *sanMove, int ibuf);
 #endif 

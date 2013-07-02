@@ -19,7 +19,7 @@ void commands()
 // http://www.open-aurec.com/wbforum/viewtopic.php?f=24&t=51739
 // =================================================================
 
-	int i, j, number;
+	int i, j, number, depth;
 	char d;
 	int fenhalfmoveclock;
 	int fenfullmovenumber;
@@ -580,22 +580,9 @@ noPonder:
 			continue; 
 		}
 		if (!XB_MODE && !strcmp(command, "mateIn")){
-			sscanf(CMD_BUFF,"mateIn %d", &number);
+			sscanf(CMD_BUFF,"mateIn %s %d %d", userinput, &number, &depth);
 
-			board.topeMovesMateInN = -1;
-			char path[MAX_PATH_MOVES];
-			path[0]	 = '\0';
-			ret = isMateInN(number, 0, 1, path);
-
-			if (ret) {
-				std::cout << "Se puede hacer un jaque mate en " << number << " movimientos o menos" << std::endl;
-			} else {
-				std::cout << "No se puede hacer un jaque mate en " << number << " movimientos o menos" << std::endl;
-			}
-			
-			for (i = 0; i <= board.topeMovesMateInN; i++){
-				std::cout << board.movesMateInN[i] << std::endl;
-			}
+			mateInN(userinput, number, depth);
 
 			continue;
 		}
