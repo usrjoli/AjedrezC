@@ -1,8 +1,7 @@
-//#include "defines.h"
 #include "protos.h"
 #include "extglobals.h"
 #include "board.h"
-//#include "timer.h"
+
 
 bool isCheckMate(){
 	int i;

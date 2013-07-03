@@ -28,6 +28,7 @@ int           movegen(int);
 void		  mstostring(U64 dt, char *);
 U64           perft(int, int);
 BOOLTYPE      readFen(char *, int);
+BOOLTYPE readFenFen(char *filename, int number, char * pFen, bool &pWhiteToMove);
 //inicio - lectura de archivo PGN
 BOOLTYPE      readPGN(char *, int, char);
 //fin - lectura de archivo PGN
@@ -58,6 +59,6 @@ void enpassantMoves();
 int find(char* source, std::string element);
 //fin debug movimientos
 
-bool mateInN(char* pPathFen, int pNroFen, int pDepth);
+void mateInN(char* pPathFen, int pNroFen, int pDepth);
 BOOLTYPE toSanBuffFrom(Move &move, char *sanMove, int ibuf);
 #endif 

@@ -105,6 +105,121 @@ BOOLTYPE readFen(char *filename, int number)
        return returnValue;
 }
  
+
+BOOLTYPE readFenFen(char *filename, int number, char * pFen, bool &pWhiteToMove)
+{// en pFen retorna el fen ejecutado
+ // en pWhiteToMove retorna ture si le toca mover a las blancas
+       int numberf;
+       char s[180];
+       char fenwhite[80];
+       char fenblack[80];
+       char fen[100];
+       char fencolor[2];     
+       char fencastling[5];
+       char fenenpassant[3];
+       char temp[80];
+	   char lNum[3];
+       int fenhalfmoveclock;
+       int fenfullmovenumber;
+       BOOLTYPE returnValue;
+       FILE * fp;
+ 
+       returnValue = false;
+       if (number <= 0) return returnValue;
+ 
+    // open the file for read and scan through until we find the number-th position:
+       fp=fopen(filename, "rt");
+       if (fp != NULL)
+       {
+              numberf = 0;
+              while (fscanf(fp, "%s", s) != EOF) 
+              {
+                     if (!strcmp(s, "[White"))
+                     {
+                           fscanf(fp, "%s", fenwhite);
+                           // remove first (") and last two characters ("]) from fenwhite:
+                           strcpy(temp, "");
+                           strncat(temp, fenwhite, strlen(fenwhite)-2);
+                           strcpy(temp, temp+1);
+                           strcpy(fenwhite, temp);
+                     }
+                     if (!strcmp(s, "[Black"))
+                     {
+                           fscanf(fp, "%s", fenblack);
+                           // remove first (") and last two characters ("]) from fenblack:
+                           strcpy(temp, "");
+                           strncat(temp, fenblack, strlen(fenblack)-2);
+                           strcpy(temp, temp+1);
+                           strcpy(fenblack, temp);
+                     }
+                     if (!strcmp(s, "[FEN"))
+                     {
+                           // position found, so increment numberf.
+                           // we already have fenwhite and fenblack.
+                           numberf++;
+                           if (numberf == number)
+                           {
+                                  fscanf(fp, "%s", fen);
+                                  fscanf(fp, "%s", fencolor);           // b or w
+                                  fscanf(fp, "%s", fencastling);        // -, or KQkq
+                                  fscanf(fp, "%s", fenenpassant);       // -, or e3, or b6, etc
+                                  fscanf(fp, "%d", &fenhalfmoveclock);  // int, used for the fifty move draw rule
+                                  fscanf(fp, "%d", &fenfullmovenumber); // int. start with 1, It is incremented after move by Black
+ 
+                                  std::cout << std::endl << "winglet> fen #" << numberf << " in " << filename << ":" << std::endl << std::endl;
+                                  std::cout << " White: " << fenwhite << std::endl;
+                                  std::cout << " Black: " << fenblack << std::endl;
+                                  std::cout << " " << &fen[1] << std::endl;
+                                  if (fencolor[0] == 'w')
+                                  {
+                                         std::cout << " wt to move next" << std::endl;
+                                  }
+                                  else
+                                  {
+                                         std::cout << " bl to move next" << std::endl;
+                                  }
+                                  std::cout << " Castling: " << fencastling << std::endl;
+                                  std::cout << " EP square: " << fenenpassant << std::endl;
+                                  std::cout << " Fifty move count: " << fenhalfmoveclock << std::endl;
+                                  std::cout << " Move number: " << fenfullmovenumber << std::endl << std::endl;
+                           }
+                     }
+              }
+ 
+              if (numberf < number)
+              {
+                     printf("winglet> only %d fens present in %s, fen #%d not found\n",
+                     numberf, filename, number);
+                     returnValue = false;
+              }
+              else
+              {
+                     setupFen(fen, fencolor, fencastling, fenenpassant, fenhalfmoveclock, fenfullmovenumber);
+                     returnValue = true;
+					 strcpy(pFen, fen);
+					 strcat(pFen, " ");
+					 strcat(pFen, fencolor);
+					 strcat(pFen, " ");
+					 strcat(pFen, fencastling);strcat(pFen, " ");
+					 strcat(pFen, fenenpassant);strcat(pFen, " ");
+					
+					 _itoa(fenhalfmoveclock, lNum, 10);
+					 strcat(pFen, lNum); strcat(pFen, " ");
+					 _itoa(fenfullmovenumber, lNum, 10);
+					 strcat(pFen, lNum); strcat(pFen, "\"");
+
+					 pWhiteToMove = (fencolor[0] == 'w');
+              }
+              fclose(fp);
+       }
+       else
+       {
+              printf("winglet> error opening file: %s\n", filename);
+              returnValue = false;
+       }
+       return returnValue;
+}
+
 void setupFen(char *fen, char *fencolor, char *fencastling, char *fenenpassant, int fenhalfmoveclock, int fenfullmovenumber)
 {
        int i, file, rank, counter, piece;

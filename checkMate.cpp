@@ -1,15 +1,14 @@
 #ifndef _CRT_SECURE_NO_DEPRECATE  // suppress MS security warnings
 #define _CRT_SECURE_NO_DEPRECATE
 #endif
+
+#include <fstream>
 #include <iostream>
 #include "defines.h"
 #include "protos.h"
 #include "extglobals.h"
 
-// TODO:
-//- Límites del buffer
-//- lista de movimientos en string (usando toSan(board.moveBuffer[i], sanMove) o similar )
-//- Verificar si usar isOtherKingAttacked o isOwnKingAttacked
+using namespace std;
 
 bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath);
 
@@ -85,7 +84,7 @@ bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath){
 		// agrego el número de turno y el movimiento  a la lista resultante
 		strcpy(lPath, pPath);	
 
-		itoa(pTurn, lturn,10);
+		_itoa(pTurn, lturn,10);
 		strcat(lPath, lturn);
 		strcat(lPath, ". ");
 		toSanBuffFrom(board.moveBuffer[i], sanMove, lIndexMoveBufLen + 1);
@@ -119,27 +118,57 @@ bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath){
 	}
 }
 
-bool mateInN(char* pPathFen, int pNroFen, int pDepth){
+void mateInN(char* pPathFen, int pNroFen, int pDepth){
 	// carga el tablero dado el archivo fen indicado en pPathFen
-	
-			board.init();
-			readFen(pPathFen, pNroFen);
-			board.display();
-
-			int i;
-			board.topeMovesMateInN = -1;
+			int i;	
+			char fen[100];
+			bool whiteToMove = true;
 			char path[MAX_PATH_MOVES];
-			path[0]	 = '\0';
-			bool ret = isMateInN(pDepth, 0, 1, path);
 
-			if (ret) {
-				std::cout << "Se puede hacer un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
-			} else {
-				std::cout << "No se puede hacer un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
-			}
+			board.init();
 			
-			for (i = 0; i <= board.topeMovesMateInN; i++){
-				std::cout << board.movesMateInN[i] << std::endl;
+			fen[0]	 = '\0';
+			if(readFenFen(pPathFen, pNroFen, fen, whiteToMove)){
+				board.display();
+				board.topeMovesMateInN = -1;				
+				path[0]	 = '\0';
+				bool ret = isMateInN(pDepth, 0, 1, path);
+
+				if (ret) {
+					std::cout << "Se puede hacer un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
+				} else {
+					std::cout << "No se puede hacer un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
+				}
+
+				//abro archivo escritura
+				ofstream myfile;
+				myfile.open ("resultMateInN.pgn");
+				myfile << "[Event \"Problema de Mate a profundidad máxima fija\"]\n";
+				myfile << "[White \"Mate en " << pDepth << "\"]\n";
+				myfile << "[Black \"Juega el ";
+				if(whiteToMove) myfile << "Blanco\"]\n";
+				else myfile << "Negro\"]\n";
+				
+				myfile << "[Result \"";
+				if(ret){ // si es posible un mate en N
+					if(whiteToMove) myfile << "1-0\"]\n"; // si le toca jugar a las blancas
+					else myfile << "0-1\"]\n";
+				}else {
+					myfile << "*\"]\n";
+				}
+					
+				myfile << "[FEN " << fen << "]\n";
+
+				if(ret) myfile << "[Mate-en-" << pDepth << " \"Verdadero\"]\n\n";
+				else myfile << "[Mate-en-" << pDepth << " \"Falso\"]\n\n *\n";
+
+				for (i = 0; i <= board.topeMovesMateInN; i++){
+					std::cout << board.movesMateInN[i] << std::endl;
+					myfile << board.movesMateInN[i] << "\n";
+				}
+
+				//cierro archivo de escritura
+				myfile.close();
 			}
 }
 
