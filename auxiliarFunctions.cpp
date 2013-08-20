@@ -26,7 +26,7 @@ bool isCheckMateG(int indexBuffer){
 }
 
 int generarMovimientosPosibles(int pIndexMoveBufLen){
-//recibe si pIndexMoveBufLen = 0 -> almaceno en board.moveBufLen[pIndexMoveBufLen] el indice 0 de board.moveBuffer
+//si pIndexMoveBufLen = 0 -> almaceno en board.moveBufLen[pIndexMoveBufLen] el indice 0 de board.moveBuffer
 //	 si pIndexMoveBufLen > 0 -> copio lo que esta en board.moveBufLen[pIndexMoveBufLen]
 	int posLibre;
 	if(pIndexMoveBufLen == 0){

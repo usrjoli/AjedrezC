@@ -3,6 +3,7 @@
 #include "protos.h"
 #include "extglobals.h"
 #include "board.h"
+
  
 int Board::eval()
 {
@@ -83,7 +84,7 @@ int Board::eval()
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Evaluate for draws due to insufficient material:
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	if (!whitepawns && !blackpawns)
+	if (!whitepawns && !blackpawns) // si no hay peones
 	{
 		// king versus king:
 		if ((whitetotalmat == 0) && (blacktotalmat == 0)) 
@@ -765,4 +766,251 @@ int Board::eval()
        if (board.nextMove) return -score;
        else return score;
  
+}
+
+int evalPieza(int valD, int valT, int valC, int valA, int valP, int valR, Move mov){
+	// TODO: VER EL VALOR DEL REY
+	int piec = mov.getPiec();
+	if(piec == WHITE_PAWN || piec == BLACK_PAWN) return valP;
+	if(piec == WHITE_KING || piec == BLACK_KING) return valR;
+	if(piec == WHITE_KNIGHT || piec == BLACK_KNIGHT) return valC;
+	if(piec == WHITE_BISHOP || piec == BLACK_BISHOP) return valA;
+	if(piec == WHITE_ROOK || piec == BLACK_ROOK) return valT;
+	if(piec == WHITE_QUEEN || piec == BLACK_QUEEN) return valD;
+
+	return 0;
+	
+}
+
+int evalMaterial(int valD, int valT, int valC, int valA, int valP){
+	//	===========================================================================
+	// La evaluación Material de la posición apunta a reflejar la diferencia de material entre los
+	// bandos, y deberá considerar por lo menos los siguientes elementos:
+	//	a) Asignará un valor material parametrizable a cada tipo de pieza (clásicamente valD=9
+	//	   para cada Dama, valT=5 para cada Torre, valA=valC=3 para cada Alfil y cada Caballo, y
+	//	   valP=1 para cada Peón)
+	//	b) La evaluación no puede ser más sencilla que la resultante de restarle al valor material
+	//	   total del Blanco el valor material total del Negro 
+	//	===========================================================================
+
+	int whitepawns, whiteknights, whitebishops, whiterooks, whitequeens;
+	int blackpawns, blackknights, blackbishops, blackrooks, blackqueens;
+	int whitetotalmat, blacktotalmat;
+
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Piece counts, note that we could have done this incrementally in (un)makeMove
+	// because it's basically the same thing as keeping board.Material up to date..
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+	whitepawns = bitCnt(board.whitePawns);
+	whiteknights = bitCnt(board.whiteKnights);
+	whitebishops = bitCnt(board.whiteBishops);
+	whiterooks = bitCnt(board.whiteRooks);
+	whitequeens = bitCnt(board.whiteQueens);
+	
+	whitetotalmat = valD*whitequeens + valT*whiterooks + valC*whiteknights + valA*whitebishops +  valP*whitepawns;
+    //whitetotal = whitepawns + whiteknights + whitebishops + whiterooks + whitequeens;
+
+	blackpawns = bitCnt(board.blackPawns);
+    blackknights = bitCnt(board.blackKnights);
+    blackbishops = bitCnt(board.blackBishops);
+    blackrooks = bitCnt(board.blackRooks);
+    blackqueens = bitCnt(board.blackQueens);
+
+    blacktotalmat = valD*blackqueens + valT*blackrooks + valC*blackknights + valA*blackbishops +  valP*blackpawns;
+    //blacktotal = blackpawns + blackknights + blackbishops + blackrooks + blackqueens;
+
+
+//	(board.totalWhitePawns + board.totalWhitePieces) - (board.totalBlackPawns + board.totalBlackPieces);
+
+	return whitetotalmat - blacktotalmat;
+}
+
+int evalEspacial(int pIndexMoveBufLen){
+//	===========================================================================
+// La evaluación Espacial de la posición apunta a reflejar la diferencia en la cantidad de casillas
+// que controlan los bandos, y deberá considerar por lo menos aquéllas casillas controladas de
+// forma indisputada por un bando y otro.
+//	===========================================================================
+	//reachableSquare
+	// cargo en el array todos los casilleros alcanzables por el jugador de turno
+	// realizo un movimiento del jugador de turno
+	// para cada destino del oponente veo si ese casillero no es alcanzable por el jugador de turno. (si es alcanzable por el jugador de turno 
+	// -> marco false ese casillero para jugador de turno y el oponente)
+
+	int i, totalCurrentMoves = 0, totalOponentMoves = 0;	
+	bool reachablesCurrent[64]; // vector donde cada casillero representa un casillero del tablero, si es true -> ese casillero es alcanzado por los blancos
+	bool reachablesOponent[64];
+
+	Move validWhiteMove;
+	Move dummy;
+	
+	//=============================== reachables for current player
+	dummy.clear();
+	// inicializo todo el tablero como no alcanzable por los blancos
+	for (i = 0; i < 64; i++){
+		reachablesCurrent[i] = false;
+	}
+
+	/*board.moveBufLen[0] = 0;
+	board.moveBufLen[1] = movegen(board.moveBufLen[0]);*/
+
+	/************ obtengo todos los movimientos posibles del turno actual **********************/
+	int lIndexMoveBufLen = generarMovimientosPosibles(pIndexMoveBufLen);
+	/************ FIN obtengo todos los movimientos posibles del turno actual **********************/
+
+	for (i = board.moveBufLen[lIndexMoveBufLen]; i < board.moveBufLen[lIndexMoveBufLen + 1]; i++){  // i = índice donde comienzan los movimientos generados
+		// para cada movimiento posible de las blancas
+		dummy = board.moveBuffer[i];
+		makeMove(dummy);
+		if (!isOtherKingAttacked()){
+			// si es movimiento valido			
+			if (!reachablesCurrent[dummy.getTosq()]) { // si ya no lo marque
+				reachablesCurrent[dummy.getTosq()] = true;
+				totalCurrentMoves++;
+			}
+			validWhiteMove = dummy;
+		}
+		unmakeMove(dummy);
+	}
+
+	//=============================== reachables for oponent player
+
+	if(totalCurrentMoves > 0){ 
+		// si existe algún movimiento posible de los blancos lo realizo asi paso el turno al oponente y puedo obtener todos sus movimientos
+		makeMove(validWhiteMove);
+
+		dummy.clear();
+		// inicializo todo el tablero como no alcanzable por los blancos
+		for (i = 0; i < 64; i++){
+			reachablesOponent[i] = false;
+		}
+
+		/************ obtengo todos los movimientos posibles del oponente **********************/
+		int lIndexMoveBufLen2 = generarMovimientosPosibles(lIndexMoveBufLen + 1);
+		/************ FIN obtengo todos los movimientos posibles del oponente **********************/  
+
+		for (i = board.moveBufLen[lIndexMoveBufLen2]; i < board.moveBufLen[lIndexMoveBufLen2 + 1]; i++){ // i = índice donde comienzan los movimientos generados
+			// para cada movimiento posible del oponente
+			dummy = board.moveBuffer[i];
+			makeMove(dummy);
+			if (!isOtherKingAttacked()){
+				// si es movimiento valido
+				if(reachablesCurrent[dummy.getTosq()] == true){
+					// si ya lo habia marcado para el jugador actual deja de ser casillero disponible para el actual y el oponente
+					//corregido, marco el casillero como ocupado, así no lo utilizo de nuevo
+					//disminuyo uno el total de casilleros que puedo acceder y marco como utilizado el casillero para el oponente, así no suma nuevamente.
+					reachablesOponent[dummy.getTosq()] = true;
+					totalCurrentMoves--;
+				}
+				else { 
+					if (!reachablesOponent[dummy.getTosq()]) { // si ya no lo marque
+						reachablesOponent[dummy.getTosq()] = true;
+						totalOponentMoves++;
+					}
+				}
+			}
+			unmakeMove(dummy);
+		}
+
+		// vuelvo el turno al jugador actual
+		unmakeMove(validWhiteMove);
+	}
+
+	return totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
+
+}
+
+int evalDinamica(int valD, int valT, int valC, int valA, int valP, int valR, int pIndexMoveBufLen){
+//	===========================================================================
+// La evaluación Dinámica de la posición apunta a reflejar la diferencia de movilidad existente
+// entre los bandos. Una forma posible de realizar esta evaluación consiste en computar, para
+// cada bando, la cantidad de jugadas legales posibles de sus piezas, multiplicándolas por el valor
+// de las mismas (por ejemplo: si una Torre puede realizar 7 jugadas legales, dicha Torre aportará
+// 7*valT al total de movilidad de su bando).
+//	===========================================================================
+
+	int i, totalCurrentMoves = 0, totalOponentMoves = 0;
+	Move validWhiteMove;
+	Move dummy;
+	
+	//=============================== reachables for current player
+	dummy.clear();
+
+	//board.moveBufLen[0] = 0;
+	//board.moveBufLen[1] = movegen(board.moveBufLen[0]);
+
+	/************ obtengo todos los movimientos posibles del turno actual **********************/
+	int lIndexMoveBufLen = generarMovimientosPosibles(pIndexMoveBufLen);
+	/************ FIN obtengo todos los movimientos posibles del turno actual **********************/
+
+	for (i = board.moveBufLen[lIndexMoveBufLen]; i < board.moveBufLen[lIndexMoveBufLen + 1]; i++){  // i = índice donde comienzan los movimientos generados
+		// para cada movimiento posible de las blancas
+		dummy = board.moveBuffer[i];
+		makeMove(dummy);
+		if (!isOtherKingAttacked()){
+			// si es movimiento valido			
+			totalCurrentMoves += evalPieza(valD, valT, valC, valA, valP, valR, dummy);
+			validWhiteMove = dummy; // TODO: VER SI validWhiteMove = dummy; se copia bien o si se pierde al generar los movimientos del oponente
+		}
+		unmakeMove(dummy);
+	}
+
+	//=============================== reachables for oponent player
+
+	if(totalCurrentMoves > 0){ 
+		// si existe algún movimiento posible de los blancos lo realizo asi paso el turno al oponente y puedo obtener todos sus movimientos
+		makeMove(validWhiteMove);
+		displayFullMove(validWhiteMove);
+		dummy.clear();
+
+		//board.moveBufLen[0] = 0;
+		//board.moveBufLen[1] = movegen(board.moveBufLen[0]);
+
+		/************ obtengo todos los movimientos posibles del oponente **********************/
+		int lIndexMoveBufLen2 = generarMovimientosPosibles(lIndexMoveBufLen + 1);
+		/************ FIN obtengo todos los movimientos posibles del oponente **********************/  
+
+		for (i = board.moveBufLen[lIndexMoveBufLen2]; i < board.moveBufLen[lIndexMoveBufLen2 + 1]; i++){ // i = índice donde comienzan los movimientos generados
+			// para cada movimiento posible del oponente
+			dummy = board.moveBuffer[i];
+			makeMove(dummy);
+			if (!isOtherKingAttacked()){
+				// si es movimiento valido
+				totalOponentMoves += evalPieza(valD, valT, valC, valA, valP, valR, dummy);
+			}
+			unmakeMove(dummy);
+		}
+
+		// vuelvo el turno al jugador actual
+		displayFullMove(validWhiteMove); // TODO VERIFICAR QUE NO CAMBIÓ
+		unmakeMove(validWhiteMove);
+	}
+
+	return totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
+}
+
+int Board::evalJL(int pa1, int pa2, int pa3, int pIndexMoveBufLen){
+	//	===========================================================================
+	// An evaluation function is used to heuristically determine the relative value of a position, i.e. the chances of winning.
+	// If we could see to the end of the game in every line, the evaluation would only have values of -1 (loss), 0 (draw), and 1 (win).
+	// In practice, however, we do not know the exact value of a position, so we must make an approximation.
+	// Beginning chess players learn to do this starting with the value of the pieces themselves. 
+	// Computer evaluation functions also use the value of the material as the most significant aspect and then add other considerations.
+	//	===========================================================================
+
+	int score, who2Move;
+	
+	// In order for NegaMax to work, it is important to return the score relative to the side being evaluated 
+	// => who2Move = +1 for white, -1 for black. 
+	who2Move = 1; 
+	if(board.nextMove == BLACK_MOVE){
+		who2Move = -1;
+	}
+
+	score = (pa1*evalMaterial(QUEEN_VALUE_U, ROOK_VALUE_U, KNIGHT_VALUE_U, BISHOP_VALUE_U, PAWN_VALUE_U)) * who2Move;	
+	score += pa2*evalEspacial(pIndexMoveBufLen);
+	score += pa3*evalDinamica(QUEEN_VALUE_U, ROOK_VALUE_U, KNIGHT_VALUE_U, BISHOP_VALUE_U, PAWN_VALUE_U, KING_VALUE_U, pIndexMoveBufLen);
+
+	return score; // return the score relative to the side to move
 }

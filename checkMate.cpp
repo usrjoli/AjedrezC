@@ -118,6 +118,41 @@ bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath){
 	}
 }
 
+//Parametros entrada:  paso, distancia, indices del buffer y lista de movimientos resultantes ver!!!
+bool isMateInNMov(int pDepth, int pIndexMoveBufLen, Move pLastMove){
+	// pIndex es el primer lugar libre de board.moveBufLen para comenzar a guardar los movimientos
+	bool fin = false;
+	char lPath[MAX_PATH_MOVES];
+
+	if(isCheckMateG(pIndexMoveBufLen)){ // recibimos un tablero con mate (el fen ya es mate) TODO ver si en la recursión cae aca
+		return true;
+	}
+	if (pDepth == 0){
+		return false;
+	}
+
+	board.topeMovesMateInN = -1;				
+	lPath[0]	 = '\0';
+
+	makeMove(pLastMove);
+	if (!isOtherKingAttacked()){// sí es movimiento legal		
+		if(isCheckMateG(pIndexMoveBufLen)){ // pIndexMoveBufLen + 1 = indice de moveBufLen donde se encuentra la posicion libre de moveBuffer
+			// al ejecutar el movimiento hay mate -> para todos los movimientos del oponete hay mate
+			fin = true;		
+		}else{
+			fin = CheckOppTurn(pDepth, pIndexMoveBufLen, 0, lPath); // RETORNA TRUE SII PARA TODOS LOS MOVIMIENTOS DEL OPONENTE HAY MATE
+		}
+	}
+	unmakeMove(pLastMove);
+
+	if(fin){
+		// el movimiento que dio mate se encuentra en i moveBuffer
+		return true;
+	}else {
+		return false;
+	}
+}
+
 void mateInN(char* pPathFen, int pNroFen, int pDepth){
 	// carga el tablero dado el archivo fen indicado en pPathFen
 			int i;	

@@ -64,6 +64,14 @@ extern const int BISHOP_VALUE;
 extern const int ROOK_VALUE;
 extern const int QUEEN_VALUE;
 extern const int KING_VALUE;
+
+extern const int PAWN_VALUE_U;
+extern const int KNIGHT_VALUE_U;
+extern const int BISHOP_VALUE_U;
+extern const int ROOK_VALUE_U;
+extern const int QUEEN_VALUE_U;
+extern const int KING_VALUE_U;
+
 extern const int CHECK_MATE;
 extern int PIECEVALUES[];
 

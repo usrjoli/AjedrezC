@@ -47,7 +47,10 @@ Move Board::think()
 //	===========================================================================
 //	There is more than legal 1 move, so prepare to search:
 //	===========================================================================
+
 	if (XB_MODE) timeControl();
+
+	// The Principal variation (PV) is a sequence of moves that programs consider best and therefore expect to be played
 	lastPVLength = 0;
 	memset(lastPV, 0 , sizeof(lastPV));
 	memset(whiteHeuristics, 0, sizeof(whiteHeuristics));
@@ -70,7 +73,8 @@ Move Board::think()
 		memset(triangularArray, 0, sizeof(triangularArray));
 		followpv = true;
 		allownull = true;
-		score = alphabetapvs(0, currentdepth, -LARGE_NUMBER, LARGE_NUMBER);
+		//score = alphabetapvs(0, currentdepth, -LARGE_NUMBER, LARGE_NUMBER);
+		score = minimax(0, currentdepth); // carga triangularArray
 		// now check if time is up
 		// if not decide if it makes sense to start another iteration:
 		if (timedout) 
@@ -256,22 +260,52 @@ int Board::alphabeta(int ply, int depth, int alpha, int beta)
 
 int Board::minimax(int ply, int depth)
 {
-	// Negamax 
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// intenta minimizar la ganancia del rival, o sea busca que el rival tenga el peor resultado
+	// Pasos del algoritmo Minimax:
+	//	1. Generación del árbol de juego. Se generarán todos los nodos hasta llegar a un estado terminal.
+	//	2. Cálculo de los valores de la función de utilidad para cada nodo terminal (funcion eval)
+	//	3. Calcular el valor de los nodos superiores a partir del valor de los inferiores. 
+	//		Según el nivel si es MAX o MIN se elegirán los valores mínimos y máximos representando los movimientos del jugador y del oponente, de ahí el nombre de Minimax.
+	//	4. Elegir la jugada valorando los valores que han llegado al nivel superior.
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+	// Negamax: Usually the Negamax algorithm is used for simplicity. (max(a, b) == -min(-a, -b))
+	// This means that the evaluation of a position is equivalent to the negation of the evaluation from the opponent's viewpoint.
+	// This is because of the zero-sum property of chess: one side's win is the other side's loss.
+	// Important!!: In order for negaMax to work, your Static Evaluation function must return a score relative to the side to being evaluated.
+	//				(e.g. the simplest score evaluation could be: score = materialWeight * (numWhitePieces - numBlackPieces) * who2move 
+	//				where who2move = 1 for white, and who2move = -1 for black).
+
+	bool isMateInN = false;
 	int i, j, val, best;
+	int a1 = 1, a2 = 0, a3 = 0; // parametros para la función de evaluación. TODO AGREGARLO AL archivo wingletx.ini
 	best = -LARGE_NUMBER;
 	triangularLength[ply] = ply;
-	if (depth == 0) return board.eval();
-	moveBufLen[ply+1] = movegen(moveBufLen[ply]);
+
+	if (depth == 0) return board.evalJL(a1, a2, a3, ply);
+	//if (depth == 0) return board.eval();
+
+	moveBufLen[ply+1] = movegen(moveBufLen[ply]);  
+	
 	for (i = moveBufLen[ply]; i < moveBufLen[ply+1]; i++)
 	{
+		// MateIn para el movimiento a evaluar
+		isMateInN = isMateInNMov(depth, ply+1, moveBuffer[i]);
+
 		makeMove(moveBuffer[i]);
 		{
 			if (!isOtherKingAttacked()) 
 			{
 				inodes++;
 				if (!ply) displaySearchStats(3, ply, i);
-				val = -minimax(ply+1, depth-1);                                 // note the minus sign
+				if(isMateInN){
+					// si al ejecutar el movimiento moveBuffer[i] hay mateInN -> le doy el mayor valor posible al movimiento
+					val = LARGE_NUMBER;
+				}else {
+					val = -minimax(ply+1, depth-1); // note the minus sign
+				}
+	
 				unmakeMove(moveBuffer[i]);
 				if (val > best)                                                 // both sides want to maximize from *their* perspective
 				{
@@ -279,7 +313,8 @@ int Board::minimax(int ply, int depth)
 					triangularArray[ply][ply] = moveBuffer[i];					// save this move
 					for (j = ply + 1; j < triangularLength[ply + 1]; j++) 
 					{
-						triangularArray[ply][j] = triangularArray[ply+1][j];	// and append the latest best PV from deeper plies
+						triangularArray[ply][j] = triangularArray[ply+1][j];	// and append the latest best PV (Principal Variation) from deeper plies
+																				// The Principal variation (PV) is a sequence of moves that programs consider best and therefore expect to be played
 					}
 					triangularLength[ply] = triangularLength[ply + 1];
 					if (!ply)  displaySearchStats(2, depth, val);
@@ -290,7 +325,6 @@ int Board::minimax(int ply, int depth)
 	}
 	return best;
 }
-
 
 void Board::displaySearchStats(int mode, int depth, int score)
 {
@@ -583,6 +617,7 @@ void mstostring(U64 dt, char *timestring)
 	return;
 
 }
+
 void timeControl()
 {
 

@@ -60,6 +60,7 @@ struct Board
 
 	void init();
 	int eval();
+	int evalJL(int pA1, int pA2, int pA3, int pIndexMoveBufLen);
 	Move think();
 	int minimax(int ply, int depth);
 	int alphabeta(int ply, int depth, int alpha, int beta);

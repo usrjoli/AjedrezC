@@ -101,6 +101,16 @@ extern const int ROOK_VALUE = 500;
 extern const int QUEEN_VALUE = 900;
 extern const int KING_VALUE = 9999;
 extern const int CHECK_MATE = KING_VALUE;
+
+// Value of material unit:
+extern const int PAWN_VALUE_U = 1;
+extern const int KNIGHT_VALUE_U = 3;
+extern const int BISHOP_VALUE_U = 3;
+extern const int ROOK_VALUE_U = 5;
+extern const int QUEEN_VALUE_U = 9;
+extern const int KING_VALUE_U = 0;
+
+
 // used for MVV/LVA and SEE:
 int PIECEVALUES[16];
  

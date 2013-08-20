@@ -19,7 +19,7 @@ void commands()
 // http://www.open-aurec.com/wbforum/viewtopic.php?f=24&t=51739
 // =================================================================
 
-	int i, j, number, depth;
+	int i, j, number, depth, la1, la2, la3;
 	char d;
 	int fenhalfmoveclock;
 	int fenfullmovenumber;
@@ -196,7 +196,7 @@ noPonder:
 			std::cout << "time s              : time per move in seconds" << std::endl;
 			std::cout << "undo                : take back last move" << std::endl;
 			std::cout << "white               : WHITE to move" << std::endl;
-//jose - inicio - agregado para leer de .pgn y otras funcionalidades
+//inicio - agregado para leer de .pgn y otras funcionalidades
 			std::cout << " -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --" << std::endl;
 			std::cout << "isCheck             : estoy en jaque?" << std::endl;
 			std::cout << "isMate              : es jaque mate?" << std::endl;
@@ -213,7 +213,9 @@ noPonder:
 			std::cout << "readpgn filename n  : carga el tablero a partir de un archivo PGN, " << std::endl;
 			std::cout << "                      n es opcional e indica hasta que jugada cargar del pgn" << std::endl;
 			std::cout << "mateIn n            : chequea si hay jaque mate en menos de n movimientos" << std::endl;
-//jose - fin - agregado para leer de .pgn y otras funcionalidades
+			std::cout << "think               : invocaci\242n a la funci\242n de evaluaci\242n final" << std::endl;
+			std::cout << "evaluate a1 a2 a3   : invocaci\242n a la funci\242n de evaluaci\242n de la posici\242n" << std::endl;
+//fin - agregado para leer de .pgn y otras funcionalidades
 			std::cout << std::endl;
 			continue; 
 		}
@@ -527,16 +529,14 @@ noPonder:
 					toSan(board.moveBuffer[i], sanMove);
 					//std::cout << ++number << ". " << sanMove << std::endl;
 					number++;
-// jose inicio prueba para ver movimiento completo
 					std::cout << number << ". ";
 					displayFullMove(board.moveBuffer[i]);
 					std::cout<<std::endl;
-// jose fin prueba para ver movimiento completo
 				}
 			}
 			continue; 
 		}
-// jose -  inicio
+// ********************************************** //
 		if (!XB_MODE && !strcmp(command, "isMate"))  
 		{ 
 			ret = isCheckMate();
@@ -572,7 +572,7 @@ noPonder:
 		}
 		if (!XB_MODE && !strcmp(command, "reachables")){ 
 			number = reachableSquares(false);
-			std::cout << "Se puede ocupar 1 de " << number << " casillero(s) distinto(s)" << std::endl;
+			std::cout << "Se puede ocupar " << number << " casillero(s) distinto(s)" << std::endl;
 			continue; 
 		}
 		if (!XB_MODE && !strcmp(command, "enpassantMoves")){ 
@@ -586,7 +586,22 @@ noPonder:
 
 			continue;
 		}
-// jose -  fin
+		if (!XB_MODE && !strcmp(command, "think")){
+			sscanf(CMD_BUFF,"think", userinput, &number, &depth);
+
+			board.think();
+
+			continue;
+		}
+		if (!XB_MODE && !strcmp(command, "evaluate")){
+			sscanf(CMD_BUFF,"evaluate %d %d %d", &la1, &la2, &la3);
+
+			board.evalJL(la1, la2, la3, 0);
+
+			continue;
+		}
+		//
+// fin
 		// =================================================================
 		// move: enter a move (use this format: move e2e4, or h7h8q)
 		// =================================================================
@@ -823,7 +838,7 @@ noPonder:
 			board.display();
 			continue; 
 		}
-// jose - inicio - lectura de un archivo pgn
+// inicio - lectura de un archivo pgn
 		// =================================================================
 		// readpgn filename n d: reads PGN from filename
 		// =================================================================
@@ -842,7 +857,7 @@ noPonder:
 			for (CMD_BUFF_COUNT = 0; (CMD_BUFF[CMD_BUFF_COUNT] = getchar()) != '\n'; CMD_BUFF_COUNT++);
 			continue; 
 		}
-// jose - fin - lectura de un archivo pgn
+// fin - lectura de un archivo pgn
 		// =================================================================
 		// rejected: feature is rejected
 		// =================================================================
