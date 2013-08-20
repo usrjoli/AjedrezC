@@ -213,6 +213,8 @@ noPonder:
 			std::cout << "readpgn filename n  : carga el tablero a partir de un archivo PGN, " << std::endl;
 			std::cout << "                      n es opcional e indica hasta que jugada cargar del pgn" << std::endl;
 			std::cout << "mateIn n            : chequea si hay jaque mate en menos de n movimientos" << std::endl;
+			std::cout << "                      ruta numeroPGN profundidad" << std::endl;
+//jose - fin - agregado para leer de .pgn y otras funcionalidades
 			std::cout << "think               : invocaci\242n a la funci\242n de evaluaci\242n final" << std::endl;
 			std::cout << "evaluate a1 a2 a3   : invocaci\242n a la funci\242n de evaluaci\242n de la posici\242n" << std::endl;
 //fin - agregado para leer de .pgn y otras funcionalidades
