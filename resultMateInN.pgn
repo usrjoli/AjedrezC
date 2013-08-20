@@ -1,0 +1,9 @@
+[Event "Problema de Mate a profundidad máxima fija"]
+[White "Mate en 2"]
+[Black "Juega el Blanco"]
+[Result "1-0"]
+[FEN "4K2k/8/5N2/4Q3/8/8/8/8 w - - 0 1"]
+[Mate-en-2 "Verdadero"]
+
+1. Nh5+ Kh7 2. Qg7# 
+1. Nh5+ Kg8 2. Qg7# 
