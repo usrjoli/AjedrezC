@@ -19,7 +19,7 @@ void commands()
 // http://www.open-aurec.com/wbforum/viewtopic.php?f=24&t=51739
 // =================================================================
 
-	int i, j, number, depth, la1, la2, la3;
+	int i, j, number, depth;
 	char d;
 	int fenhalfmoveclock;
 	int fenfullmovenumber;
@@ -212,9 +212,7 @@ noPonder:
 			std::cout << "                      turno" << std::endl;
 			std::cout << "readpgn filename n  : carga el tablero a partir de un archivo PGN, " << std::endl;
 			std::cout << "                      n es opcional e indica hasta que jugada cargar del pgn" << std::endl;
-			std::cout << "mateIn n            : chequea si hay jaque mate en menos de n movimientos" << std::endl;
-			std::cout << "                      ruta numeroPGN profundidad" << std::endl;
-//jose - fin - agregado para leer de .pgn y otras funcionalidades
+			std::cout << "mateIn filename numeroFen profundidad  : chequea si hay jaque mate en menos de n movimientos" << std::endl;
 			std::cout << "think               : invocaci\242n a la funci\242n de evaluaci\242n final" << std::endl;
 			std::cout << "evaluate a1 a2 a3   : invocaci\242n a la funci\242n de evaluaci\242n de la posici\242n" << std::endl;
 //fin - agregado para leer de .pgn y otras funcionalidades
@@ -589,16 +587,16 @@ noPonder:
 			continue;
 		}
 		if (!XB_MODE && !strcmp(command, "think")){
-			sscanf(CMD_BUFF,"think", userinput, &number, &depth);
+			//sscanf(CMD_BUFF,"think", userinput, &number, &depth);
 
-			board.think();
+			displayFullMove(board.think());
 
 			continue;
 		}
 		if (!XB_MODE && !strcmp(command, "evaluate")){
-			sscanf(CMD_BUFF,"evaluate %d %d %d", &la1, &la2, &la3);
+			//sscanf(CMD_BUFF,"evaluate %d %d %d", &la1, &la2, &la3);
 
-			board.evalJL(la1, la2, la3, 0);
+			board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, 0);
 
 			continue;
 		}

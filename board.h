@@ -60,9 +60,9 @@ struct Board
 
 	void init();
 	int eval();
-	int evalJL(int pA1, int pA2, int pA3, int pIndexMoveBufLen);
+	double evalJL(double pA1, double pA2, double pA3, int pIndexMoveBufLen);
 	Move think();
-	int minimax(int ply, int depth);
+	double minimax(int ply, int depth);
 	int alphabeta(int ply, int depth, int alpha, int beta);
 	int alphabetapvs(int ply, int depth, int alpha, int beta);
 	int qsearch(int ply, int alpha, int beta);

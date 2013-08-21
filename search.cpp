@@ -24,7 +24,8 @@ Move Board::think()
 //  - the search depth is reached
 //	===========================================================================
 
-	int score, legalmoves, currentdepth;
+	double score;
+	int legalmoves, currentdepth;
 	Move singlemove;
 
 //	===========================================================================
@@ -94,7 +95,7 @@ Move Board::think()
 				}
 			}
 		}
-		displaySearchStats(2, currentdepth, score);
+		displaySearchStats(2, currentdepth, (int)score);
 		// stop searching if the current depth leads to a forced mate:
 		if ((score > (CHECKMATESCORE-currentdepth)) || (score < -(CHECKMATESCORE-currentdepth))) 
 			currentdepth = searchDepth;
@@ -258,7 +259,7 @@ int Board::alphabeta(int ply, int depth, int alpha, int beta)
 	return alpha;
 }
 
-int Board::minimax(int ply, int depth)
+double Board::minimax(int ply, int depth)
 {
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// intenta minimizar la ganancia del rival, o sea busca que el rival tenga el peor resultado
@@ -278,12 +279,13 @@ int Board::minimax(int ply, int depth)
 	//				where who2move = 1 for white, and who2move = -1 for black).
 
 	bool isMateInN = false;
-	int i, j, val, best;
+	int i, j;
+	double val, best;
 	int a1 = 1, a2 = 0, a3 = 0; // parametros para la función de evaluación. TODO AGREGARLO AL archivo wingletx.ini
 	best = -LARGE_NUMBER;
 	triangularLength[ply] = ply;
 
-	if (depth == 0) return board.evalJL(a1, a2, a3, ply);
+	if (depth == 0) return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, ply);
 	//if (depth == 0) return board.eval();
 
 	moveBufLen[ply+1] = movegen(moveBufLen[ply]);  
@@ -291,7 +293,7 @@ int Board::minimax(int ply, int depth)
 	for (i = moveBufLen[ply]; i < moveBufLen[ply+1]; i++)
 	{
 		// MateIn para el movimiento a evaluar
-		isMateInN = isMateInNMov(depth, ply+1, moveBuffer[i]);
+		isMateInN = isMateInNMov(DEPTH_MATE, ply+1, moveBuffer[i]);
 
 		makeMove(moveBuffer[i]);
 		{
@@ -317,7 +319,7 @@ int Board::minimax(int ply, int depth)
 																				// The Principal variation (PV) is a sequence of moves that programs consider best and therefore expect to be played
 					}
 					triangularLength[ply] = triangularLength[ply + 1];
-					if (!ply)  displaySearchStats(2, depth, val);
+					if (!ply)  displaySearchStats(2, depth, (int)val);
 				}
 			}
 			else unmakeMove(moveBuffer[i]);

@@ -873,5 +873,36 @@ BOOLTYPE doIniCommand(const char *buf)
 		return true;
 	}
 
+	if (!strncmp(buf, "PARAM_EVAL_MATERIAL", 19))
+	{
+		sscanf(buf+19, "%d", &number);
+		PARAM_EVAL_MATERIAL = (float)(number/100.0);
+		CMD_BUFF_COUNT = '\0';
+		return true;
+	}
+
+	if (!strncmp(buf, "PARAM_EVAL_ESPACIAL", 19))
+	{
+		sscanf(buf+19, "%d", &number);
+		PARAM_EVAL_ESPACIAL = (float)(number/100.0);
+		CMD_BUFF_COUNT = '\0';
+		return true;
+	}
+
+	if (!strncmp(buf, "PARAM_EVAL_DINAMICA", 19))
+	{
+		sscanf(buf+19, "%d", &number);
+		PARAM_EVAL_DINAMICA = (float)(number/100.0);
+		CMD_BUFF_COUNT = '\0';
+		return true;
+	}
+
+	if (!strncmp(buf, "DEPTH_MATE", 10))
+	{
+		sscanf(buf+10, "%d", &number);
+		DEPTH_MATE = (int)(number);
+		CMD_BUFF_COUNT = '\0';
+		return true;
+	}
 	return true;
 }

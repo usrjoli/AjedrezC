@@ -110,6 +110,12 @@ extern const int ROOK_VALUE_U = 5;
 extern const int QUEEN_VALUE_U = 9;
 extern const int KING_VALUE_U = 0;
 
+// Parametros para función de evaluación
+double PARAM_EVAL_MATERIAL = 1;
+double PARAM_EVAL_ESPACIAL = 1;
+double PARAM_EVAL_DINAMICA = 1;
+
+int DEPTH_MATE = 2;
 
 // used for MVV/LVA and SEE:
 int PIECEVALUES[16];

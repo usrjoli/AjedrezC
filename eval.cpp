@@ -951,7 +951,7 @@ int evalDinamica(int valD, int valT, int valC, int valA, int valP, int valR, int
 		if (!isOtherKingAttacked()){
 			// si es movimiento valido			
 			totalCurrentMoves += evalPieza(valD, valT, valC, valA, valP, valR, dummy);
-			validWhiteMove = dummy; // TODO: VER SI validWhiteMove = dummy; se copia bien o si se pierde al generar los movimientos del oponente
+			validWhiteMove = dummy;
 		}
 		unmakeMove(dummy);
 	}
@@ -961,11 +961,7 @@ int evalDinamica(int valD, int valT, int valC, int valA, int valP, int valR, int
 	if(totalCurrentMoves > 0){ 
 		// si existe algún movimiento posible de los blancos lo realizo asi paso el turno al oponente y puedo obtener todos sus movimientos
 		makeMove(validWhiteMove);
-		displayFullMove(validWhiteMove);
 		dummy.clear();
-
-		//board.moveBufLen[0] = 0;
-		//board.moveBufLen[1] = movegen(board.moveBufLen[0]);
 
 		/************ obtengo todos los movimientos posibles del oponente **********************/
 		int lIndexMoveBufLen2 = generarMovimientosPosibles(lIndexMoveBufLen + 1);
@@ -983,14 +979,13 @@ int evalDinamica(int valD, int valT, int valC, int valA, int valP, int valR, int
 		}
 
 		// vuelvo el turno al jugador actual
-		displayFullMove(validWhiteMove); // TODO VERIFICAR QUE NO CAMBIÓ
 		unmakeMove(validWhiteMove);
 	}
 
 	return totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
 }
 
-int Board::evalJL(int pa1, int pa2, int pa3, int pIndexMoveBufLen){
+double Board::evalJL(double pa1, double pa2, double pa3, int pIndexMoveBufLen){
 	//	===========================================================================
 	// An evaluation function is used to heuristically determine the relative value of a position, i.e. the chances of winning.
 	// If we could see to the end of the game in every line, the evaluation would only have values of -1 (loss), 0 (draw), and 1 (win).
@@ -999,7 +994,7 @@ int Board::evalJL(int pa1, int pa2, int pa3, int pIndexMoveBufLen){
 	// Computer evaluation functions also use the value of the material as the most significant aspect and then add other considerations.
 	//	===========================================================================
 
-	int score, who2Move;
+	double score, who2Move;
 	
 	// In order for NegaMax to work, it is important to return the score relative to the side being evaluated 
 	// => who2Move = +1 for white, -1 for black. 

@@ -72,6 +72,13 @@ extern const int ROOK_VALUE_U;
 extern const int QUEEN_VALUE_U;
 extern const int KING_VALUE_U;
 
+// Parametros para función de evaluación
+extern double PARAM_EVAL_MATERIAL;
+extern double PARAM_EVAL_ESPACIAL;
+extern double PARAM_EVAL_DINAMICA;
+
+extern int DEPTH_MATE;
+
 extern const int CHECK_MATE;
 extern int PIECEVALUES[];
 
