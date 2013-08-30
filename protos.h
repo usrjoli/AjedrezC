@@ -32,6 +32,8 @@ BOOLTYPE readFenFen(char *filename, int number, char * pFen, bool &pWhiteToMove)
 //inicio - lectura de archivo PGN
 BOOLTYPE      readPGN(char *, int, char);
 //fin - lectura de archivo PGN
+// transforma un movimiento en char(formato pgn) en un Move
+Move obtenerMovimiento(char str[180], bool blancas, char* &usermov, char* &msg_error);
 void		  readIniFile();
 void          setup();
 void          setupFen(char *, char *, char *, char *, int , int );
@@ -59,7 +61,13 @@ void enpassantMoves();
 int find(char* source, std::string element);
 //fin debug movimientos
 
+
+// FUNCIONES PARA mateInN
 void mateInN(char* pPathFen, int pNroFen, int pDepth);
+//bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath);
+bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath, bool write_full_path, Move& first_move);
 bool isMateInNMov(int pDepth, int pIndexMoveBufLen, Move pLastMove);
 BOOLTYPE toSanBuffFrom(Move &move, char *sanMove, int ibuf);
+
+
 #endif 

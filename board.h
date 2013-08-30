@@ -62,11 +62,11 @@ struct Board
 	int eval();
 	double evalJL(double pA1, double pA2, double pA3, int pIndexMoveBufLen);
 	Move think();
-	double minimax(int ply, int depth);
+	double minimax(int ply, int depth, bool inicio);//inicio es para indicar que es la primer invocación, así hacemos el mate in
 	int alphabeta(int ply, int depth, int alpha, int beta);
-	int alphabetapvs(int ply, int depth, int alpha, int beta);
-	int qsearch(int ply, int alpha, int beta);
-	void displaySearchStats(int mode, int depth, int score);
+	double alphabetapvs(int ply, int depth, double alpha, double beta);
+	double qsearch(int ply, double alpha, double beta);
+	void displaySearchStats(int mode, int depth, int score, double scoreD); // para mode = 2 se utiliza scoreD
 	BOOLTYPE isEndOfgame(int &legalmoves, Move &singlemove);
 	BOOLTYPE isEndOfgameMate(int &legalmoves, Move &singlemove, int pIndex);
 	int repetitionCount();

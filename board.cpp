@@ -47,6 +47,9 @@ void Board::init()
  
        initFromSquares(square, WHITE_MOVE, 0, CANCASTLEOO + CANCASTLEOOO, CANCASTLEOO + CANCASTLEOOO, 0);
 
+	   // para mate in N
+	   DEPTH_MATE_DEC = 0;
+
        return;
 }
 

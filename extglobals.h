@@ -78,6 +78,7 @@ extern double PARAM_EVAL_ESPACIAL;
 extern double PARAM_EVAL_DINAMICA;
 
 extern int DEPTH_MATE;
+extern int DEPTH_MATE_DEC;
 
 extern const int CHECK_MATE;
 extern int PIECEVALUES[];

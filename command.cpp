@@ -656,7 +656,7 @@ noPonder:
 
 		if (!strcmp(command, "new"))     
 		{
-			board.init(); 
+			board.init(); 			
 			if (XB_MODE) 
 			{
 				XB_COMPUTER_SIDE = BLACK_MOVE;

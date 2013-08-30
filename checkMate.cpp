@@ -10,15 +10,15 @@
 
 using namespace std;
 
-bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath);
-
-bool CheckOppTurn(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath){
+bool CheckOppTurn(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath, bool write_full_path){
 	// Check if all opponents moves lead to Mate-in-(N-1)
 	int mates = 0;
 	int lIndexMoveBufLen, i, ahogado = 0;
 	bool fin = false;
 	char sanMove[12];
 	char lPath[MAX_PATH_MOVES];
+	Move maux;
+	maux.clear();
 
 	/************ obtengo todos los movimientos posibles del turno actual **********************/
 	lIndexMoveBufLen = generarMovimientosPosibles(pIndexMoveBufLen);
@@ -28,12 +28,14 @@ bool CheckOppTurn(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath){
 	while (!fin && i < board.moveBufLen[lIndexMoveBufLen + 1]){
 		// concateno el movimiento del oponente a la lista resultante
 		strcpy(lPath, pPath);	
-		toSanBuffFrom(board.moveBuffer[i], sanMove, lIndexMoveBufLen + 1);
-		strcat(lPath, sanMove);
-		strcat(lPath, " ");
+		if(write_full_path){
+			toSanBuffFrom(board.moveBuffer[i], sanMove, lIndexMoveBufLen + 1);
+			strcat(lPath, sanMove);
+			strcat(lPath, " ");
+			}
 		makeMove(board.moveBuffer[i]); // realiza el movimiento del oponente		
 		if (!isOtherKingAttacked()){// sí es movimiento legal			
-			if(!isMateInN(pDepth -1, lIndexMoveBufLen + 1, pTurn + 1, lPath)){
+			if(!isMateInN(pDepth -1, lIndexMoveBufLen + 1, pTurn + 1, lPath, write_full_path, maux)){
 				// encontre un movimiento del oponente para el cual no hay mate -> finalizo y retorno false
 				fin = true;
 				if(pTurn == 1){
@@ -56,8 +58,10 @@ bool CheckOppTurn(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath){
 
 
 //Parametros entrada:  paso, distancia, indices del buffer y lista de movimientos resultantes ver!!!
-bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath){
+bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath, bool write_full_path, Move& first_move){
 	// pIndex es el primer lugar libre de board.moveBufLen para comenzar a guardar los movimientos
+	// si hay mate -> write_full_path es para guardar en el buffer todos los movimientos al mate o no
+	// si hay mate -> first_move indica el primer movimiento de camino al mate
 	int i, lIndexMoveBufLen;
 	bool fin = false;
 	char sanMove[12], lturn[3];
@@ -81,15 +85,18 @@ bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath){
 	// TODO se podrían recorrer todos los movimientos posibles sin hacer recursión para ver si hay mate con los primeros movimientos
 	while (!fin && i < board.moveBufLen[lIndexMoveBufLen + 1])
 	{
-		// agrego el número de turno y el movimiento  a la lista resultante
-		strcpy(lPath, pPath);	
-
-		_itoa(pTurn, lturn,10);
-		strcat(lPath, lturn);
-		strcat(lPath, ". ");
-		toSanBuffFrom(board.moveBuffer[i], sanMove, lIndexMoveBufLen + 1);
-		strcat(lPath, sanMove);
-		strcat(lPath, " ");
+		strcpy(lPath, pPath);
+		if(write_full_path){
+			// agrego el número de turno y el movimiento  a la lista resultante	
+			_itoa(pTurn, lturn,10);
+			strcat(lPath, lturn);
+			strcat(lPath, ". ");
+			toSanBuffFrom(board.moveBuffer[i], sanMove, lIndexMoveBufLen + 1);
+			strcat(lPath, sanMove);
+			strcat(lPath, " ");
+		}else if(pTurn == 1){ // no escribe el camino al mate y es el primer movimiento -> escribo sólo el primer movimiento hacia el mate
+			first_move = board.moveBuffer[i];
+		}
 		//displayFullMove(board.moveBuffer[i]);
 		makeMove(board.moveBuffer[i]);
 		if (!isOtherKingAttacked()){// sí es movimiento legal		
@@ -98,10 +105,12 @@ bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath){
 			if(isCheckMateG(lIndexMoveBufLen + 1)){ // pIndexMoveBufLen + 1 = indice de moveBufLen donde se encuentra la posicion libre de moveBuffer
 				// al ejecutar el movimiento hay mate -> para todos los movimientos del oponete hay mate
 				fin = true;
-				board.topeMovesMateInN++;
-				strcpy(board.movesMateInN[board.topeMovesMateInN], lPath); // alamaceno el listado de movimientos que llevan al mate				
+				if(write_full_path){
+					board.topeMovesMateInN++;
+					strcpy(board.movesMateInN[board.topeMovesMateInN], lPath); // alamaceno el listado de movimientos que llevan al mate				
+				}
 			}else{
-				fin = CheckOppTurn(pDepth, lIndexMoveBufLen+ 1, pTurn, lPath); // RETORNA TRUE SII PARA TODOS LOS MOVIMIENTOS DEL OPONENTE HAY MATE
+				fin = CheckOppTurn(pDepth, lIndexMoveBufLen+ 1, pTurn, lPath, write_full_path); // RETORNA TRUE SII PARA TODOS LOS MOVIMIENTOS DEL OPONENTE HAY MATE
 			}
 		}
 		unmakeMove(board.moveBuffer[i]);
@@ -140,7 +149,7 @@ bool isMateInNMov(int pDepth, int pIndexMoveBufLen, Move pLastMove){
 			// al ejecutar el movimiento hay mate -> para todos los movimientos del oponete hay mate
 			fin = true;		
 		}else{
-			fin = CheckOppTurn(pDepth, pIndexMoveBufLen, 0, lPath); // RETORNA TRUE SII PARA TODOS LOS MOVIMIENTOS DEL OPONENTE HAY MATE
+			fin = CheckOppTurn(pDepth, pIndexMoveBufLen, 0, lPath, false); // RETORNA TRUE SII PARA TODOS LOS MOVIMIENTOS DEL OPONENTE HAY MATE
 		}
 	}
 	unmakeMove(pLastMove);
@@ -159,6 +168,8 @@ void mateInN(char* pPathFen, int pNroFen, int pDepth){
 			char fen[100];
 			bool whiteToMove = true;
 			char path[MAX_PATH_MOVES];
+			Move first_move;
+			first_move.clear();
 
 			board.init();
 			
@@ -167,10 +178,12 @@ void mateInN(char* pPathFen, int pNroFen, int pDepth){
 				board.display();
 				board.topeMovesMateInN = -1;				
 				path[0]	 = '\0';
-				bool ret = isMateInN(pDepth, 0, 1, path);
+				bool ret = isMateInN(pDepth, 0, 1, path, true, first_move);
 
 				if (ret) {
 					std::cout << "Se puede hacer un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
+					std::cout << "Primer movimiento:  " << std::endl;
+					displayFullMove(first_move);
 				} else {
 					std::cout << "No se puede hacer un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
 				}
@@ -209,3 +222,5 @@ void mateInN(char* pPathFen, int pNroFen, int pDepth){
 
 
  
+
+

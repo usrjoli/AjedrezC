@@ -917,7 +917,8 @@ int evalEspacial(int pIndexMoveBufLen){
 		unmakeMove(validWhiteMove);
 	}
 
-	return totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
+	//return totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
+	return totalOponentMoves - totalCurrentMoves; // return the score relative to the side to move
 
 }
 
@@ -940,9 +941,9 @@ int evalDinamica(int valD, int valT, int valC, int valA, int valP, int valR, int
 	//board.moveBufLen[0] = 0;
 	//board.moveBufLen[1] = movegen(board.moveBufLen[0]);
 
-	/************ obtengo todos los movimientos posibles del turno actual **********************/
+	/************ obtengo todos los movimientos posibles del oponente **********************/
 	int lIndexMoveBufLen = generarMovimientosPosibles(pIndexMoveBufLen);
-	/************ FIN obtengo todos los movimientos posibles del turno actual **********************/
+	/************ FIN obtengo todos los movimientos posibles del oponente **********************/
 
 	for (i = board.moveBufLen[lIndexMoveBufLen]; i < board.moveBufLen[lIndexMoveBufLen + 1]; i++){  // i = índice donde comienzan los movimientos generados
 		// para cada movimiento posible de las blancas
@@ -982,7 +983,8 @@ int evalDinamica(int valD, int valT, int valC, int valA, int valP, int valR, int
 		unmakeMove(validWhiteMove);
 	}
 
-	return totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
+	//return totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
+	return totalOponentMoves - totalCurrentMoves; // return the score relative to the side to move
 }
 
 double Board::evalJL(double pa1, double pa2, double pa3, int pIndexMoveBufLen){
@@ -998,9 +1000,9 @@ double Board::evalJL(double pa1, double pa2, double pa3, int pIndexMoveBufLen){
 	
 	// In order for NegaMax to work, it is important to return the score relative to the side being evaluated 
 	// => who2Move = +1 for white, -1 for black. 
-	who2Move = 1; 
+	who2Move = -1; 
 	if(board.nextMove == BLACK_MOVE){
-		who2Move = -1;
+		who2Move = 1;
 	}
 
 	score = (pa1*evalMaterial(QUEEN_VALUE_U, ROOK_VALUE_U, KNIGHT_VALUE_U, BISHOP_VALUE_U, PAWN_VALUE_U)) * who2Move;	

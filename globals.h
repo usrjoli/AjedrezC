@@ -116,6 +116,9 @@ double PARAM_EVAL_ESPACIAL = 1;
 double PARAM_EVAL_DINAMICA = 1;
 
 int DEPTH_MATE = 2;
+// Decrementador, se utiliza cuando se encuentra mante en DEPTH_MATE y se incrementa con cada jugada luego de detectado el mate 
+//-> el mateIn N siguiente será en menor profundidad.
+int DEPTH_MATE_DEC = 0; 
 
 // used for MVV/LVA and SEE:
 int PIECEVALUES[16];

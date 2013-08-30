@@ -26,7 +26,9 @@ Move Board::think()
 
 	double score;
 	int legalmoves, currentdepth;
-	Move singlemove;
+	Move singlemove, first_move;
+
+	char path[MAX_PATH_MOVES];
 
 //	===========================================================================
 //	Check if the game has ended, or if there is only one legal move,
@@ -50,6 +52,20 @@ Move Board::think()
 //	===========================================================================
 
 	if (XB_MODE) timeControl();
+//================== chequeo de mateIn N: llamar al ismateinn antes que nada, si ya tenemos una secuencia ganadora, vamos por ahí
+
+	board.topeMovesMateInN = -1;				
+	path[0]	 = '\0';
+	first_move.clear();
+
+	if(isMateInN(DEPTH_MATE-DEPTH_MATE_DEC, 0, 1, path, false, first_move)){	
+		DEPTH_MATE_DEC++;
+		return first_move;
+	}
+
+// ============== FIN chequeo de mateIn N
+
+
 
 	// The Principal variation (PV) is a sequence of moves that programs consider best and therefore expect to be played
 	lastPVLength = 0;
@@ -60,7 +76,7 @@ Move Board::think()
 	countdown = UPDATEINTERVAL;
 	timedout = false;
 	// display console header
-	displaySearchStats(1, 0, 0);  
+	displaySearchStats(1, 0, 0, -1);  
 	timer.init();
 	msStart = timer.getms();
 
@@ -74,8 +90,11 @@ Move Board::think()
 		memset(triangularArray, 0, sizeof(triangularArray));
 		followpv = true;
 		allownull = true;
-		//score = alphabetapvs(0, currentdepth, -LARGE_NUMBER, LARGE_NUMBER);
-		score = minimax(0, currentdepth); // carga triangularArray
+
+		score = alphabetapvs(0, currentdepth, -LARGE_NUMBER, LARGE_NUMBER);
+		
+		//score = minimax(0, currentdepth, true); // carga triangularArray
+		
 		// now check if time is up
 		// if not decide if it makes sense to start another iteration:
 		if (timedout) 
@@ -95,7 +114,7 @@ Move Board::think()
 				}
 			}
 		}
-		displaySearchStats(2, currentdepth, (int)score);
+		displaySearchStats(2, currentdepth, -1, score);
 		// stop searching if the current depth leads to a forced mate:
 		if ((score > (CHECKMATESCORE-currentdepth)) || (score < -(CHECKMATESCORE-currentdepth))) 
 			currentdepth = searchDepth;
@@ -103,11 +122,12 @@ Move Board::think()
 	return (lastPV[0]);
 }
 
-int Board::alphabetapvs(int ply, int depth, int alpha, int beta)
+double Board::alphabetapvs(int ply, int depth, double alpha, double beta)
 {
 	// PV search
 
-	int i, j, movesfound, pvmovesfound, val;
+	int i, j, movesfound, pvmovesfound;
+	double val;
 
 	triangularLength[ply] = ply;
 	if (depth <= 0) 
@@ -155,7 +175,7 @@ int Board::alphabetapvs(int ply, int depth, int alpha, int beta)
 				inodes++;
 				if (--countdown <=0) readClockAndInput();
 				movesfound++;
-				if (!ply) displaySearchStats(3, ply, i); 
+				if (!ply) displaySearchStats(3, ply, i, -1); 
 				if (pvmovesfound)
 				{
 					val = -alphabetapvs(ply+1, depth-1, -alpha-1, -alpha); 
@@ -188,7 +208,7 @@ int Board::alphabetapvs(int ply, int depth, int alpha, int beta)
 						triangularArray[ply][j] = triangularArray[ply+1][j];	// and append the latest best PV from deeper plies
 					}
 					triangularLength[ply] = triangularLength[ply+1];
-					if (!ply) displaySearchStats(2, depth, val);
+					if (!ply) displaySearchStats(2, depth, -1, val);
 				}
 			}
 			else unmakeMove(moveBuffer[i]);
@@ -234,7 +254,7 @@ int Board::alphabeta(int ply, int depth, int alpha, int beta)
 			if (!isOtherKingAttacked()) 
 			{
 				inodes++;
-				if (!ply) displaySearchStats(3, ply, i); 
+				if (!ply) displaySearchStats(3, ply, i, -1); 
 				val = -alphabeta(ply+1, depth-1, -beta, -alpha);
 				unmakeMove(moveBuffer[i]);
 				if (val >= beta)
@@ -250,7 +270,7 @@ int Board::alphabeta(int ply, int depth, int alpha, int beta)
 						triangularArray[ply][j] = triangularArray[ply+1][j];	// and append the latest best PV from deeper plies
 					}
 					triangularLength[ply] = triangularLength[ply + 1];
-					if (!ply) displaySearchStats(2, depth, val);
+					if (!ply) displaySearchStats(2, depth, -1, val);
 				}
 			}
 			else unmakeMove(moveBuffer[i]);
@@ -259,7 +279,8 @@ int Board::alphabeta(int ply, int depth, int alpha, int beta)
 	return alpha;
 }
 
-double Board::minimax(int ply, int depth)
+double Board::minimax(int ply, int depth, bool inicio)
+//inicio es para indicar que es la primer invocación, así hacemos el mate in
 {
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// intenta minimizar la ganancia del rival, o sea busca que el rival tenga el peor resultado
@@ -289,37 +310,41 @@ double Board::minimax(int ply, int depth)
 	//if (depth == 0) return board.eval();
 
 	moveBufLen[ply+1] = movegen(moveBufLen[ply]);  
-	
-	for (i = moveBufLen[ply]; i < moveBufLen[ply+1]; i++)
-	{
+
+	for (i = moveBufLen[ply]; i < moveBufLen[ply+1]; i++){
 		// MateIn para el movimiento a evaluar
-		isMateInN = isMateInNMov(DEPTH_MATE, ply+1, moveBuffer[i]);
+		if (inicio){
+			isMateInN = isMateInNMov(DEPTH_MATE, ply+1, moveBuffer[i]);
+		} else {
+			/*if (depth == DEPTH_MATE){
+				isMateInN = isMateInNMov(DEPTH_MATE, ply+1, moveBuffer[i]);
+			}
+			else {*/
+				isMateInN = false;
+			//}
+		}
 
 		makeMove(moveBuffer[i]);
 		{
-			if (!isOtherKingAttacked()) 
-			{
+			if (!isOtherKingAttacked()){
 				inodes++;
-				if (!ply) displaySearchStats(3, ply, i);
+				if (!ply) displaySearchStats(3, ply, i, -1);
 				if(isMateInN){
 					// si al ejecutar el movimiento moveBuffer[i] hay mateInN -> le doy el mayor valor posible al movimiento
-					val = LARGE_NUMBER;
+					val = LARGE_NUMBER; // TODO cortar el for (i = moveBufLen[ply]; i < moveBufLen[ply+1]; i++){
 				}else {
-					val = -minimax(ply+1, depth-1); // note the minus sign
+					val = -minimax(ply+1, depth-1, false); // note the minus sign
 				}
-	
 				unmakeMove(moveBuffer[i]);
-				if (val > best)                                                 // both sides want to maximize from *their* perspective
-				{
+				if (val > best){                                            // both sides want to maximize from *their* perspective
 					best = val;
 					triangularArray[ply][ply] = moveBuffer[i];					// save this move
-					for (j = ply + 1; j < triangularLength[ply + 1]; j++) 
-					{
+					for (j = ply + 1; j < triangularLength[ply + 1]; j++){
 						triangularArray[ply][j] = triangularArray[ply+1][j];	// and append the latest best PV (Principal Variation) from deeper plies
 																				// The Principal variation (PV) is a sequence of moves that programs consider best and therefore expect to be played
 					}
 					triangularLength[ply] = triangularLength[ply + 1];
-					if (!ply)  displaySearchStats(2, depth, (int)val);
+					if (!ply)  displaySearchStats(2, depth, -1, val);
 				}
 			}
 			else unmakeMove(moveBuffer[i]);
@@ -328,7 +353,7 @@ double Board::minimax(int ply, int depth)
 	return best;
 }
 
-void Board::displaySearchStats(int mode, int depth, int score)
+void Board::displaySearchStats(int mode, int depth, int score, double scoreD)
 {
 	// displays various search statistics
 	// only to be used when ply = 0
@@ -350,7 +375,7 @@ void Board::displaySearchStats(int mode, int depth, int score)
 		case 2:
 				if (XB_MODE && XB_POST)
 				{
-					printf("%5d %6d %8d %9d ", depth, score, dt/10, inodes);
+					printf("%5d %6d %8d %9d ", depth, scoreD, dt/10, inodes);
 					rememberPV();
 					displayPV();
 				}
@@ -360,7 +385,7 @@ void Board::displaySearchStats(int mode, int depth, int score)
 					printf("%5d ", depth);
 
 					// score
-					printf("%+6.2f ", float(score/100.0));
+					printf("%+6.2f ", float(scoreD/100.0));
 
 					// nodes searched
 					if      (inodes > 100000000) printf("%6.0f%c ", float(inodes/1000000.0), 'M');

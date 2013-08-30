@@ -3,16 +3,18 @@
 #include "protos.h" 
 #include "board.h" 
 
-int Board::qsearch(int ply, int alpha, int beta)
+double Board::qsearch(int ply, double alpha, double beta)
 {
 	// quiescence search 
 
-	int i, j, val;
+	int i, j;
+	double val;
 
 	if (timedout) return 0;
 	triangularLength[ply] = ply;
 	if (isOwnKingAttacked()) return alphabetapvs(ply, 1, alpha, beta);
-	val = board.eval();
+	//val = board.eval();
+	val = board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, ply);
 	if (val >= beta) return val;
 	if (val > alpha) alpha = val;
 
