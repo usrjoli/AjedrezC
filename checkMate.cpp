@@ -76,6 +76,12 @@ bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath, bool wr
 		return false;
 	}
 
+	if(TIMER_MATE > 0){ // si esta habilitado el control del timer
+		if(board.isTimeOutMate()){
+			return false;
+		}
+	}
+
 	/************ obtengo todos los movimientos posibles del turno actual **********************/
 	lIndexMoveBufLen = generarMovimientosPosibles(pIndexMoveBufLen);
 	i = board.moveBufLen[lIndexMoveBufLen]; // i = índice donde comienzan los movimientos generados
@@ -94,7 +100,9 @@ bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath, bool wr
 			toSanBuffFrom(board.moveBuffer[i], sanMove, lIndexMoveBufLen + 1);
 			strcat(lPath, sanMove);
 			strcat(lPath, " ");
-		}else if(pTurn == 1){ // no escribe el camino al mate y es el primer movimiento -> escribo sólo el primer movimiento hacia el mate
+		}
+		
+		if(pTurn == 1){ // es el primer movimiento -> escribo sólo el primer movimiento hacia el mate
 			first_move = board.moveBuffer[i];
 		}
 		//displayFullMove(board.moveBuffer[i]);
@@ -178,14 +186,24 @@ void mateInN(char* pPathFen, int pNroFen, int pDepth){
 				board.display();
 				board.topeMovesMateInN = -1;				
 				path[0]	 = '\0';
+
+				if(TIMER_MATE > 0){
+					board.timer.init();
+					board.msStart = board.timer.getms();
+				}
 				bool ret = isMateInN(pDepth, 0, 1, path, true, first_move);
 
+				if(TIMER_MATE > 0){
+					if(board.isTimeOutMate()){
+						std::cout << "Time out en mateInN" << std::endl;
+					}
+				}
 				if (ret) {
-					std::cout << "Se puede hacer un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
+					std::cout << "Se pudo hacer un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
 					std::cout << "Primer movimiento:  " << std::endl;
 					displayFullMove(first_move);
 				} else {
-					std::cout << "No se puede hacer un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
+					std::cout << "No se pudo obtener un jaque mate en " << pDepth << " movimientos o menos" << std::endl;
 				}
 
 				//abro archivo escritura

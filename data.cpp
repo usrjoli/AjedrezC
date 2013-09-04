@@ -904,5 +904,13 @@ BOOLTYPE doIniCommand(const char *buf)
 		CMD_BUFF_COUNT = '\0';
 		return true;
 	}
+
+	if (!strncmp(buf, "TIMER_MATE", 10))
+	{
+		sscanf(buf+10, "%d", &number);
+		TIMER_MATE = (U64)(number);
+		CMD_BUFF_COUNT = '\0';
+		return true;
+	}
 	return true;
 }

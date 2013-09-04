@@ -52,20 +52,6 @@ Move Board::think()
 //	===========================================================================
 
 	if (XB_MODE) timeControl();
-//================== chequeo de mateIn N: llamar al ismateinn antes que nada, si ya tenemos una secuencia ganadora, vamos por ahí
-
-	board.topeMovesMateInN = -1;				
-	path[0]	 = '\0';
-	first_move.clear();
-
-	if(isMateInN(DEPTH_MATE-DEPTH_MATE_DEC, 0, 1, path, false, first_move)){	
-		DEPTH_MATE_DEC++;
-		return first_move;
-	}
-
-// ============== FIN chequeo de mateIn N
-
-
 
 	// The Principal variation (PV) is a sequence of moves that programs consider best and therefore expect to be played
 	lastPVLength = 0;
@@ -79,6 +65,21 @@ Move Board::think()
 	displaySearchStats(1, 0, 0, -1);  
 	timer.init();
 	msStart = timer.getms();
+
+	//================== chequeo de mateIn N: llamar al ismateinn antes que nada, si ya tenemos una secuencia ganadora, vamos por ahí
+
+	board.topeMovesMateInN = -1;				
+	path[0]	 = '\0';
+	first_move.clear();
+
+	if(DEPTH_MATE > 0){ // si en el ini se carga 0 -> se deshabilita la búsqueda del mateInN
+		if(isMateInN(DEPTH_MATE-DEPTH_MATE_DEC, 0, 1, path, false, first_move)){	
+			DEPTH_MATE_DEC++;
+			return first_move;
+		}
+	}
+
+// ============== FIN chequeo de mateIn N
 
 	//  iterative deepening:
 	for (currentdepth = 1; currentdepth <= searchDepth; currentdepth++)

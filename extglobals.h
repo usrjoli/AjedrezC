@@ -79,6 +79,7 @@ extern double PARAM_EVAL_DINAMICA;
 
 extern int DEPTH_MATE;
 extern int DEPTH_MATE_DEC;
+extern U64 TIMER_MATE;
 
 extern const int CHECK_MATE;
 extern int PIECEVALUES[];

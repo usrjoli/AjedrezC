@@ -382,7 +382,7 @@ threatening Qg4#(#1)} c5 2. Qg4# 1-0
 (#1)} d2 2. Ng6# (2. Nf7#)) (1. Nf6 {threatening Nf7#(#1)} d2 2. Nf7#) (1. Ng3
 d2 2. Nf7#) (1. Ng7 d2 2. Nf7#) 1... Kh7 2. Bxd3# 1-0
 
-[Event "#314 Chess: 5334 Problems, Combinations"]
+[Event "#28 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -396,7 +396,7 @@ d2 2. Nf7#) (1. Ng7 d2 2. Nf7#) 1... Kh7 2. Bxd3# 1-0
 
 {[%tqu "White to mate in 2","","",Qh3+,"",10]} 1. Qh3+ Kg1 2. Nf3# 1-0
 
-[Event "#315 Chess: 5334 Problems, Combinations"]
+[Event "#29 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -411,7 +411,7 @@ d2 2. Nf7#) (1. Ng7 d2 2. Nf7#) 1... Kh7 2. Bxd3# 1-0
 {[%tqu "White to mate in 2","","",Bb3+,"",10]} 1. Bb3+ Kb1 2. Qg1# (2. Qe1#)
 1-0
 
-[Event "#316 Chess: 5334 Problems, Combinations"]
+[Event "#30 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -426,7 +426,7 @@ d2 2. Nf7#) (1. Ng7 d2 2. Nf7#) 1... Kh7 2. Bxd3# 1-0
 {[%tqu "White to mate in 2","","",Qa2,"threatening Qb1#(#1)",10]} 1. Qa2 {
 threatening Qb1#(#1)} Ke1 (1... Kg1 2. Qg2#) 2. Qe2# 1-0
 
-[Event "#317 Chess: 5334 Problems, Combinations"]
+[Event "#31 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -441,7 +441,7 @@ threatening Qb1#(#1)} Ke1 (1... Kg1 2. Qg2#) 2. Qe2# 1-0
 {[%tqu "White to mate in 2","","",Qd3+,"",10]} 1. Qd3+ Kc1 (1... Ke1 2. Nc2#)
 2. Qc2# 1-0
 
-[Event "#318 Chess: 5334 Problems, Combinations"]
+[Event "#32 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -456,7 +456,7 @@ threatening Qb1#(#1)} Ke1 (1... Kg1 2. Qg2#) 2. Qe2# 1-0
 {[%tqu "White to mate in 2","","",Bg4,"threatening Rd1#(#1)",10]} 1. Bg4 {
 [%cal Rd3d1] threatening Rd1#(#1)} Kb1 2. Rd1# 1-0
 
-[Event "#319 Chess: 5334 Problems, Combinations"]
+[Event "#33 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -471,7 +471,7 @@ threatening Qb1#(#1)} Ke1 (1... Kg1 2. Qg2#) 2. Qe2# 1-0
 {[%tqu "White to mate in 2  (Two variants, depending on Black's reply)","","",
 Qe1+,"",10]} 1. Qe1+ Rg3 (1... Kg4 2. Qe4#) 2. Qxg3# 1-0
 
-[Event "#320 Chess: 5334 Problems, Combinations"]
+[Event "#34 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -485,7 +485,7 @@ Qe1+,"",10]} 1. Qe1+ Rg3 (1... Kg4 2. Qe4#) 2. Qxg3# 1-0
 
 {[%tqu "White to mate in 2","","",Ne5+,"",10]} 1. Ne5+ Ke3 2. Qf2# 1-0
 
-[Event "#321 Chess: 5334 Problems, Combinations"]
+[Event "#35 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -500,7 +500,7 @@ Qe1+,"",10]} 1. Qe1+ Rg3 (1... Kg4 2. Qe4#) 2. Qxg3# 1-0
 {[%tqu "White to mate in 2","","",Kc3,"threatening Qb2#(#1)",10]} 1. Kc3 {
 [%cal Ra3b2] threatening Qb2#(#1)} Ka1 (1... c4 2. Qb2#) 2. Qb2# 1-0
 
-[Event "#322 Chess: 5334 Problems, Combinations"]
+[Event "#36 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -515,7 +515,7 @@ Qe1+,"",10]} 1. Qe1+ Rg3 (1... Kg4 2. Qe4#) 2. Qxg3# 1-0
 {[%tqu "White to mate in 2","","",Kf2,"threatening Qxg1#(#1)",10]} 1. Kf2 {
 [%cal Rf2g1] threatening Qxg1#(#1)} Kh2 (1... h2 2. Qg2#) 2. Qxg1# 1-0
 
-[Event "#323 Chess: 5334 Problems, Combinations"]
+[Event "#37 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -530,7 +530,7 @@ Qe1+,"",10]} 1. Qe1+ Rg3 (1... Kg4 2. Qe4#) 2. Qxg3# 1-0
 {[%tqu "White to mate in 2","","",Nd5,"threatening Qb6#(#1)",10]} 1. Nd5 {
 [%cal Rc7b6] threatening Qb6#(#1)} Ka6 (1... b6 2. Qxb6#) 2. Qb6# 1-0
 
-[Event "#324 Chess: 5334 Problems, Combinations"]
+[Event "#38Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -545,7 +545,7 @@ Qe1+,"",10]} 1. Qe1+ Rg3 (1... Kg4 2. Qe4#) 2. Qxg3# 1-0
 {[%tqu "White to mate in 2","","",Ne6+,"",10]} 1. Ne6+ Kf5 (1... Kh5 2. Qh2#)
 2. Qf4# 1-0
 
-[Event "#325 Chess: 5334 Problems, Combinations"]
+[Event "#39 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -560,7 +560,7 @@ Qe1+,"",10]} 1. Qe1+ Rg3 (1... Kg4 2. Qe4#) 2. Qxg3# 1-0
 {[%tqu "White to mate in 2","","",Ng6+,"",10]} 1. Ng6+ Kf5 (1... Kg5 2. Qa5# (
 2. Qe5#)) 2. Qe5# 1-0
 
-[Event "#326 Chess: 5334 Problems, Combinations"]
+[Event "#40 Chess: 5334 Problems, Combinations"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -575,7 +575,7 @@ Qe1+,"",10]} 1. Qe1+ Rg3 (1... Kg4 2. Qe4#) 2. Qxg3# 1-0
 {[%tqu "White to mate in 2","","",Qf2+,"",10]} 1. Qf2+ Kh1 (1... Kh3 2. Qh2#)
 2. Qh2# 1-0
 
-[Event "#3719 Chess: 5334 Problems, Combination"]
+[Event "#41 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -590,7 +590,7 @@ Qe1+,"",10]} 1. Qe1+ Rg3 (1... Kg4 2. Qe4#) 2. Qxg3# 1-0
 {[%tqu "White to mate in 3","","",Nc5+,"",10]} 1. Nc5+ Qxc5 (1... dxc5 2. Nxd4+
 cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
-[Event "#3720 Chess: 5334 Problems, Combination"]
+[Event "#42 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -604,7 +604,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Nxc7+ Qxc7 2. Nc5+ Qxc5 3. Qe1# *
 
-[Event "#3721 Chess: 5334 Problems, Combination"]
+[Event "#43 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -619,7 +619,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 1. Nd5+ (1. Ng6+ hxg6 2. Nd5+ exd5 3. Qe5#) 1... exd5 2. Ng6+ fxg6 (2... hxg6
 3. Qe5#) 3. Bg5# *
 
-[Event "#3722 Chess: 5334 Problems, Combination"]
+[Event "#44 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -633,7 +633,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Qxf7+ Kxf7 2. Bc4+ Qd5 3. Bxd5# *
 
-[Event "#3723 Chess: 5334 Problems, Combination"]
+[Event "#45 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -647,7 +647,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Qxf7+ Kxh6 2. Bg5+ Kxg5 3. Qf4# *
 
-[Event "#3724 Chess: 5334 Problems, Combination"]
+[Event "#46 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -661,7 +661,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Qd8+ Kxd8 2. Bg5+ Kc7 (2... Ke8 3. Rd8#) 3. Bd8# *
 
-[Event "#3725 Chess: 5334 Problems, Combination"]
+[Event "#47 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -675,7 +675,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Nf7+ Kg8 2. Rh8+ Nxh8 3. Nh6# *
 
-[Event "#3726 Chess: 5334 Problems, Combination"]
+[Event "#48 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -689,7 +689,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Ne7+ Kh8 2. Rxh7+ Kxh7 3. Rh5# *
 
-[Event "#3727 Chess: 5334 Problems, Combination"]
+[Event "#49 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -703,7 +703,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Ne7+ Kh8 2. Ng6+ hxg6 3. hxg3# *
 
-[Event "#3728 Chess: 5334 Problems, Combination"]
+[Event "#50 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -717,7 +717,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Rxh6+ gxh6 2. Rg8+ Kf5 3. e4# *
 
-[Event "#3729 Chess: 5334 Problems, Combination"]
+[Event "#51 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -731,7 +731,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Bxg5+ Kxg5 2. Qg7+ Kh5 3. g4# *
 
-[Event "#3730 Chess: 5334 Problems, Combination"]
+[Event "#52 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -745,7 +745,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Ne6+ fxe6 2. Qg5+ Kh7 3. Rh6# *
 
-[Event "#3731 Chess: 5334 Problems, Combination"]
+[Event "#53 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -759,7 +759,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Rh8+ Nxh8 2. Qh7+ Kf8 3. Qxh8# *
 
-[Event "#3732 Chess: 5334 Problems, Combination"]
+[Event "#54 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -773,7 +773,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Rf8+ Kxf8 2. Qa8+ Ke7 3. Qe8# *
 
-[Event "#3733 Chess: 5334 Problems, Combination"]
+[Event "#55 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -787,7 +787,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Rg8+ Kxg8 2. Rg1+ Kh8 3. Bf6# *
 
-[Event "#3734 Chess: 5334 Problems, Combination"]
+[Event "#56 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -801,7 +801,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Rc8+ Qxc8 2. Qxg7+ Rxg7 3. Rxg7# *
 
-[Event "#3735 Chess: 5334 Problems, Combination"]
+[Event "#57 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -815,7 +815,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. g7+ Rxg7 2. Qh6+ Rh7 3. Qxh7# *
 
-[Event "#3736 Chess: 5334 Problems, Combination"]
+[Event "#58 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -829,7 +829,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Bg6+ Kxg6 2. Rg4+ Kf5 3. Qh5# *
 
-[Event "#3737 Chess: 5334 Problems, Combination"]
+[Event "#59 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]
@@ -843,7 +843,7 @@ cxd4 3. Qe4#) 2. Nxc7+ Qxc7 3. Qe4# 1-0
 
 1. Bf7+ Nxf7 2. Qxc6+ Kd8 3. Nxf7# *
 
-[Event "#3738 Chess: 5334 Problems, Combination"]
+[Event "#60 Chess: 5334 Problems, Combination"]
 [Site "Copyright 1994 Könemann"]
 [Date "1994.??.??"]
 [Round "?"]

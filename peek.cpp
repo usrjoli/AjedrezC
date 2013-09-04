@@ -107,6 +107,29 @@ noPonder:
 }
 
 
+bool Board::isTimeOutMate(){
+
+	U64 endTime;
+
+	if(TIMER_MATE > 0) {
+		endTime = (maxTime * TIMER_MATE)/100;
+
+		if ((!XB_NO_TIME_LIMIT && ((timer.getms() - msStart) > endTime)))
+		{
+			#ifdef WINGLET_DEBUG_WINBOARD
+				if (XB_MODE)
+				{
+					std::cout << "#-winglet : timed out en MateInN" << std::endl;
+				}
+			#endif
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
 
 
 

@@ -80,6 +80,7 @@ struct Board
 	BitMap attacksTo(int &target);
 	BitMap revealNextAttacker(BitMap &attackers, BitMap &nonremoved, int &target, int &heading);
 	void readClockAndInput();
+	bool isTimeOutMate();
 
 };
  

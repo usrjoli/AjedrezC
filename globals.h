@@ -120,6 +120,8 @@ int DEPTH_MATE = 2;
 //-> el mateIn N siguiente será en menor profundidad.
 int DEPTH_MATE_DEC = 0; 
 
+U64 TIMER_MATE = 50;
+
 // used for MVV/LVA and SEE:
 int PIECEVALUES[16];
  
