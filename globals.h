@@ -114,6 +114,7 @@ extern const int KING_VALUE_U = 0;
 double PARAM_EVAL_MATERIAL = 1;
 double PARAM_EVAL_ESPACIAL = 1;
 double PARAM_EVAL_DINAMICA = 1;
+int EVAL_FUNC = 1;
 
 int DEPTH_MATE = 2;
 // Decrementador, se utiliza cuando se encuentra mante en DEPTH_MATE y se incrementa con cada jugada luego de detectado el mate 

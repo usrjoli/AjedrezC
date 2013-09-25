@@ -13,7 +13,16 @@
 
 Move Board::think()
 {
+	
+	/************** debug ***************/
+	char txt[50] = "No. movimiento del juego: ";
+	char txt2[50];
+	char * res;
 
+	_itoa(board.endOfGame, txt2, 10);
+	res = strcat(txt, txt2);
+	printDebug(txt);
+	/************** fin debug ***********/
 //	===========================================================================
 //  This is the entry point for search, it is intended to drive iterative deepening 
 //  The search stops if (whatever comes first): 
@@ -76,6 +85,8 @@ Move Board::think()
 		if(isMateInN(DEPTH_MATE-DEPTH_MATE_DEC, 0, 1, path, false, first_move)){	
 			DEPTH_MATE_DEC++;
 			return first_move;
+		}else {
+			std::cout << "------------ NO MATE in N ------------" << std::endl;
 		}
 	}
 

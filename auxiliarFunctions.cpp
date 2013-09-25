@@ -1,6 +1,10 @@
+#include <fstream>
+
 #include "protos.h"
 #include "extglobals.h"
 #include "board.h"
+
+using namespace std;
 
 
 bool isCheckMate(){
@@ -309,4 +313,15 @@ bool checkMateInN(int movesLeft){
 		std::cout << "Aguanta el pichi papi, que esto no está pronto todavia" << std::endl;
 	}
 	return isMate;
+}
+
+void printDebug(char* pTexto){
+	//abro archivo escritura
+	ofstream myfile;
+	myfile.open ("debug.txt");
+
+	myfile << pTexto;
+
+	//cierro archivo de escritura
+	myfile.close();
 }

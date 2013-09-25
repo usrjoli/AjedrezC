@@ -117,7 +117,6 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="timer.cpp" />
-    <ClCompile Include="winglet.cpp" />
     <ClCompile Include="wingletx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

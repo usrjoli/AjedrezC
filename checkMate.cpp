@@ -66,8 +66,7 @@ bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath, bool wr
 	bool fin = false;
 	char sanMove[12], lturn[3];
 	char lPath[MAX_PATH_MOVES];
-
-
+	
 	if(isCheckMateG(pIndexMoveBufLen)){ // recibimos un tablero con mate (el fen ya es mate) TODO ver si en la recursión cae aca
 		// cargo la lista y termino
 		return true;
@@ -78,6 +77,7 @@ bool isMateInN(int pDepth, int pIndexMoveBufLen, int pTurn, char* pPath, bool wr
 
 	if(TIMER_MATE > 0){ // si esta habilitado el control del timer
 		if(board.isTimeOutMate()){
+			std::cout << "------------ TIMEOUT MATE ------------" << std::endl;
 			return false;
 		}
 	}

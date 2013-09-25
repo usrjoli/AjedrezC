@@ -902,6 +902,17 @@ BOOLTYPE doIniCommand(const char *buf)
 		sscanf(buf+10, "%d", &number);
 		DEPTH_MATE = (int)(number);
 		CMD_BUFF_COUNT = '\0';
+
+		/************** debug ***************/
+		char txt[50] = "DEPTH_MATE: ";
+		char txt2[50];
+		char * res;
+
+		_itoa(DEPTH_MATE, txt2, 10);
+		res = strcat(txt, txt2);
+		printDebug(txt);
+		/************** fin debug ***********/
+
 		return true;
 	}
 
@@ -912,5 +923,15 @@ BOOLTYPE doIniCommand(const char *buf)
 		CMD_BUFF_COUNT = '\0';
 		return true;
 	}
+
+	
+	if (!strncmp(buf, "EVAL_FUNC", 10))
+	{
+		sscanf(buf+10, "%d", &number);
+		EVAL_FUNC = (int)(number);
+		CMD_BUFF_COUNT = '\0';
+		return true;
+	}
+
 	return true;
 }

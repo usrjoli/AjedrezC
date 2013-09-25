@@ -76,6 +76,7 @@ extern const int KING_VALUE_U;
 extern double PARAM_EVAL_MATERIAL;
 extern double PARAM_EVAL_ESPACIAL;
 extern double PARAM_EVAL_DINAMICA;
+extern int EVAL_FUNC;
 
 extern int DEPTH_MATE;
 extern int DEPTH_MATE_DEC;

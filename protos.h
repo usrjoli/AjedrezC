@@ -45,6 +45,7 @@ void          unmakeCapture(unsigned int &, unsigned int &);
 void          unmakeMove(Move &);
 void          unmakeWhitePromotion(unsigned int, unsigned int &);
 bool          checkMateInN(int movesLeft);
+void printDebug(char* pTexto);
 //inicio debug movimientos
 bool isCheckMate();
 bool isCheckMateG(int indexBuffer);

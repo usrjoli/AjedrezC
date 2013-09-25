@@ -56,9 +56,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winglet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bitops.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

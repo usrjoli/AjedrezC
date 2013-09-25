@@ -13,8 +13,11 @@ double Board::qsearch(int ply, double alpha, double beta)
 	if (timedout) return 0;
 	triangularLength[ply] = ply;
 	if (isOwnKingAttacked()) return alphabetapvs(ply, 1, alpha, beta);
-	//val = board.eval();
-	val = board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, ply);
+	if(EVAL_FUNC == 0){
+		val = board.eval();
+	}else {
+		val = board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, ply);
+	}
 	if (val >= beta) return val;
 	if (val > alpha) alpha = val;
 
