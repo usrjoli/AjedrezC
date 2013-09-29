@@ -897,6 +897,14 @@ BOOLTYPE doIniCommand(const char *buf)
 		return true;
 	}
 
+	if (!strncmp(buf, "PARAM_EVAL_POS_TABLERO", 22))
+	{
+		sscanf(buf+22, "%d", &number);
+		PARAM_EVAL_POS_TABLERO = (float)(number/100.0);
+		CMD_BUFF_COUNT = '\0';
+		return true;
+	}
+
 	if (!strncmp(buf, "DEPTH_MATE", 10))
 	{
 		sscanf(buf+10, "%d", &number);

@@ -1,1 +1,1 @@
-DEPTH_MATE: 2
+No. movimiento del juego: 6

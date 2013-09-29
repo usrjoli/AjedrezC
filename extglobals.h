@@ -76,6 +76,7 @@ extern const int KING_VALUE_U;
 extern double PARAM_EVAL_MATERIAL;
 extern double PARAM_EVAL_ESPACIAL;
 extern double PARAM_EVAL_DINAMICA;
+extern double PARAM_EVAL_POS_TABLERO;
 extern int EVAL_FUNC;
 
 extern int DEPTH_MATE;
@@ -136,6 +137,8 @@ extern int ICHECK;
 extern int PENALTY_DOUBLED_PAWN;
 extern int PENALTY_ISOLATED_PAWN;
 extern int PENALTY_BACKWARD_PAWN;
+extern int PENALTY_ULTIMA_POS_REPETIDA;
+
 extern int BONUS_PASSED_PAWN;
 extern int BONUS_BISHOP_PAIR;
 extern int BONUS_ROOK_BEHIND_PASSED_PAWN;

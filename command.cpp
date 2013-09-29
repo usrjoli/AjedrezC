@@ -596,7 +596,7 @@ noPonder:
 		if (!XB_MODE && !strcmp(command, "evaluate")){
 			//sscanf(CMD_BUFF,"evaluate %d %d %d", &la1, &la2, &la3);
 
-			board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, 0);
+			board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
 
 			continue;
 		}

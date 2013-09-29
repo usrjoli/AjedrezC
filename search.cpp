@@ -91,7 +91,6 @@ Move Board::think()
 	}
 
 // ============== FIN chequeo de mateIn N
-
 	//  iterative deepening:
 	for (currentdepth = 1; currentdepth <= searchDepth; currentdepth++)
 	{
@@ -318,7 +317,7 @@ double Board::minimax(int ply, int depth, bool inicio)
 	best = -LARGE_NUMBER;
 	triangularLength[ply] = ply;
 
-	if (depth == 0) return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, ply);
+	if (depth == 0) return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
 	//if (depth == 0) return board.eval();
 
 	moveBufLen[ply+1] = movegen(moveBufLen[ply]);  
