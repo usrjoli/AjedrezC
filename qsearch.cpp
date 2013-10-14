@@ -16,7 +16,7 @@ double Board::qsearch(int ply, double alpha, double beta)
 	if(EVAL_FUNC == 0){
 		val = board.eval();
 	}else {
-		val = board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, ply);
+		val = board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
 	}
 	if (val >= beta) return val;
 	if (val > alpha) alpha = val;

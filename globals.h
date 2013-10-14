@@ -114,6 +114,7 @@ extern const int KING_VALUE_U = 0;
 double PARAM_EVAL_MATERIAL = 1;
 double PARAM_EVAL_ESPACIAL = 1;
 double PARAM_EVAL_DINAMICA = 1;
+double PARAM_EVAL_POS_TABLERO = 1;
 int EVAL_FUNC = 1;
 
 int DEPTH_MATE = 2;
@@ -251,6 +252,8 @@ int ICHECK;
 int PENALTY_DOUBLED_PAWN          = 10;
 int PENALTY_ISOLATED_PAWN         = 20;
 int PENALTY_BACKWARD_PAWN         =  8;
+int PENALTY_ULTIMA_POS_REPETIDA   = 15;
+
 int BONUS_PASSED_PAWN             = 20;
 int BONUS_BISHOP_PAIR             = 10;
 int BONUS_ROOK_BEHIND_PASSED_PAWN = 20;
