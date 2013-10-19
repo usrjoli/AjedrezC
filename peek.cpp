@@ -21,7 +21,22 @@ void Board::readClockAndInput()
 	// reset countdown
 	countdown = UPDATEINTERVAL;
 
-	if ((!XB_NO_TIME_LIMIT && ((timer.getms() - msStart) > maxTime)) || (!XB_MODE && _kbhit()))
+// JL DEBUG
+	char txt[50] = "readClockAndInput timer - start: ";
+	char txt2[50];
+	char * res;
+
+	_itoa((timer.getms() - msStart), txt2, 10);
+	res = strcat(txt, txt2);
+	printDebug(txt);
+	txt[0] = '\0';
+	res = strcat(txt, "readClockAndInput timer - maxtime: ");
+	_itoa(maxTime, txt2, 10);
+	res = strcat(txt, txt2);
+	printDebug(txt);
+// JL DEBUG FIN
+
+	if ((!XB_NO_TIME_LIMIT && ((timer.getms() - msStart) > maxTime)) || (!XB_MODE && _kbhit())) 
 	{
 		timedout = true;
 		#ifdef WINGLET_DEBUG_WINBOARD

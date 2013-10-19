@@ -14,7 +14,7 @@
 Move Board::think()
 {
 	
-	/************** debug ***************/
+// JL DEBUG
 	char txt[50] = "No. movimiento del juego: ";
 	char txt2[50];
 	char * res;
@@ -22,7 +22,7 @@ Move Board::think()
 	_itoa(board.endOfGame, txt2, 10);
 	res = strcat(txt, txt2);
 	printDebug(txt);
-	/************** fin debug ***********/
+// JL DEBUG FIN
 //	===========================================================================
 //  This is the entry point for search, it is intended to drive iterative deepening 
 //  The search stops if (whatever comes first): 
@@ -81,17 +81,34 @@ Move Board::think()
 	path[0]	 = '\0';
 	first_move.clear();
 
+// JL DEBUG
+	txt[0] = '\0';
+	res = strcat(txt, "Profundidad de Mate: ");
+	_itoa(DEPTH_MATE, txt2, 10);
+	res = strcat(txt, txt2);
+	printDebug(txt);
+// JL DEBUG FIN
 	if(DEPTH_MATE > 0){ // si en el ini se carga 0 -> se deshabilita la búsqueda del mateInN
 		if(isMateInN(DEPTH_MATE-DEPTH_MATE_DEC, 0, 1, path, false, first_move)){	
 			DEPTH_MATE_DEC++;
 			return first_move;
-		}else {
+		}/*else {
 			std::cout << "------------ NO MATE in N ------------" << std::endl;
-		}
+		}*/
 	}
 
 // ============== FIN chequeo de mateIn N
 	//  iterative deepening:
+	
+// JL DEBUG
+	txt[0] = '\0';
+	res = strcat(txt, "Profundidad de Búsqueda: ");
+	_itoa(searchDepth, txt2, 10);
+	res = strcat(txt, txt2);
+	printDebug(txt);
+// JL DEBUG
+
+
 	for (currentdepth = 1; currentdepth <= searchDepth; currentdepth++)
 	{
 		//  clear the buffers:
