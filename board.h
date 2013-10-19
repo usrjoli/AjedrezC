@@ -54,7 +54,7 @@ struct Board
 	BOOLTYPE allownull;
 	U64 inodes;
 	U64 countdown;
-	U64 maxTime; 
+	U64 maxTime;
 	BOOLTYPE timedout;
 	BOOLTYPE ponder;
 

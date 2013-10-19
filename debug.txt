@@ -1,1 +1,11 @@
-No. movimiento del juego: 6
+DEPTH_MATE: 2DEPTH: 10DEPTH_MATE: 2No. movimiento del juego: 0DEPTH: 10DEPTH_MATE: 2No. movimiento del juego: 0DEPTH: 10
+DEPTH_MATE: 2
+DEPTH: 10
+DEPTH_MATE: 2
+DEPTH: 10
+DEPTH_MATE: 2
+No. movimiento del juego: 0
+DEPTH: 10
+DEPTH_MATE: 2
+DEPTH: 10
+DEPTH_MATE: 2

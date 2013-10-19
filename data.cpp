@@ -838,7 +838,16 @@ BOOLTYPE doIniCommand(const char *buf)
 		sscanf(buf+5, "%d", &board.searchDepth);
 		if (board.searchDepth < 1) board.searchDepth = 1;
 		if (board.searchDepth > MAX_PLY) board.searchDepth = MAX_PLY;
-		CMD_BUFF_COUNT = '\0';
+		CMD_BUFF_COUNT = '\0';		
+		// JL DEBUG
+		char txt[50] = "DEPTH (las dos): ";
+		char txt2[50];
+		char * res;
+
+		_itoa(board.searchDepth, txt2, 10);
+		res = strcat(txt, txt2);
+		printDebug(txt);
+		// JL DEBUG FIN
 		return true;
 	}
 

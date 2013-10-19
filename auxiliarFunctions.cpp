@@ -318,9 +318,10 @@ bool checkMateInN(int movesLeft){
 void printDebug(char* pTexto){
 	//abro archivo escritura
 	ofstream myfile;
-	myfile.open ("debug.txt");
+	myfile.open ("debug.txt",std::ios_base::app);
 
 	myfile << pTexto;
+	myfile << "\r\n";
 
 	//cierro archivo de escritura
 	myfile.close();
