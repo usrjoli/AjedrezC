@@ -1,11 +1,8 @@
-DEPTH_MATE: 2DEPTH: 10DEPTH_MATE: 2No. movimiento del juego: 0DEPTH: 10DEPTH_MATE: 2No. movimiento del juego: 0DEPTH: 10
-DEPTH_MATE: 2
-DEPTH: 10
+---------- dataInit ------------------
+Tiempo del ini: 59000
+DEPTH (las dos): 16
 DEPTH_MATE: 2
-DEPTH: 10
-DEPTH_MATE: 2
-No. movimiento del juego: 0
-DEPTH: 10
-DEPTH_MATE: 2
-DEPTH: 10
+---------- dataInit ------------------
+Tiempo del ini: 59000
+DEPTH (las dos): 16
 DEPTH_MATE: 2

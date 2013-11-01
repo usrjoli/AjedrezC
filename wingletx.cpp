@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 
 	// read the initialization file:
 	strcpy(PATHNAME, argv[0]);
-	strcpy(INIFILE, "wingletx.ini");  // default name
+	strcpy(INIFILE, "config.ini");  // default name
 	// check command-line to see if we need to use another ini-file:
 	// usage: "wingletx.exe i=somefile.ini"
 	for (i = 1; i < argc; i++) 

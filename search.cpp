@@ -15,13 +15,13 @@ Move Board::think()
 {
 	
 // JL DEBUG
-	char txt[50] = "No. movimiento del juego: ";
-	char txt2[50];
-	char * res;
+	//char txt[50] = "Tiempo en el think: ";
+	//char txt2[50];
+	//char * res;
 
-	_itoa(board.endOfGame, txt2, 10);
-	res = strcat(txt, txt2);
-	printDebug(txt);
+	//_itoa(board.maxTime, txt2, 10);
+	//res = strcat(txt, txt2);
+	//printDebug(txt);
 // JL DEBUG FIN
 //	===========================================================================
 //  This is the entry point for search, it is intended to drive iterative deepening 
@@ -75,18 +75,18 @@ Move Board::think()
 	timer.init();
 	msStart = timer.getms();
 
-	//================== chequeo de mateIn N: llamar al ismateinn antes que nada, si ya tenemos una secuencia ganadora, vamos por ahí
+	//================== chequeo de mateIn N: llamar al ismateinN antes que nada, si ya tenemos una secuencia ganadora, vamos por ahí
 
 	board.topeMovesMateInN = -1;				
 	path[0]	 = '\0';
 	first_move.clear();
 
 // JL DEBUG
-	txt[0] = '\0';
-	res = strcat(txt, "Profundidad de Mate: ");
-	_itoa(DEPTH_MATE, txt2, 10);
-	res = strcat(txt, txt2);
-	printDebug(txt);
+	//txt[0] = '\0';
+	//res = strcat(txt, "Profundidad de Mate: ");
+	//_itoa(DEPTH_MATE, txt2, 10);
+	//res = strcat(txt, txt2);
+	//printDebug(txt);
 // JL DEBUG FIN
 	if(DEPTH_MATE > 0){ // si en el ini se carga 0 -> se deshabilita la búsqueda del mateInN
 		if(isMateInN(DEPTH_MATE-DEPTH_MATE_DEC, 0, 1, path, false, first_move)){	
@@ -101,11 +101,11 @@ Move Board::think()
 	//  iterative deepening:
 	
 // JL DEBUG
-	txt[0] = '\0';
-	res = strcat(txt, "Profundidad de Búsqueda: ");
-	_itoa(searchDepth, txt2, 10);
-	res = strcat(txt, txt2);
-	printDebug(txt);
+	//txt[0] = '\0';
+	//res = strcat(txt, "Profundidad de Búsqueda: ");
+	//_itoa(searchDepth, txt2, 10);
+	//res = strcat(txt, txt2);
+	//printDebug(txt);
 // JL DEBUG
 
 
@@ -147,6 +147,15 @@ Move Board::think()
 		if ((score > (CHECKMATESCORE-currentdepth)) || (score < -(CHECKMATESCORE-currentdepth))) 
 			currentdepth = searchDepth;
 	}
+
+// JL DEBUG
+	//txt[0] = '\0';
+	//res = strcat(txt, "Profundidad de Búsqueda alcanzada: ");
+	//_itoa(currentdepth, txt2, 10);
+	//res = strcat(txt, txt2);
+	//printDebug(txt);
+// JL DEBUG
+
 	return (lastPV[0]);
 }
 
@@ -272,7 +281,13 @@ int Board::alphabeta(int ply, int depth, int alpha, int beta)
 	int i, j, val;
 
 	triangularLength[ply] = ply;
-	if (depth == 0) return board.eval();
+	if (depth == 0) {
+		if(EVAL_FUNC == 0){
+			return board.eval();
+		}else {
+			return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
+		}
+	}//return board.eval();
 
 	moveBufLen[ply+1] = movegen(moveBufLen[ply]);
 	for (i = moveBufLen[ply]; i < moveBufLen[ply+1]; i++)
@@ -330,11 +345,19 @@ double Board::minimax(int ply, int depth, bool inicio)
 	bool isMateInN = false;
 	int i, j;
 	double val, best;
-	int a1 = 1, a2 = 0, a3 = 0; // parametros para la función de evaluación. TODO AGREGARLO AL archivo wingletx.ini
+	int a1 = 1, a2 = 0, a3 = 0; // parametros para la función de evaluación. TODO AGREGARLO AL archivo config.ini
 	best = -LARGE_NUMBER;
 	triangularLength[ply] = ply;
 
-	if (depth == 0) return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
+	if (depth == 0){
+		if(EVAL_FUNC == 0){
+			return board.eval();
+		}else {
+			return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
+		}
+	}
+		
+	//return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
 	//if (depth == 0) return board.eval();
 
 	moveBufLen[ply+1] = movegen(moveBufLen[ply]);  
@@ -704,10 +727,31 @@ void timeControl()
 //	===========================================================================
 //	Use up part of the thinking time advantage that we may have:
 //	===========================================================================
+
+		// JL DEBUG
+	//char txt[100] = "1 Use up part of the thinking time advantage that we may have -> board.maxtime =  ";
+	//char txt2[100];
+	//char * res;
+
+	//_itoa(board.maxTime, txt2, 10);
+	//res = strcat(txt, txt2);
+	//printDebug(txt);
+	// JL DEBUG FIN
+
 	if ((XB_OTIM + XB_INC) < xb_ctim)
 		board.maxTime = (xb_ctim / movesLeft) + XB_INC + (int)(0.80*(xb_ctim - XB_OTIM - XB_INC)); 
 	else
 		board.maxTime = (xb_ctim / movesLeft);
+
+	// JL DEBUG
+	//char txt3[100] = "2 Use up part of the thinking time advantage that we may have -> board.maxtime=  ";
+	//char txt4[100];
+	//char * res2;
+
+	//_itoa(board.maxTime, txt4, 10);
+	//res2 = strcat(txt3, txt4);
+	//printDebug(txt3);
+	// JL DEBUG FIN
 
 
 //	===========================================================================

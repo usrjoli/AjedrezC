@@ -33,9 +33,9 @@ void commands()
 	U64 msStart,msStop, perftcount;
 	Timer timer;
 	Move move, dummy;
-//jose
+//JL
 	bool ret;
-//jose
+//FIN JL
 
 	// =================================================================
 	// infinite loop:
@@ -319,12 +319,21 @@ noPonder:
 
 		if (!XB_MODE && !strcmp(command, "eval"))    
 		{ 
-			number = board.eval();
+			if(EVAL_FUNC == 0){
+				number = board.eval();
+			}else {
+				number = board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
+			}
 			std::cout << "eval score = " << number << std::endl;
 			#ifdef WINGLET_DEBUG_EVAL
 				board.mirror();
 				board.display();
-				i = board.eval();
+				//i = board.eval();
+				if(EVAL_FUNC == 0){
+					i = board.eval();
+				}else {
+					i = board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
+				}
 				std::cout << "eval score = " << i << std::endl;
 				board.mirror();
 				if (number != i) std::cout << "evaluation is not symmetrical! " << number << std::endl;
@@ -596,7 +605,12 @@ noPonder:
 		if (!XB_MODE && !strcmp(command, "evaluate")){
 			//sscanf(CMD_BUFF,"evaluate %d %d %d", &la1, &la2, &la3);
 
-			board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
+			if(EVAL_FUNC == 0){
+				board.eval();
+			}else {
+				board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
+			}
+			//board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
 
 			continue;
 		}
@@ -983,10 +997,28 @@ noPonder:
 			{
 				XB_CTIM = number * 10;
 				board.maxTime = number * 10; // conversion to ms
+				// JL DEBUG
+				//char txt[50] = "1 board.maxTime = number * 10 =  ";
+				//char txt2[50];
+				//char * res;
+
+				//_itoa(board.maxTime, txt2, 10);
+				//res = strcat(txt, txt2);
+				//printDebug(txt);
+				// JL DEBUG FIN
 			}
 			else
 			{
 				board.maxTime = number * 1000; // conversion to ms
+				// JL DEBUG
+				//char txt[50] = "2 board.maxTime = number * 10 =  ";
+				//char txt2[50];
+				//char * res;
+
+				//_itoa(board.maxTime, txt2, 10);
+				//res = strcat(txt, txt2);
+				//printDebug(txt);
+				// JL DEBUG FIN
 			}
 			goto noPonder; 
 		}

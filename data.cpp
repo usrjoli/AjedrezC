@@ -9,6 +9,13 @@
  
 void dataInit()
 {
+
+	// JL DEBUG
+	char txt[50] = "---------- dataInit ------------------";
+
+//	printDebug(txt);
+	// JL DEBUG FIN
+
 //     ===========================================================================
 //	   Initialization of global data at program startup.
 //	   This function should be called only once (or else the mirrored data will be 
@@ -840,13 +847,13 @@ BOOLTYPE doIniCommand(const char *buf)
 		if (board.searchDepth > MAX_PLY) board.searchDepth = MAX_PLY;
 		CMD_BUFF_COUNT = '\0';		
 		// JL DEBUG
-		char txt[50] = "DEPTH (las dos): ";
-		char txt2[50];
-		char * res;
+		//char txt[50] = "DEPTH (las dos): ";
+		//char txt2[50];
+		//char * res;
 
-		_itoa(board.searchDepth, txt2, 10);
-		res = strcat(txt, txt2);
-		printDebug(txt);
+		//_itoa(board.searchDepth, txt2, 10);
+		//res = strcat(txt, txt2);
+		//printDebug(txt);
 		// JL DEBUG FIN
 		return true;
 	}
@@ -857,6 +864,17 @@ BOOLTYPE doIniCommand(const char *buf)
 		board.maxTime *= 1000;  // convert to milliseconds
 		if (board.maxTime < 0) board.maxTime = 1;
 		CMD_BUFF_COUNT = '\0';
+
+	// JL DEBUG
+		//char txt[50] = "Tiempo del ini: ";
+		//char txt2[50];
+		//char * res;
+
+		//_itoa(board.maxTime, txt2, 10);
+		//res = strcat(txt, txt2);
+		//printDebug(txt);
+	// JL DEBUG FIN
+
 		return true;
 	}
 
@@ -921,13 +939,13 @@ BOOLTYPE doIniCommand(const char *buf)
 		CMD_BUFF_COUNT = '\0';
 
 		/************** debug ***************/
-		char txt[50] = "DEPTH_MATE: ";
-		char txt2[50];
-		char * res;
+		//char txt[50] = "DEPTH_MATE: ";
+		//char txt2[50];
+		//char * res;
 
-		_itoa(DEPTH_MATE, txt2, 10);
-		res = strcat(txt, txt2);
-		printDebug(txt);
+		//_itoa(DEPTH_MATE, txt2, 10);
+		//res = strcat(txt, txt2);
+		//printDebug(txt);
 		/************** fin debug ***********/
 
 		return true;
