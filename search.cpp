@@ -75,7 +75,7 @@ Move Board::think()
 	timer.init();
 	msStart = timer.getms();
 
-	//================== chequeo de mateIn N: llamar al ismateinn antes que nada, si ya tenemos una secuencia ganadora, vamos por ahí
+	//================== chequeo de mateIn N: llamar al ismateinN antes que nada, si ya tenemos una secuencia ganadora, vamos por ahí
 
 	board.topeMovesMateInN = -1;				
 	path[0]	 = '\0';
@@ -90,7 +90,8 @@ Move Board::think()
 // JL DEBUG FIN
 	if(DEPTH_MATE > 0){ // si en el ini se carga 0 -> se deshabilita la búsqueda del mateInN
 		if(isMateInN(DEPTH_MATE-DEPTH_MATE_DEC, 0, 1, path, false, first_move)){	
-			DEPTH_MATE_DEC++;
+			DEPTH_MATE_DEC++;			
+			std::cout << "------------ SI MATE in N ------------" << std::endl;
 			return first_move;
 		}/*else {
 			std::cout << "------------ NO MATE in N ------------" << std::endl;
@@ -147,6 +148,11 @@ Move Board::think()
 		if ((score > (CHECKMATESCORE-currentdepth)) || (score < -(CHECKMATESCORE-currentdepth))) 
 			currentdepth = searchDepth;
 	}
+
+// JL DEBUG
+	std::cout << "#-wingletJL : Profundidad de Búsqueda alcanzada: , profundidad: " << currentdepth - 1 << std::endl;
+// JL DEBUG
+
 	return (lastPV[0]);
 }
 

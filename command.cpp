@@ -33,9 +33,9 @@ void commands()
 	U64 msStart,msStop, perftcount;
 	Timer timer;
 	Move move, dummy;
-//jose
+//JL
 	bool ret;
-//jose
+//FIN JL
 
 	// =================================================================
 	// infinite loop:
@@ -974,7 +974,7 @@ noPonder:
 		// =================================================================
 
 		if (!strcmp(command, "time"))    
-		{ 
+		{ 		
 			number = (int)board.maxTime / 1000;
 			sscanf(CMD_BUFF,"time %d", &number);
 			if (number < 1) number = 1;

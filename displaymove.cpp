@@ -35,7 +35,7 @@ void displayMove(Move &move)
        return;
 }
 
-// jose inicio visualización de movimiento completo
+// JL inicio visualización de movimiento completo
 void displayFullMove(Move &move){
 	std::cout << "jugador : ";
 	if (move.isWhitemove()){
@@ -76,7 +76,7 @@ void displayFullMove(Move &move){
 	std::cout.flush();
 	return;
 }
-// jose fin visualización de movimiento completo
+// JL fin visualización de movimiento completo
 
 void displayPV()
 {
