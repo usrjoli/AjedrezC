@@ -319,12 +319,21 @@ noPonder:
 
 		if (!XB_MODE && !strcmp(command, "eval"))    
 		{ 
+			if(EVAL_FUNC == 0){
 			number = board.eval();
+			}else {
+				number = board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
+			}
 			std::cout << "eval score = " << number << std::endl;
 			#ifdef WINGLET_DEBUG_EVAL
 				board.mirror();
 				board.display();
+				//i = board.eval();
+				if(EVAL_FUNC == 0){
 				i = board.eval();
+				}else {
+					i = board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
+				}
 				std::cout << "eval score = " << i << std::endl;
 				board.mirror();
 				if (number != i) std::cout << "evaluation is not symmetrical! " << number << std::endl;
@@ -596,7 +605,12 @@ noPonder:
 		if (!XB_MODE && !strcmp(command, "evaluate")){
 			//sscanf(CMD_BUFF,"evaluate %d %d %d", &la1, &la2, &la3);
 
+			if(EVAL_FUNC == 0){
+				board.eval();
+			}else {
 			board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
+			}
+			//board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
 
 			continue;
 		}
@@ -974,7 +988,7 @@ noPonder:
 		// =================================================================
 
 		if (!strcmp(command, "time"))    
-		{ 		
+		{ 
 			number = (int)board.maxTime / 1000;
 			sscanf(CMD_BUFF,"time %d", &number);
 			if (number < 1) number = 1;

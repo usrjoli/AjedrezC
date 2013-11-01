@@ -798,8 +798,8 @@ int evalMaterial(int valD, int valT, int valC, int valA, int valP, bool & pIsDra
 //	b) La evaluación no puede ser más sencilla que la resultante de restarle al valor material
 //	   total del Blanco el valor material total del Negro 
 //	===========================================================================
+ 
 	
-
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // This is winglet's evaluation function
 // The score is calculated from White's perspective (in centipawns)
@@ -844,7 +844,6 @@ int evalMaterial(int valD, int valT, int valC, int valA, int valP, bool & pIsDra
        whitebishops = bitCnt(board.whiteBishops);
        whiterooks = bitCnt(board.whiteRooks);
        whitequeens = bitCnt(board.whiteQueens);
-       //whitetotalmat = 3 * whiteknights + 3 * whitebishops + 5 * whiterooks + 10 * whitequeens;
 	   whitetotalmat = valD*whitequeens + valT*whiterooks + valC*whiteknights + valA*whitebishops;
        whitetotal = whitepawns + whiteknights + whitebishops + whiterooks + whitequeens;
        
@@ -853,8 +852,7 @@ int evalMaterial(int valD, int valT, int valC, int valA, int valP, bool & pIsDra
        blackbishops = bitCnt(board.blackBishops);
        blackrooks = bitCnt(board.blackRooks);
        blackqueens = bitCnt(board.blackQueens);
-       //blacktotalmat = 3 * blackknights + 3 * blackbishops + 5 * blackrooks + 10 * blackqueens;
-	    blacktotalmat = valD*blackqueens + valT*blackrooks + valC*blackknights + valA*blackbishops;
+       blacktotalmat = valD*blackqueens + valT*blackrooks + valC*blackknights + valA*blackbishops;
        blacktotal = blackpawns + blackknights + blackbishops + blackrooks + blackqueens;
        
 		#ifdef WINGLET_VERBOSE_EVAL
@@ -864,17 +862,14 @@ int evalMaterial(int valD, int valT, int valC, int valA, int valP, bool & pIsDra
               std::cout << "EVAL> BLACK TOTAL>                    " << blacktotal << std::endl;
        #endif
  
- 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Evaluate for draws due to insufficient material:
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	pIsDrawScore = false;
-	if (!whitepawns && !blackpawns) // si no hay peones
-	{
+	if (!whitepawns && !blackpawns) {// if there are no pawns
 		// king versus king:
-		if ((whitetotalmat == 0) && (blacktotalmat == 0)) 
-		{
+		if ((whitetotalmat == 0) && (blacktotalmat == 0)) {
 			pIsDrawScore = true;
 			if (board.nextMove) return -DRAWSCORE;
 			else return DRAWSCORE;
@@ -882,22 +877,18 @@ int evalMaterial(int valD, int valT, int valC, int valA, int valP, bool & pIsDra
  
 		// king and knight versus king:
 		if (((whitetotalmat == 3) && (whiteknights == 1) && (blacktotalmat == 0)) ||
-			((blacktotalmat == 3) && (blackknights == 1) && (whitetotalmat == 0))) 
-		{
+			((blacktotalmat == 3) && (blackknights == 1) && (whitetotalmat == 0))) 	{
 			pIsDrawScore = true;
 			if (board.nextMove) return -DRAWSCORE;
 			else return DRAWSCORE;
 		}
  
 		// 2 kings with one or more bishops, and all bishops on the same colour:
-		if ((whitebishops + blackbishops) > 0)
-		{
+		if ((whitebishops + blackbishops) > 0) {
 				if ((whiteknights == 0) && (whiterooks == 0) && (whitequeens == 0) &&
-				(blackknights == 0) && (blackrooks == 0) && (blackqueens == 0))
-			{
+				(blackknights == 0) && (blackrooks == 0) && (blackqueens == 0))	{
 				if (!((board.whiteBishops | board.blackBishops) & WHITE_SQUARES) ||
-					!((board.whiteBishops | board.blackBishops) & BLACK_SQUARES))
-				{
+					!((board.whiteBishops | board.blackBishops) & BLACK_SQUARES)) {
 					pIsDrawScore = true;
 					if (board.nextMove) return -DRAWSCORE;
 					else return DRAWSCORE;
@@ -927,18 +918,14 @@ int evalMaterial(int valD, int valT, int valC, int valA, int valP, bool & pIsDra
               int iblackking = 0;
        #endif
  
-       if (whitetotalmat + whitepawns > blacktotalmat + blackpawns)
-       {
+       if (whitetotalmat + whitepawns > blacktotalmat + blackpawns){
               score += 45 + 3 * whitetotal - 6 * blacktotal;
               #ifdef WINGLET_VERBOSE_EVAL
                      std::cout << "EVAL> EXCHANGE WHITE>                 " << (45 + 3 * whitetotal - 6 * blacktotal) << std::endl;
                      iexch = (45 + 3 * whitetotal - 6 * blacktotal);
               #endif
-       }
-       else
-       {
-              if (whitetotalmat + whitepawns < blacktotalmat + blackpawns)
-              {
+       } else {
+              if (whitetotalmat + whitepawns < blacktotalmat + blackpawns) {
                      score += -45 - 3 * blacktotal + 6 * whitetotal;
                      #ifdef WINGLET_VERBOSE_EVAL
                            std::cout << "EVAL> EXCHANGE BLACK>                 " << (-45 - 3 * blacktotal + 6 * whitetotal) << std::endl;
@@ -1028,7 +1015,7 @@ int evalEspacial(int pIndexMoveBufLen){
 		for (i = 0; i < 64; i++){
 			reachablesCurrent[i] = false;
 		}
-
+		
 		/************ obtengo todos los movimientos posibles del turno actual **********************/
 		int lIndexMoveBufLen2 = generarMovimientosPosibles(lIndexMoveBufLen + 1);
 		/************ FIN obtengo todos los movimientos posibles del turno actual **********************/  
@@ -1122,10 +1109,7 @@ int evalDinamica(int valD, int valT, int valC, int valA, int valP, int valR, int
 		// vuelvo el turno al oponente, afuera de esta función se realiza un unmakemove de la guada a evaluar y se vuelve el turno al jugador que le tocaba jugar.
 		unmakeMove(validOponentMove);
 	}
-
 	score =  totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
-
-
 	return score;
 }
 
@@ -1166,7 +1150,9 @@ int evalPosicionDiff(){
 	blackqueens = bitCnt(board.blackQueens);
 	blacktotalmat = 3 * blackknights + 3 * blackbishops + 5 * blackrooks + 10 * blackqueens;
 
-	endgame = (whitetotalmat < 15 || blacktotalmat < 15);
+	endgame = (whitetotalmat < 18 || blacktotalmat < 18);
+// Para mejorar el movimiento del rey sobre el fin del partido, consideramos el endgame a partir de 21
+// Mas o menos, cuando se tiene reina, torre y caballo o alfil
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Evaluate white pawns
 // - position on the board
@@ -1708,9 +1694,9 @@ int evalPosicionDiff(){
 //TODO: penalizar repetición de movimientos. movimiento actual = movimiento - 3
 //buscar dónde es que se guarda el movimiento y estudiar como penalizarlo (score -= PENALTY_MOVE)
 	//std::cout << "EOG: " << board.endOfGame << std::endl;
+	currentMove = board.gameLine[board.endOfGame].move;
 	if (board.endOfGame >= 3) { //me aseguro que hayan suficientes movimientos como para que se puedan repetir
 	// esto es más que nada para que en el arranque no empiece a loopear movimiento de pieza
-		currentMove = board.gameLine[board.endOfGame].move;
 		controlMove = board.gameLine[board.endOfGame - 2].move;
 		if (!currentMove.isPawnmove()){
 			if ((currentMove.getFrom() == controlMove.getTosq()) &&
@@ -1724,11 +1710,30 @@ int evalPosicionDiff(){
 						score -= PENALTY_ULTIMA_POS_REPETIDA;
 					}
 					//std::cout << "score dsps: " << score << std::endl;
-			} else {
-				//displayFullMove(currentMove);
-				//displayFullMove(controlMove);
 			}
+			/*if (board.endOfGame >= 5){
+				controlMove = board.gameLine[board.endOfGame - 4].move;
+				if ((currentMove.getFrom() == controlMove.getTosq()) &&
+					(currentMove.getTosq() == controlMove.getFrom()) &&
+					(currentMove.getPiec() == controlMove.getPiec()) &&
+					(!currentMove.getCapt())) {
+					//std::cout << "score antes: " << score << std::endl;
+					if (board.nextMove) {
+						score += PENALTY_ULTIMA_POS_REPETIDA;
+					} else {
+						score -= PENALTY_ULTIMA_POS_REPETIDA;
+					}
+					//std::cout << "score dsps: " << score << std::endl;
+				}
+			}*/
 		}
+		//if ((board.endOfGame <= 25) && ((currentMove.getPiec() == WHITE_KING)||(currentMove.getPiec() == BLACK_KING))){
+		//	if (board.nextMove) {
+		//		score += PENALTY_HURRY_KING;
+		//	} else {
+		//		score -= PENALTY_HURRY_KING;
+		//	}
+		//}
 	}
 	return score;
 

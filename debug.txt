@@ -1,72 +1,24 @@
----------- dataInit ------------------
-Tiempo del ini: 59000
-DEPTH (las dos): 16
-DEPTH_MATE: 2
----------- dataInit ------------------
-Tiempo del ini: 59000
-DEPTH (las dos): 16
-DEPTH_MATE: 2
-Tiempo en el think: 59000
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 16
-Tiempo del ini: 59000
-DEPTH (las dos): 16
-DEPTH_MATE: 2
-Tiempo en el think: 59000
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 16
----------- dataInit ------------------
-Tiempo del ini: 59000
-DEPTH (las dos): 16
-DEPTH_MATE: 2
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 16
-Tiempo del ini: 70000
-DEPTH (las dos): 10
-DEPTH_MATE: 2
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 10
-Tiempo del ini: 90000
-DEPTH (las dos): 10
-DEPTH_MATE: 2
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 10
-Tiempo del ini: 90000
-DEPTH (las dos): 10
-DEPTH_MATE: 2
-1 number = (int)board.maxTime / 1000:   90
-1 number =  90
-XB_INC:  0
-2 board.maxTime = number * 10 =  90000
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 10
-Tiempo del ini: 90000
-DEPTH (las dos): 9
-DEPTH_MATE: 2
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 9
-Tiempo del ini: 100000
-DEPTH (las dos): 9
-DEPTH_MATE: 2
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 9
-Tiempo del ini: 100000
-DEPTH (las dos): 9
-DEPTH_MATE: 2
-Tiempo del ini: 120000
-DEPTH (las dos): 9
-DEPTH_MATE: 2
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 9
-Tiempo del ini: 120000
-DEPTH (las dos): 9
-DEPTH_MATE: 2
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 9
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 9
-Tiempo del ini: 100000
-DEPTH (las dos): 9
-DEPTH_MATE: 2
-Profundidad de Mate: 2
-Profundidad de Búsqueda: 9
+DEPTH_MATE: 2DEPTH: 10DEPTH_MATE: 2No. movimiento del juego: 0DEPTH: 10DEPTH_MATE: 2No. movimiento del juego: 0DEPTH: 10
+DEPTH_MATE: 2
+DEPTH: 10
+
+Tiempo del ini: 59000
+
+DEPTH: 10
+
+DEPTH_MATE: 2
+
+No. movimiento del juego: 0
+
+DEPTH: 10
+
+DEPTH_MATE: 2
+
+DEPTH: 10
+
+DEPTH_MATE: 2
+
+Profundidad de Mate: 2
+
+Profundidad de Búsqueda: 9
+

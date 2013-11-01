@@ -13,16 +13,6 @@
 
 Move Board::think()
 {
-	
-// JL DEBUG
-	char txt[50] = "No. movimiento del juego: ";
-	char txt2[50];
-	char * res;
-
-	_itoa(board.endOfGame, txt2, 10);
-	res = strcat(txt, txt2);
-	printDebug(txt);
-// JL DEBUG FIN
 //	===========================================================================
 //  This is the entry point for search, it is intended to drive iterative deepening 
 //  The search stops if (whatever comes first): 
@@ -80,17 +70,9 @@ Move Board::think()
 	board.topeMovesMateInN = -1;				
 	path[0]	 = '\0';
 	first_move.clear();
-
-// JL DEBUG
-	txt[0] = '\0';
-	res = strcat(txt, "Profundidad de Mate: ");
-	_itoa(DEPTH_MATE, txt2, 10);
-	res = strcat(txt, txt2);
-	printDebug(txt);
-// JL DEBUG FIN
 	if(DEPTH_MATE > 0){ // si en el ini se carga 0 -> se deshabilita la búsqueda del mateInN
 		if(isMateInN(DEPTH_MATE-DEPTH_MATE_DEC, 0, 1, path, false, first_move)){	
-			DEPTH_MATE_DEC++;			
+			DEPTH_MATE_DEC++;
 			std::cout << "------------ SI MATE in N ------------" << std::endl;
 			return first_move;
 		}/*else {
@@ -100,14 +82,7 @@ Move Board::think()
 
 // ============== FIN chequeo de mateIn N
 	//  iterative deepening:
-	
-// JL DEBUG
-	txt[0] = '\0';
-	res = strcat(txt, "Profundidad de Búsqueda: ");
-	_itoa(searchDepth, txt2, 10);
-	res = strcat(txt, txt2);
-	printDebug(txt);
-// JL DEBUG
+
 
 
 	for (currentdepth = 1; currentdepth <= searchDepth; currentdepth++)
@@ -278,7 +253,13 @@ int Board::alphabeta(int ply, int depth, int alpha, int beta)
 	int i, j, val;
 
 	triangularLength[ply] = ply;
-	if (depth == 0) return board.eval();
+	if (depth == 0) {
+		if(EVAL_FUNC == 0){
+			return board.eval();
+		}else {
+			return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
+		}
+	}//return board.eval();
 
 	moveBufLen[ply+1] = movegen(moveBufLen[ply]);
 	for (i = moveBufLen[ply]; i < moveBufLen[ply+1]; i++)
@@ -336,11 +317,19 @@ double Board::minimax(int ply, int depth, bool inicio)
 	bool isMateInN = false;
 	int i, j;
 	double val, best;
-	int a1 = 1, a2 = 0, a3 = 0; // parametros para la función de evaluación. TODO AGREGARLO AL archivo wingletx.ini
+	int a1 = 1, a2 = 0, a3 = 0; // parametros para la función de evaluación. TODO AGREGARLO AL archivo config.ini
 	best = -LARGE_NUMBER;
 	triangularLength[ply] = ply;
 
-	if (depth == 0) return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
+	if (depth == 0){
+		if(EVAL_FUNC == 0){
+			return board.eval();
+		}else {
+			return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
+		}
+	}
+		
+	//return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
 	//if (depth == 0) return board.eval();
 
 	moveBufLen[ply+1] = movegen(moveBufLen[ply]);  
