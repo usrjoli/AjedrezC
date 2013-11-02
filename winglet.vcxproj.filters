@@ -17,6 +17,7 @@
   <ItemGroup>
     <None Include="ReadMe.txt" />
     <None Include="wingletx.ini" />
+    <None Include="config.ini" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

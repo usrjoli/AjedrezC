@@ -63,7 +63,7 @@ struct Board
 	double evalJL(double pA1, double pA2, double pA3, double pA4, int pIndexMoveBufLen);
 	Move think();
 	double minimax(int ply, int depth, bool inicio);//inicio es para indicar que es la primer invocación, así hacemos el mate in
-	int alphabeta(int ply, int depth, int alpha, int beta);
+	double alphabeta(int ply, int depth, int alpha, int beta);
 	double alphabetapvs(int ply, int depth, double alpha, double beta);
 	double qsearch(int ply, double alpha, double beta);
 	void displaySearchStats(int mode, int depth, int score, double scoreD); // para mode = 2 se utiliza scoreD

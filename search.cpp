@@ -246,7 +246,7 @@ double Board::alphabetapvs(int ply, int depth, double alpha, double beta)
 	return alpha;
 }
 
-int Board::alphabeta(int ply, int depth, int alpha, int beta)
+double Board::alphabeta(int ply, int depth, int alpha, int beta)
 {
 	// Negascout
 

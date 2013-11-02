@@ -1703,13 +1703,7 @@ int evalPosicionDiff(){
 				(currentMove.getTosq() == controlMove.getFrom()) &&
 				(currentMove.getPiec() == controlMove.getPiec()) &&
 				(!currentMove.getCapt())) {
-					//std::cout << "score antes: " << score << std::endl;
-					if (board.nextMove) {
-						score += PENALTY_ULTIMA_POS_REPETIDA;
-					} else {
-						score -= PENALTY_ULTIMA_POS_REPETIDA;
-					}
-					//std::cout << "score dsps: " << score << std::endl;
+					score += PENALTY_ULTIMA_POS_REPETIDA;
 			}
 			/*if (board.endOfGame >= 5){
 				controlMove = board.gameLine[board.endOfGame - 4].move;
