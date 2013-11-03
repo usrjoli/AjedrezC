@@ -802,6 +802,7 @@ int evalMaterial(bool & pIsDrawScore){
 //	b) La evaluación no puede ser más sencilla que la resultante de restarle al valor material
 //	   total del Blanco el valor material total del Negro 
 //	===========================================================================
+//  Cuando se invoca a esta función ya se realizó un movimiento del jugador de turno
  
 	
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -870,13 +871,13 @@ int evalMaterial(bool & pIsDrawScore){
 // Evaluate for draws due to insufficient material:
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	pIsDrawScore = false;
-	if (!whitepawns && !blackpawns) {// if there are no pawns
+	pIsDrawScore = false; // no es empate
+	if (!whitepawns && !blackpawns) {// si no hay peones
 		// king versus king:
-		if ((whitetotalmat == 0) && (blacktotalmat == 0)) {
-			pIsDrawScore = true;
-			if (board.nextMove) return -DRAWSCORE;
-			else return DRAWSCORE;
+		if ((whitetotalmat == 0) && (blacktotalmat == 0)) { // si sólo estan los reyes
+			pIsDrawScore = true; // es empate
+			if (board.nextMove) return -DRAWSCORE; // si le toca jugar a las negras --> retorna negativo
+			else return DRAWSCORE; // le toca jugar a las blancas --> retorna positivo
 		}
  
 		// king and knight versus king:
@@ -922,7 +923,7 @@ int evalMaterial(bool & pIsDrawScore){
               int iblackking = 0;
        #endif
  
-       if (whitetotalmat + whitepawns > blacktotalmat + blackpawns){
+       if (whitetotalmat + whitepawns > blacktotalmat + blackpawns){ // si los blancos tienen mas valor en materiales -> 
               score += 45 + 3 * whitetotal - 6 * blacktotal;
               #ifdef WINGLET_VERBOSE_EVAL
                      std::cout << "EVAL> EXCHANGE WHITE>                 " << (45 + 3 * whitetotal - 6 * blacktotal) << std::endl;
