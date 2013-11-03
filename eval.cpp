@@ -1052,7 +1052,13 @@ int evalEspacial(int pIndexMoveBufLen){
 		unmakeMove(validOponentMove);
 	}
 
-	return totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
+	
+//	return totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
+	if (board.nextMove == BLACK_MOVE){
+		return totalOponentMoves - totalCurrentMoves;
+	} else {
+		return totalCurrentMoves - totalOponentMoves;
+	}
 }
 
 int evalDinamica(int pIndexMoveBufLen){
@@ -1113,10 +1119,15 @@ int evalDinamica(int pIndexMoveBufLen){
 		// vuelvo el turno al oponente, afuera de esta función se realiza un unmakemove de la guada a evaluar y se vuelve el turno al jugador que le tocaba jugar.
 		unmakeMove(validOponentMove);
 	}
-	score =  totalCurrentMoves - totalOponentMoves; 
+	//score =  totalCurrentMoves - totalOponentMoves; 
 	//corregido el retorno, estaba devolviendo valores siempre del lado de blancas...
-	if (board.nextMove) return score;
-    else return -score;
+	//if (board.nextMove) return score;
+ //   else return -score;
+	if (board.nextMove == BLACK_MOVE){
+		return totalOponentMoves - totalCurrentMoves;
+	} else {
+		return totalCurrentMoves - totalOponentMoves;
+	}
 }
 
 int evalPosicionDiff(){
@@ -1730,15 +1741,20 @@ int Board::evalJL(int pa1, int pa2, int pa3, int pa4, int pIndexMoveBufLen){
 	score = 0;
 	bool isDrawScore;
 	
-	score = evalMaterial(isDrawScore);
+	//score = evalMaterial(isDrawScore);
 
-	if(!isDrawScore){
-		score = pa1*score;
+	//if(!isDrawScore){
+		/*score = pa1*score;*/
 		score += pa2*evalEspacial(pIndexMoveBufLen);
 		score += pa3*evalDinamica(pIndexMoveBufLen);//revisada 3/11
-		score += pa4*evalPosicionDiff();
+		//score += pa4*evalPosicionDiff();
+	//}
+	 // return the score relative to the side to move
+	if (board.nextMove == BLACK_MOVE){
+		return -score;
+	} else {
+		return score;
 	}
-	return score; // return the score relative to the side to move
 }
 
 double Board::evalJLD(double pa1, double pa2, double pa3, double pa4, int pIndexMoveBufLen){
@@ -1751,15 +1767,16 @@ double Board::evalJLD(double pa1, double pa2, double pa3, double pa4, int pIndex
 	//	===========================================================================
 
 	double score;
+	score = 0;
 	bool isDrawScore;
 	
-	score = evalMaterial(isDrawScore);
+	/*score = evalMaterial(isDrawScore);
 
-	if(!isDrawScore){
+	if(!isDrawScore){*/
 		score = pa1*score;
 		score += pa2*evalEspacial(pIndexMoveBufLen);
-		score += pa3*evalDinamica(pIndexMoveBufLen);
-		score += pa4*evalPosicionDiff();
-	}
+	//	score += pa3*evalDinamica(pIndexMoveBufLen);
+	//	score += pa4*evalPosicionDiff();
+	//}
 	return score; // return the score relative to the side to move
 }
