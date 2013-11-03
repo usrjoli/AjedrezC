@@ -23,8 +23,8 @@ Move Board::think()
 //  - the search depth is reached
 //	===========================================================================
 
-	double score;
-	int legalmoves, currentdepth;
+	//double scoreD;
+	int score, legalmoves, currentdepth;
 	Move singlemove, first_move;
 
 	char path[MAX_PATH_MOVES];
@@ -61,7 +61,10 @@ Move Board::think()
 	countdown = UPDATEINTERVAL;
 	timedout = false;
 	// display console header
-	displaySearchStats(1, 0, 0, -1);  
+	displaySearchStats(1, 0, 0);  
+
+	//displaySearchStatsD(1, 0, 0, -1);  
+
 	timer.init();
 	msStart = timer.getms();
 
@@ -95,6 +98,7 @@ Move Board::think()
 		followpv = true;
 		allownull = true;
 
+		//scoreD = alphabetapvs(0, currentdepth, -LARGE_NUMBER, LARGE_NUMBER);
 		score = alphabetapvs(0, currentdepth, -LARGE_NUMBER, LARGE_NUMBER);
 		
 		//score = minimax(0, currentdepth, true); // carga triangularArray
@@ -118,7 +122,9 @@ Move Board::think()
 				}
 			}
 		}
-		displaySearchStats(2, currentdepth, -1, score);
+		displaySearchStats(2, currentdepth, score);
+
+		//displaySearchStats(2, currentdepth, -1, score);
 		// stop searching if the current depth leads to a forced mate:
 		if ((score > (CHECKMATESCORE-currentdepth)) || (score < -(CHECKMATESCORE-currentdepth))) 
 			currentdepth = searchDepth;
@@ -131,12 +137,11 @@ Move Board::think()
 	return (lastPV[0]);
 }
 
-double Board::alphabetapvs(int ply, int depth, double alpha, double beta)
+int Board::alphabetapvs(int ply, int depth, int alpha, int beta)
 {
 	// PV search
 
-	int i, j, movesfound, pvmovesfound;
-	double val;
+	int i, j, movesfound, pvmovesfound, val;
 
 	triangularLength[ply] = ply;
 	if (depth <= 0) 
@@ -184,7 +189,7 @@ double Board::alphabetapvs(int ply, int depth, double alpha, double beta)
 				inodes++;
 				if (--countdown <=0) readClockAndInput();
 				movesfound++;
-				if (!ply) displaySearchStats(3, ply, i, -1); 
+				if (!ply) displaySearchStats(3, ply, i); 
 				if (pvmovesfound)
 				{
 					val = -alphabetapvs(ply+1, depth-1, -alpha-1, -alpha); 
@@ -217,7 +222,7 @@ double Board::alphabetapvs(int ply, int depth, double alpha, double beta)
 						triangularArray[ply][j] = triangularArray[ply+1][j];	// and append the latest best PV from deeper plies
 					}
 					triangularLength[ply] = triangularLength[ply+1];
-					if (!ply) displaySearchStats(2, depth, -1, val);
+					if (!ply) displaySearchStats(2, depth, val);
 				}
 			}
 			else unmakeMove(moveBuffer[i]);
@@ -246,7 +251,122 @@ double Board::alphabetapvs(int ply, int depth, double alpha, double beta)
 	return alpha;
 }
 
-double Board::alphabeta(int ply, int depth, int alpha, int beta)
+double Board::alphabetapvsD(int ply, int depth, double alpha, double beta)
+{
+	// PV search
+
+	int i, j, movesfound, pvmovesfound;
+	double val;
+
+	triangularLength[ply] = ply;
+	if (depth <= 0) 
+	{
+		followpv = false;
+		return qsearchD(ply, alpha, beta);
+	}
+
+	// repetition check:
+	if (repetitionCount() >= 3) return DRAWSCORE;
+	
+	// now try a null move to get an early beta cut-off:
+	if (!followpv && allownull)
+	{
+		if ((nextMove && (board.totalBlackPieces > NULLMOVE_LIMIT)) || (!nextMove && (board.totalWhitePieces > NULLMOVE_LIMIT)))
+		{
+			if (!isOwnKingAttacked())
+			{
+				allownull = false;
+				inodes++;
+				if (--countdown <=0) readClockAndInput();
+				nextMove = !nextMove;
+				hashkey ^= KEY.side; 
+				val = -alphabetapvsD(ply, depth - NULLMOVE_REDUCTION, -beta, -beta+1);
+				nextMove = !nextMove;
+				hashkey ^= KEY.side;
+				if (timedout) return 0;
+				allownull = true;
+				if (val >= beta) return val;
+			}
+		}
+	}
+	allownull = true;
+
+	movesfound = 0;
+	pvmovesfound = 0;
+	moveBufLen[ply+1] = movegen(moveBufLen[ply]);
+	for (i = moveBufLen[ply]; i < moveBufLen[ply+1]; i++)
+	{
+		selectmove(ply, i, depth, followpv); 
+		makeMove(moveBuffer[i]);
+		{
+			if (!isOtherKingAttacked()) 
+			{
+				inodes++;
+				if (--countdown <=0) readClockAndInput();
+				movesfound++;
+				if (!ply) displaySearchStatsD(3, ply, i, -1); 
+				if (pvmovesfound)
+				{
+					val = -alphabetapvsD(ply+1, depth-1, -alpha-1, -alpha); 
+		            if ((val > alpha) && (val < beta))
+					{
+						 // in case of failure, proceed with normal alphabeta
+						val = -alphabetapvsD(ply+1, depth - 1, -beta, -alpha);  		        
+					}
+				} 
+				// normal alphabeta
+	 			else val = -alphabetapvsD(ply+1, depth-1, -beta, -alpha);	    
+				unmakeMove(moveBuffer[i]);
+				if (timedout) return 0;
+				if (val >= beta)
+				{
+					// update the history heuristic
+					if (nextMove) 
+						blackHeuristics[moveBuffer[i].getFrom()][moveBuffer[i].getTosq()] += depth*depth;
+					else 
+						whiteHeuristics[moveBuffer[i].getFrom()][moveBuffer[i].getTosq()] += depth*depth;
+					return beta;
+				}
+				if (val > alpha)
+				{
+					alpha = val;								    // both sides want to maximize from *their* perspective
+					pvmovesfound++;
+					triangularArray[ply][ply] = moveBuffer[i];					// save this move
+					for (j = ply + 1; j < triangularLength[ply+1]; j++) 
+					{
+						triangularArray[ply][j] = triangularArray[ply+1][j];	// and append the latest best PV from deeper plies
+					}
+					triangularLength[ply] = triangularLength[ply+1];
+					if (!ply) displaySearchStatsD(2, depth, -1, val);
+				}
+			}
+			else unmakeMove(moveBuffer[i]);
+		}
+	}
+
+	// update the history heuristic
+	if (pvmovesfound)
+	{
+		if (nextMove) 
+			blackHeuristics[triangularArray[ply][ply].getFrom()][triangularArray[ply][ply].getTosq()] += depth*depth;
+		else
+			whiteHeuristics[triangularArray[ply][ply].getFrom()][triangularArray[ply][ply].getTosq()] += depth*depth;
+	}
+
+	//	50-move rule:
+	if (fiftyMove >= 100) return DRAWSCORE;
+
+	//	Checkmate/stalemate detection:
+	if (!movesfound)
+	{
+		if (isOwnKingAttacked())  return (-CHECKMATESCORE+ply-1);
+		else  return (STALEMATESCORE);
+	}
+
+	return alpha;
+}
+
+int Board::alphabeta(int ply, int depth, int alpha, int beta)
 {
 	// Negascout
 
@@ -259,7 +379,7 @@ double Board::alphabeta(int ply, int depth, int alpha, int beta)
 		}else {
 			return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
 		}
-	}//return board.eval();
+	}
 
 	moveBufLen[ply+1] = movegen(moveBufLen[ply]);
 	for (i = moveBufLen[ply]; i < moveBufLen[ply+1]; i++)
@@ -269,7 +389,7 @@ double Board::alphabeta(int ply, int depth, int alpha, int beta)
 			if (!isOtherKingAttacked()) 
 			{
 				inodes++;
-				if (!ply) displaySearchStats(3, ply, i, -1); 
+				if (!ply) displaySearchStatsD(3, ply, i, -1); 
 				val = -alphabeta(ply+1, depth-1, -beta, -alpha);
 				unmakeMove(moveBuffer[i]);
 				if (val >= beta)
@@ -285,7 +405,7 @@ double Board::alphabeta(int ply, int depth, int alpha, int beta)
 						triangularArray[ply][j] = triangularArray[ply+1][j];	// and append the latest best PV from deeper plies
 					}
 					triangularLength[ply] = triangularLength[ply + 1];
-					if (!ply) displaySearchStats(2, depth, -1, val);
+					if (!ply) displaySearchStats(2, depth, val);
 				}
 			}
 			else unmakeMove(moveBuffer[i]);
@@ -294,7 +414,7 @@ double Board::alphabeta(int ply, int depth, int alpha, int beta)
 	return alpha;
 }
 
-double Board::minimax(int ply, int depth, bool inicio)
+int Board::minimax(int ply, int depth, bool inicio)
 //inicio es para indicar que es la primer invocación, así hacemos el mate in
 {
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -316,7 +436,7 @@ double Board::minimax(int ply, int depth, bool inicio)
 
 	bool isMateInN = false;
 	int i, j;
-	double val, best;
+	int val, best;
 	int a1 = 1, a2 = 0, a3 = 0; // parametros para la función de evaluación. TODO AGREGARLO AL archivo config.ini
 	best = -LARGE_NUMBER;
 	triangularLength[ply] = ply;
@@ -328,9 +448,6 @@ double Board::minimax(int ply, int depth, bool inicio)
 			return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
 		}
 	}
-		
-	//return board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, ply);
-	//if (depth == 0) return board.eval();
 
 	moveBufLen[ply+1] = movegen(moveBufLen[ply]);  
 
@@ -351,7 +468,7 @@ double Board::minimax(int ply, int depth, bool inicio)
 		{
 			if (!isOtherKingAttacked()){
 				inodes++;
-				if (!ply) displaySearchStats(3, ply, i, -1);
+				if (!ply) displaySearchStats(3, ply, i);
 				if(isMateInN){
 					// si al ejecutar el movimiento moveBuffer[i] hay mateInN -> le doy el mayor valor posible al movimiento
 					val = LARGE_NUMBER; // TODO cortar el for (i = moveBufLen[ply]; i < moveBufLen[ply+1]; i++){
@@ -367,7 +484,7 @@ double Board::minimax(int ply, int depth, bool inicio)
 																				// The Principal variation (PV) is a sequence of moves that programs consider best and therefore expect to be played
 					}
 					triangularLength[ply] = triangularLength[ply + 1];
-					if (!ply)  displaySearchStats(2, depth, -1, val);
+					if (!ply)  displaySearchStats(2, depth, val);
 				}
 			}
 			else unmakeMove(moveBuffer[i]);
@@ -376,7 +493,90 @@ double Board::minimax(int ply, int depth, bool inicio)
 	return best;
 }
 
-void Board::displaySearchStats(int mode, int depth, int score, double scoreD)
+void Board::displaySearchStats(int mode, int depth, int score)
+{
+	// displays various search statistics
+	// only to be used when ply = 0
+	// mode = 1 : display header
+	// mode = 2 : display full stats, including score and latest PV
+	// mode = 3 : display current root move that is being searched
+	//			  depth = ply, score = loop counter in the search move list 
+
+	char sanMove[12], timestring[8];
+	U64 dt;
+
+	dt = timer.getms() - msStart;
+	switch (mode)
+	{
+		case 1: 
+				if (!XB_MODE) std::cout << "depth  score   nodes     time  knps PV" << std::endl;
+				break;
+
+		case 2:
+				if (XB_MODE && XB_POST)
+				{
+					printf("%5d %6d %8d %9d ", depth, score, dt/10, inodes);
+					rememberPV();
+					displayPV();
+				}
+				else
+				{
+					// depth
+					printf("%5d ", depth);
+
+					// score
+					printf("%+6.2f ", float(score/100.0));
+
+					// nodes searched
+					if      (inodes > 100000000) printf("%6.0f%c ", float(inodes/1000000.0), 'M');
+					else if (inodes > 10000000)	 printf("%6.2f%c ", float(inodes/1000000.0), 'M');
+					else if (inodes > 1000000)	 printf("%6.0f%c ", float(inodes/1000.0),    'K');
+					else if (inodes > 100000)	 printf("%6.1f%c ", float(inodes/1000.0),    'K');
+					else if (inodes > 10000)	 printf("%6.2f%c ", float(inodes/1000.0),    'K');
+					else						 printf("%7d ", inodes);
+
+					// search time
+					mstostring(dt, timestring);
+					printf("%8s ", timestring);
+
+					// search speed
+					if (dt > 0) std::cout << std::setw(5) << (inodes/dt) << " ";
+					else		std::cout << "    - ";
+
+					// store this PV:
+					rememberPV();
+
+					// display the PV
+					displayPV();
+				}
+				break;
+
+		case 3: // Note that the numbers refer to pseudo-legal moves:
+				if (!TO_CONSOLE) break;
+				if (XB_MODE)
+				{
+
+				}
+				else
+				{
+					mstostring(dt, timestring);
+					printf("             (%2d/%2d) %8s       ", score+1, moveBufLen[depth+1]-moveBufLen[depth], timestring);
+					unmakeMove(moveBuffer[score]);
+					toSan(moveBuffer[score], sanMove);
+					std::cout << sanMove;
+					makeMove(moveBuffer[score]);
+					printf("...    \r");
+					std::cout.flush();
+				}
+				break;
+
+		default: break;
+	}
+
+	return;
+}
+
+void Board::displaySearchStatsD(int mode, int depth, int score, double scoreD)
 {
 	// displays various search statistics
 	// only to be used when ply = 0

@@ -60,13 +60,17 @@ struct Board
 
 	void init();
 	int eval();
-	double evalJL(double pA1, double pA2, double pA3, double pA4, int pIndexMoveBufLen);
+	int evalJL(int pA1, int pA2, int pA3, int pA4, int pIndexMoveBufLen);
+	double evalJLD(double pA1, double pA2, double pA3, double pA4, int pIndexMoveBufLen);
 	Move think();
-	double minimax(int ply, int depth, bool inicio);//inicio es para indicar que es la primer invocación, así hacemos el mate in
-	double alphabeta(int ply, int depth, int alpha, int beta);
-	double alphabetapvs(int ply, int depth, double alpha, double beta);
-	double qsearch(int ply, double alpha, double beta);
-	void displaySearchStats(int mode, int depth, int score, double scoreD); // para mode = 2 se utiliza scoreD
+	int minimax(int ply, int depth, bool inicio);//inicio es para indicar que es la primer invocación, así hacemos el mate in
+	int alphabeta(int ply, int depth, int alpha, int beta);
+	int alphabetapvs(int ply, int depth, int alpha, int beta);
+	double alphabetapvsD(int ply, int depth, double alpha, double beta);
+	int qsearch(int ply, int alpha, int beta);
+	double qsearchD(int ply, double alpha, double beta);
+	void displaySearchStats(int mode, int depth, int score);
+	void displaySearchStatsD(int mode, int depth, int score, double scoreD); // para mode = 2 se utiliza scoreD
 	BOOLTYPE isEndOfgame(int &legalmoves, Move &singlemove);
 	BOOLTYPE isEndOfgameMate(int &legalmoves, Move &singlemove, int pIndex);
 	int repetitionCount();

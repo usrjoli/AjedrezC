@@ -874,42 +874,70 @@ BOOLTYPE doIniCommand(const char *buf)
 		return true;
 	}
 
-	if (!strncmp(buf, "PARAM_EVAL_MATERIAL", 19))
+	/*if (!strncmp(buf, "PARAM_EVAL_MATERIAL", 19))
 	{
 		sscanf(buf+19, "%d", &number);
 		PARAM_EVAL_MATERIAL = (float)(number/100.0);
 		CMD_BUFF_COUNT = '\0';
 		return true;
+	}*/
+
+	if (!strncmp(buf, "PARAM_EVAL_MATERIAL", 19))
+	{
+		sscanf(buf+19, "%d", &PARAM_EVAL_MATERIAL);
+		CMD_BUFF_COUNT = '\0';
+		return true;
 	}
 
-	if (!strncmp(buf, "PARAM_EVAL_ESPACIAL", 19))
+	/*if (!strncmp(buf, "PARAM_EVAL_ESPACIAL", 19))
 	{
 		sscanf(buf+19, "%d", &number);
 		PARAM_EVAL_ESPACIAL = (float)(number/100.0);
 		CMD_BUFF_COUNT = '\0';
 		return true;
+	}*/
+
+	if (!strncmp(buf, "PARAM_EVAL_ESPACIAL", 19))
+	{
+		sscanf(buf+19, "%d", &PARAM_EVAL_ESPACIAL);
+		CMD_BUFF_COUNT = '\0';
+		return true;
 	}
 
-	if (!strncmp(buf, "PARAM_EVAL_DINAMICA", 19))
+	/*if (!strncmp(buf, "PARAM_EVAL_DINAMICA", 19))
 	{
 		sscanf(buf+19, "%d", &number);
 		PARAM_EVAL_DINAMICA = (float)(number/100.0);
 		CMD_BUFF_COUNT = '\0';
 		return true;
+	}*/
+
+	if (!strncmp(buf, "PARAM_EVAL_DINAMICA", 19))
+	{
+		sscanf(buf+19, "%d", &PARAM_EVAL_DINAMICA);
+		CMD_BUFF_COUNT = '\0';
+		return true;
 	}
 
-	if (!strncmp(buf, "PARAM_EVAL_POS_TABLERO", 22))
+	/*if (!strncmp(buf, "PARAM_EVAL_POS_TABLERO", 22))
 	{
 		sscanf(buf+22, "%d", &number);
 		PARAM_EVAL_POS_TABLERO = (float)(number/100.0);
+		CMD_BUFF_COUNT = '\0';
+		return true;
+	}*/
+
+	if (!strncmp(buf, "PARAM_EVAL_POS_TABLERO", 22))
+	{
+		sscanf(buf+22, "%d", &PARAM_EVAL_POS_TABLERO);
 		CMD_BUFF_COUNT = '\0';
 		return true;
 	}
 
 	if (!strncmp(buf, "DEPTH_MATE", 10))
 	{
-		sscanf(buf+10, "%d", &number);
-		DEPTH_MATE = (int)(number);
+		sscanf(buf+10, "%d", &DEPTH_MATE);
+		//DEPTH_MATE = (int)(number);
 		CMD_BUFF_COUNT = '\0';
 
 		return true;
@@ -926,8 +954,8 @@ BOOLTYPE doIniCommand(const char *buf)
 	
 	if (!strncmp(buf, "EVAL_FUNC", 10))
 	{
-		sscanf(buf+10, "%d", &number);
-		EVAL_FUNC = (int)(number);
+		sscanf(buf+10, "%d", &EVAL_FUNC);
+		//EVAL_FUNC = (int)(number);
 		CMD_BUFF_COUNT = '\0';
 		return true;
 	}

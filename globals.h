@@ -111,10 +111,10 @@ extern const int QUEEN_VALUE_U = 9;
 extern const int KING_VALUE_U = 0;
 
 // Parametros para función de evaluación
-double PARAM_EVAL_MATERIAL = 1;
-double PARAM_EVAL_ESPACIAL = 1;
-double PARAM_EVAL_DINAMICA = 1;
-double PARAM_EVAL_POS_TABLERO = 1;
+int PARAM_EVAL_MATERIAL = 1;
+int PARAM_EVAL_ESPACIAL = 1;
+int PARAM_EVAL_DINAMICA = 1;
+int PARAM_EVAL_POS_TABLERO = 1;
 int EVAL_FUNC = 1;
 
 int DEPTH_MATE = 2;

@@ -1123,7 +1123,7 @@ int evalPosicionDiff(){
     int blackpawns, blackknights, blackbishops, blackrooks, blackqueens;
     int whitetotalmat, blacktotalmat;
 
-	Move currentMove, controlMove;
+	//Move currentMove, controlMove;
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Remember where the kings are
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1693,47 +1693,48 @@ int evalPosicionDiff(){
 	
 //TODO: penalizar repetición de movimientos. movimiento actual = movimiento - 3
 //buscar dónde es que se guarda el movimiento y estudiar como penalizarlo (score -= PENALTY_MOVE)
-	//std::cout << "EOG: " << board.endOfGame << std::endl;
-	currentMove = board.gameLine[board.endOfGame].move;
-	if (board.endOfGame >= 3) { //me aseguro que hayan suficientes movimientos como para que se puedan repetir
-	// esto es más que nada para que en el arranque no empiece a loopear movimiento de pieza
-		controlMove = board.gameLine[board.endOfGame - 2].move;
-		if (!currentMove.isPawnmove()){
-			if ((currentMove.getFrom() == controlMove.getTosq()) &&
-				(currentMove.getTosq() == controlMove.getFrom()) &&
-				(currentMove.getPiec() == controlMove.getPiec()) &&
-				(!currentMove.getCapt())) {
-					score += PENALTY_ULTIMA_POS_REPETIDA;
-			}
-			/*if (board.endOfGame >= 5){
-				controlMove = board.gameLine[board.endOfGame - 4].move;
-				if ((currentMove.getFrom() == controlMove.getTosq()) &&
-					(currentMove.getTosq() == controlMove.getFrom()) &&
-					(currentMove.getPiec() == controlMove.getPiec()) &&
-					(!currentMove.getCapt())) {
-					//std::cout << "score antes: " << score << std::endl;
-					if (board.nextMove) {
-						score += PENALTY_ULTIMA_POS_REPETIDA;
-					} else {
-						score -= PENALTY_ULTIMA_POS_REPETIDA;
-					}
-					//std::cout << "score dsps: " << score << std::endl;
-				}
-			}*/
-		}
-		//if ((board.endOfGame <= 25) && ((currentMove.getPiec() == WHITE_KING)||(currentMove.getPiec() == BLACK_KING))){
-		//	if (board.nextMove) {
-		//		score += PENALTY_HURRY_KING;
-		//	} else {
-		//		score -= PENALTY_HURRY_KING;
-		//	}
-		//}
-	}
+	
+	//currentMove = board.gameLine[board.endOfGame].move;
+	//if (board.endOfGame >= 3) { //me aseguro que hayan suficientes movimientos como para que se puedan repetir
+	//// esto es más que nada para que en el arranque no empiece a loopear movimiento de pieza
+	//	controlMove = board.gameLine[board.endOfGame - 2].move;
+	//	if (!currentMove.isPawnmove()){
+	//		if ((currentMove.getFrom() == controlMove.getTosq()) &&
+	//			(currentMove.getTosq() == controlMove.getFrom()) &&
+	//			(currentMove.getPiec() == controlMove.getPiec()) &&
+	//			(!currentMove.getCapt())) {
+	//				score += PENALTY_ULTIMA_POS_REPETIDA;
+	//		}
+	//	}
+	//}
 	return score;
 
 }
 
-double Board::evalJL(double pa1, double pa2, double pa3, double pa4, int pIndexMoveBufLen){
+int Board::evalJL(int pa1, int pa2, int pa3, int pa4, int pIndexMoveBufLen){
+	//	===========================================================================
+	// An evaluation function is used to heuristically determine the relative value of a position, i.e. the chances of winning.
+	// If we could see to the end of the game in every line, the evaluation would only have values of -1 (loss), 0 (draw), and 1 (win).
+	// In practice, however, we do not know the exact value of a position, so we must make an approximation.
+	// Beginning chess players learn to do this starting with the value of the pieces themselves. 
+	// Computer evaluation functions also use the value of the material as the most significant aspect and then add other considerations.
+	//	===========================================================================
+
+	int score;
+	bool isDrawScore;
+	
+	score = evalMaterial(QUEEN_VALUE_U, ROOK_VALUE_U, KNIGHT_VALUE_U, BISHOP_VALUE_U, PAWN_VALUE_U, isDrawScore);
+
+	if(!isDrawScore){
+		score = pa1*score;
+		score += pa2*evalEspacial(pIndexMoveBufLen);
+		score += pa3*evalDinamica(QUEEN_VALUE_U, ROOK_VALUE_U, KNIGHT_VALUE_U, BISHOP_VALUE_U, PAWN_VALUE_U, KING_VALUE_U, pIndexMoveBufLen);
+		score += pa4*evalPosicionDiff();
+	}
+	return score; // return the score relative to the side to move
+}
+
+double Board::evalJLD(double pa1, double pa2, double pa3, double pa4, int pIndexMoveBufLen){
 	//	===========================================================================
 	// An evaluation function is used to heuristically determine the relative value of a position, i.e. the chances of winning.
 	// If we could see to the end of the game in every line, the evaluation would only have values of -1 (loss), 0 (draw), and 1 (win).

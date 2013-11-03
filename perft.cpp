@@ -26,9 +26,21 @@ U64 perft(int ply, int depth)
        if (depth == 0)
        {
               #ifdef WINGLET_DEBUG_EVAL
-                     int before = board.eval();
+                     int before; // = board.eval();
+					 if(EVAL_FUNC == 0){
+						before = board.eval();
+					 }else {
+						before = board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
+					 }
                      board.mirror();
-                     int after = board.eval();
+                     int after; // = board.eval();
+
+					 if(EVAL_FUNC == 0){
+						after = board.eval();
+					 }else {
+						after = board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
+					 }
+
                      board.mirror();
                      if (before != after)
                      {

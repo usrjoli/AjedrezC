@@ -608,7 +608,7 @@ noPonder:
 			if(EVAL_FUNC == 0){
 				board.eval();
 			}else {
-			board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
+				board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
 			}
 			//board.evalJL(PARAM_EVAL_MATERIAL, PARAM_EVAL_ESPACIAL, PARAM_EVAL_DINAMICA, PARAM_EVAL_POS_TABLERO, 0);
 
@@ -641,14 +641,6 @@ noPonder:
 					board.endOfGame++;
 					board.endOfSearch = board.endOfGame;
 					board.display();
-/**********************/
-/*funcion para ver si estoy en mate*/
-/**********************/
-					/*if (isCheckMate()){
-						std::cout << "bueno, se acabó la papa; a jugar uno nuevo" << std::endl;
-					} else {
-						std::cout << "que siga la ronda!!" << std::endl;
-					}*/
 				}
 			}
 			else
