@@ -161,7 +161,7 @@ int Board::eval()
        }
  
 
-	   /*********************************** EVALUACIÓN ESPACIAL **************************/
+	   /*********************************** EVALUACIÓN POR POSICIÓN DEL TALBERO **************************/
 
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -814,7 +814,6 @@ int evalMaterial(bool & pIsDrawScore){
        int score;
        int whitepawns, whiteknights, whitebishops, whiterooks, whitequeens;
        int blackpawns, blackknights, blackbishops, blackrooks, blackqueens;
-       int whitekingsquare, blackkingsquare;
        int whitetotalmat, blacktotalmat;
        int whitetotal, blacktotal;
  
@@ -825,20 +824,7 @@ int evalMaterial(bool & pIsDrawScore){
        #ifdef WINGLET_VERBOSE_EVAL
               std::cout << "EVAL> MATERIAL>                       " << board.Material << std::endl;
        #endif
- 
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// Remember where the kings are
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 
-       whitekingsquare = firstOne(board.whiteKing);
-       #ifdef WINGLET_VERBOSE_EVAL
-              std::cout << "EVAL> WHITE KING POSITION>            " << SQUARENAME[whitekingsquare] << std::endl;
-       #endif
-       blackkingsquare = firstOne(board.blackKing);
-       #ifdef WINGLET_VERBOSE_EVAL
-              std::cout << "EVAL> BLACK KING POSITION>            " << SQUARENAME[blackkingsquare] << std::endl;
-       #endif
- 
+  
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Piece counts, note that we could have done this incrementally in (un)makeMove
 // because it's basically the same thing as keeping board.Material up to date..
@@ -955,11 +941,7 @@ int evalMaterial(bool & pIsDrawScore){
                      std::cout << "EVAL>     BLACK KING POS/SAF   :" << iblackking << std::endl;
        #endif
  
-
-	// it is important to return the score relative to the side being evaluated 
-	// => who2Move = +1 for white, -1 for black. 
-       if (board.nextMove) return -score;
-       else return score;
+      return score;
 
 }
 
@@ -1159,18 +1141,31 @@ int evalPosicionDiff(){
 	whitebishops = bitCnt(board.whiteBishops);
 	whiterooks = bitCnt(board.whiteRooks);
 	whitequeens = bitCnt(board.whiteQueens);
-	whitetotalmat = 3 * whiteknights + 3 * whitebishops + 5 * whiterooks + 10 * whitequeens;
+	whitetotalmat = KNIGHT_VALUE_U * whiteknights + BISHOP_VALUE_U * whitebishops + ROOK_VALUE_U * whiterooks + QUEEN_VALUE_U * whitequeens;
 	   
 	blackpawns = bitCnt(board.blackPawns);
 	blackknights = bitCnt(board.blackKnights);
 	blackbishops = bitCnt(board.blackBishops);
 	blackrooks = bitCnt(board.blackRooks);
 	blackqueens = bitCnt(board.blackQueens);
-	blacktotalmat = 3 * blackknights + 3 * blackbishops + 5 * blackrooks + 10 * blackqueens;
+	blacktotalmat = KNIGHT_VALUE_U * blackknights + BISHOP_VALUE_U * blackbishops + ROOK_VALUE_U * blackrooks + QUEEN_VALUE_U * blackqueens;
 
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Chequeamos si estamos en el final del juego
+	// Cualquier valor menor que la reina (=10) + torre (=5) + alfinl o caballo (=3) es considerado final de juego
+	// (pawns excluded in this count)
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	endgame = (whitetotalmat < 18 || blacktotalmat < 18);
-// Para mejorar el movimiento del rey sobre el fin del partido, consideramos el endgame a partir de 21
-// Mas o menos, cuando se tiene reina, torre y caballo o alfil
+	#ifdef WINGLET_VERBOSE_EVAL
+              std::cout << "EVAL> ENDGAME>                        " << endgame << std::endl;
+    #endif
+
+
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Evaluate WHITE PIECES
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Evaluate white pawns
 // - position on the board
@@ -1709,22 +1704,6 @@ int evalPosicionDiff(){
         #endif
     }
 	
-//TODO: penalizar repetición de movimientos. movimiento actual = movimiento - 3
-//buscar dónde es que se guarda el movimiento y estudiar como penalizarlo (score -= PENALTY_MOVE)
-	
-	//currentMove = board.gameLine[board.endOfGame].move;
-	//if (board.endOfGame >= 3) { //me aseguro que hayan suficientes movimientos como para que se puedan repetir
-	//// esto es más que nada para que en el arranque no empiece a loopear movimiento de pieza
-	//	controlMove = board.gameLine[board.endOfGame - 2].move;
-	//	if (!currentMove.isPawnmove()){
-	//		if ((currentMove.getFrom() == controlMove.getTosq()) &&
-	//			(currentMove.getTosq() == controlMove.getFrom()) &&
-	//			(currentMove.getPiec() == controlMove.getPiec()) &&
-	//			(!currentMove.getCapt())) {
-	//				score += PENALTY_ULTIMA_POS_REPETIDA;
-	//		}
-	//	}
-	//}
 	return score;
 
 }
@@ -1742,14 +1721,14 @@ int Board::evalJL(int pa1, int pa2, int pa3, int pa4, int pIndexMoveBufLen){
 	score = 0;
 	bool isDrawScore;
 	
-	//score = evalMaterial(isDrawScore);
+	score = evalMaterial(isDrawScore);
 
-	//if(!isDrawScore){
-		/*score = pa1*score;*/
+	if(!isDrawScore){
+		score = pa1*score;
 		score += pa2*evalEspacial(pIndexMoveBufLen);
 		score += pa3*evalDinamica(pIndexMoveBufLen);//revisada 3/11
-		//score += pa4*evalPosicionDiff();
-	//}
+		score += pa4*evalPosicionDiff();
+	}
 	 // return the score relative to the side to move
 	if (board.nextMove == BLACK_MOVE){
 		return -score;
