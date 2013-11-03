@@ -1113,8 +1113,10 @@ int evalDinamica(int pIndexMoveBufLen){
 		// vuelvo el turno al oponente, afuera de esta función se realiza un unmakemove de la guada a evaluar y se vuelve el turno al jugador que le tocaba jugar.
 		unmakeMove(validOponentMove);
 	}
-	score =  totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
-	return score;
+	score =  totalCurrentMoves - totalOponentMoves; 
+	//corregido el retorno, estaba devolviendo valores siempre del lado de blancas...
+	if (board.nextMove) return score;
+    else return -score;
 }
 
 int evalPosicionDiff(){
@@ -1725,6 +1727,7 @@ int Board::evalJL(int pa1, int pa2, int pa3, int pa4, int pIndexMoveBufLen){
 	//	===========================================================================
 
 	int score;
+	score = 0;
 	bool isDrawScore;
 	
 	score = evalMaterial(isDrawScore);
@@ -1732,7 +1735,7 @@ int Board::evalJL(int pa1, int pa2, int pa3, int pa4, int pIndexMoveBufLen){
 	if(!isDrawScore){
 		score = pa1*score;
 		score += pa2*evalEspacial(pIndexMoveBufLen);
-		score += pa3*evalDinamica(pIndexMoveBufLen);
+		score += pa3*evalDinamica(pIndexMoveBufLen);//revisada 3/11
 		score += pa4*evalPosicionDiff();
 	}
 	return score; // return the score relative to the side to move
