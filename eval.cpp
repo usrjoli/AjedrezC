@@ -774,21 +774,25 @@ int Board::eval()
  
 }
 
-int evalPieza(int valD, int valT, int valC, int valA, int valP, int valR, Move mov){
+int evalPieza(Move mov){
+	//	===========================================================================
+	// Asignará un valor material parametrizable a cada tipo de pieza (clásicamente valD=9
+	// para cada Dama, valT=5 para cada Torre, valA=valC=3 para cada Alfil y cada Caballo, y
 	// TODO: VER EL VALOR DEL REY
+
 	int piec = mov.getPiec();
-	if(piec == WHITE_PAWN || piec == BLACK_PAWN) return valP;
-	if(piec == WHITE_KING || piec == BLACK_KING) return valR;
-	if(piec == WHITE_KNIGHT || piec == BLACK_KNIGHT) return valC;
-	if(piec == WHITE_BISHOP || piec == BLACK_BISHOP) return valA;
-	if(piec == WHITE_ROOK || piec == BLACK_ROOK) return valT;
-	if(piec == WHITE_QUEEN || piec == BLACK_QUEEN) return valD;
+	if(piec == WHITE_PAWN || piec == BLACK_PAWN) return PAWN_VALUE_U;
+	if(piec == WHITE_KING || piec == BLACK_KING) return KING_VALUE_U;
+	if(piec == WHITE_KNIGHT || piec == BLACK_KNIGHT) return KNIGHT_VALUE_U;
+	if(piec == WHITE_BISHOP || piec == BLACK_BISHOP) return BISHOP_VALUE_U;
+	if(piec == WHITE_ROOK || piec == BLACK_ROOK) return ROOK_VALUE_U;
+	if(piec == WHITE_QUEEN || piec == BLACK_QUEEN) return QUEEN_VALUE_U;
 
 	return 0;
 	
 }
 
-int evalMaterial(int valD, int valT, int valC, int valA, int valP, bool & pIsDrawScore){
+int evalMaterial(bool & pIsDrawScore){
 //	===========================================================================
 // La evaluación Material de la posición apunta a reflejar la diferencia de material entre los
 // bandos, y deberá considerar por lo menos los siguientes elementos:
@@ -838,13 +842,13 @@ int evalMaterial(int valD, int valT, int valC, int valA, int valP, bool & pIsDra
 // Piece counts, note that we could have done this incrementally in (un)makeMove
 // because it's basically the same thing as keeping board.Material up to date..
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 
+
        whitepawns = bitCnt(board.whitePawns);
        whiteknights = bitCnt(board.whiteKnights);
        whitebishops = bitCnt(board.whiteBishops);
        whiterooks = bitCnt(board.whiteRooks);
        whitequeens = bitCnt(board.whiteQueens);
-	   whitetotalmat = valD*whitequeens + valT*whiterooks + valC*whiteknights + valA*whitebishops;
+	   whitetotalmat = QUEEN_VALUE_U*whitequeens + ROOK_VALUE_U*whiterooks + KNIGHT_VALUE_U*whiteknights + BISHOP_VALUE_U*whitebishops;
        whitetotal = whitepawns + whiteknights + whitebishops + whiterooks + whitequeens;
        
 	   blackpawns = bitCnt(board.blackPawns);
@@ -852,7 +856,7 @@ int evalMaterial(int valD, int valT, int valC, int valA, int valP, bool & pIsDra
        blackbishops = bitCnt(board.blackBishops);
        blackrooks = bitCnt(board.blackRooks);
        blackqueens = bitCnt(board.blackQueens);
-       blacktotalmat = valD*blackqueens + valT*blackrooks + valC*blackknights + valA*blackbishops;
+       blacktotalmat = QUEEN_VALUE_U*blackqueens + ROOK_VALUE_U*blackrooks + KNIGHT_VALUE_U*blackknights + BISHOP_VALUE_U*blackbishops;
        blacktotal = blackpawns + blackknights + blackbishops + blackrooks + blackqueens;
        
 		#ifdef WINGLET_VERBOSE_EVAL
@@ -1051,7 +1055,7 @@ int evalEspacial(int pIndexMoveBufLen){
 	return totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
 }
 
-int evalDinamica(int valD, int valT, int valC, int valA, int valP, int valR, int pIndexMoveBufLen){
+int evalDinamica(int pIndexMoveBufLen){
 //	===========================================================================
 // La evaluación Dinámica de la posición apunta a reflejar la diferencia de movilidad existente
 // entre los bandos. Una forma posible de realizar esta evaluación consiste en computar, para
@@ -1078,7 +1082,7 @@ int evalDinamica(int valD, int valT, int valC, int valA, int valP, int valR, int
 		makeMove(dummy);
 		if (!isOtherKingAttacked()){
 			// si es movimiento valido			
-			totalOponentMoves += evalPieza(valD, valT, valC, valA, valP, valR, dummy);
+			totalOponentMoves += evalPieza(dummy);
 			validOponentMove = dummy;
 		}
 		unmakeMove(dummy);
@@ -1101,7 +1105,7 @@ int evalDinamica(int valD, int valT, int valC, int valA, int valP, int valR, int
 			makeMove(dummy);
 			if (!isOtherKingAttacked()){
 				// si es movimiento valido
-				totalCurrentMoves += evalPieza(valD, valT, valC, valA, valP, valR, dummy);
+				totalCurrentMoves += evalPieza(dummy);
 			}
 			unmakeMove(dummy);
 		}
@@ -1723,12 +1727,12 @@ int Board::evalJL(int pa1, int pa2, int pa3, int pa4, int pIndexMoveBufLen){
 	int score;
 	bool isDrawScore;
 	
-	score = evalMaterial(QUEEN_VALUE_U, ROOK_VALUE_U, KNIGHT_VALUE_U, BISHOP_VALUE_U, PAWN_VALUE_U, isDrawScore);
+	score = evalMaterial(isDrawScore);
 
 	if(!isDrawScore){
 		score = pa1*score;
 		score += pa2*evalEspacial(pIndexMoveBufLen);
-		score += pa3*evalDinamica(QUEEN_VALUE_U, ROOK_VALUE_U, KNIGHT_VALUE_U, BISHOP_VALUE_U, PAWN_VALUE_U, KING_VALUE_U, pIndexMoveBufLen);
+		score += pa3*evalDinamica(pIndexMoveBufLen);
 		score += pa4*evalPosicionDiff();
 	}
 	return score; // return the score relative to the side to move
@@ -1746,12 +1750,12 @@ double Board::evalJLD(double pa1, double pa2, double pa3, double pa4, int pIndex
 	double score;
 	bool isDrawScore;
 	
-	score = evalMaterial(QUEEN_VALUE_U, ROOK_VALUE_U, KNIGHT_VALUE_U, BISHOP_VALUE_U, PAWN_VALUE_U, isDrawScore);
+	score = evalMaterial(isDrawScore);
 
 	if(!isDrawScore){
 		score = pa1*score;
 		score += pa2*evalEspacial(pIndexMoveBufLen);
-		score += pa3*evalDinamica(QUEEN_VALUE_U, ROOK_VALUE_U, KNIGHT_VALUE_U, BISHOP_VALUE_U, PAWN_VALUE_U, KING_VALUE_U, pIndexMoveBufLen);
+		score += pa3*evalDinamica(pIndexMoveBufLen);
 		score += pa4*evalPosicionDiff();
 	}
 	return score; // return the score relative to the side to move
