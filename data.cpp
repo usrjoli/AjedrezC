@@ -952,9 +952,9 @@ BOOLTYPE doIniCommand(const char *buf)
 	}
 
 	
-	if (!strncmp(buf, "EVAL_FUNC", 10))
+	if (!strncmp(buf, "EVAL_FUNC", 9))
 	{
-		sscanf(buf+10, "%d", &EVAL_FUNC);
+		sscanf(buf+9, "%d", &EVAL_FUNC);
 		//EVAL_FUNC = (int)(number);
 		CMD_BUFF_COUNT = '\0';
 		return true;

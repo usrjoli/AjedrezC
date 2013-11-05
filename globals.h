@@ -96,9 +96,11 @@ int BOARDINDEX[9][9]; // index 0 is not used, only 1..8.
 // Value of material, in centipawns:
 extern const int PAWN_VALUE = 100;
 extern const int KNIGHT_VALUE = 300;
-extern const int BISHOP_VALUE = 300;
+//extern const int BISHOP_VALUE = 300;
+extern const int BISHOP_VALUE = 350;
 extern const int ROOK_VALUE = 500;
-extern const int QUEEN_VALUE = 900;
+//extern const int QUEEN_VALUE = 900;
+extern const int QUEEN_VALUE = 1000;
 extern const int KING_VALUE = 9999;
 extern const int CHECK_MATE = KING_VALUE;
 
@@ -276,15 +278,25 @@ int QUEEN_DISTANCE[8] =              { 0,  10,  8,  5,  4,  0,  0,  0 };
 // *** looking at the chess board from white's point   ***
 // *** of perspective. Lower left corner is square a1: ***
 int PAWNPOS_W[64] = {
-         0,   0,   0,   0,   0,   0,   0,   0,
-         5,  10,  15,  20,  20,  15,  10,   5,
-         4,   8,  12,  16,  16,  12,   8,   4,
-         3,   6,   9,  12,  12,   9,   6,   3,
-         2,   4,   6,   8,   8,   6,   4,   2,
-         1,   2,   3, -10, -10,   3,   2,   1,
-         0,   0,   0, -40, -40,   0,   0,   0,
-         0,   0,   0,   0,   0,   0,   0,   0
+ 0,  0,  0,  0,  0,  0,  0,  0,
+50, 50, 50, 50, 50, 50, 50, 50,
+10, 10, 20, 30, 30, 20, 10, 10,
+ 5,  5, 10, 25, 25, 10,  5,  5,
+ 0,  0,  0, 20, 20,  0,  0,  0,
+ 5, -5,-10,  0,  0,-10, -5,  5,
+ 5, 10, 10,-20,-20, 10, 10,  5,
+ 0,  0,  0,  0,  0,  0,  0,  0
 };
+//int PAWNPOS_W[64] = {
+//         0,   0,   0,   0,   0,   0,   0,   0,
+//         5,  10,  15,  20,  20,  15,  10,   5,
+//         4,   8,  12,  16,  16,  12,   8,   4,
+//         3,   6,   9,  12,  12,   9,   6,   3,
+//         2,   4,   6,   8,   8,   6,   4,   2,
+//         1,   2,   3, -10, -10,   3,   2,   1,
+//         0,   0,   0, -40, -40,   0,   0,   0,
+//         0,   0,   0,   0,   0,   0,   0,   0
+//};
  
 // *** This array is MIRRORED                          ***
 // *** You can enter the scoring data as if you're     ***
