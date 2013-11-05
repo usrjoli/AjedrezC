@@ -975,7 +975,6 @@ int evalEspacial(int pIndexMoveBufLen){
 	/************ obtengo todos los movimientos posibles del oponente **********************/
 	int lIndexMoveBufLen = generarMovimientosPosibles(pIndexMoveBufLen);
 	/************ FIN obtengo todos los movimientos posibles del oponente **********************/
-
 	for (i = board.moveBufLen[lIndexMoveBufLen]; i < board.moveBufLen[lIndexMoveBufLen + 1]; i++){  // i = índice donde comienzan los movimientos generados
 		// para cada movimiento posible del oponente
 		dummy = board.moveBuffer[i];
@@ -992,7 +991,6 @@ int evalEspacial(int pIndexMoveBufLen){
 	}
 
 	//=============================== reachables for current player
-
 	if(totalOponentMoves > 0){ 
 		// si existe algún movimiento posible del oponente -> lo realizo pasando el turno al jugador actual y obtenemos todos sus movimientos
 		makeMove(validOponentMove);
@@ -1037,7 +1035,7 @@ int evalEspacial(int pIndexMoveBufLen){
 
 	
 //	return totalCurrentMoves - totalOponentMoves; // return the score relative to the side to move
-	if (board.nextMove == BLACK_MOVE){
+	if (board.nextMove == WHITE_MOVE){
 		return totalOponentMoves - totalCurrentMoves;
 	} else {
 		return totalCurrentMoves - totalOponentMoves;
@@ -1056,7 +1054,6 @@ int evalDinamica(int pIndexMoveBufLen){
 	int i, totalCurrentMoves = 0, totalOponentMoves = 0;
 	Move validOponentMove;
 	Move dummy;
-	int score;
 	
 	//=============================== reachables for oponent player
 	dummy.clear();
@@ -1106,7 +1103,7 @@ int evalDinamica(int pIndexMoveBufLen){
 	//corregido el retorno, estaba devolviendo valores siempre del lado de blancas...
 	//if (board.nextMove) return score;
  //   else return -score;
-	if (board.nextMove == BLACK_MOVE){
+	if (board.nextMove == WHITE_MOVE){
 		return totalOponentMoves - totalCurrentMoves;
 	} else {
 		return totalCurrentMoves - totalOponentMoves;
@@ -1704,6 +1701,21 @@ int evalPosicionDiff(){
         #endif
     }
 	
+
+
+	// si hay promoción bonifico en endgame
+	
+	Move currentMove = board.gameLine[board.endOfGame].move;
+	if (endgame) { // si 
+		if (currentMove.isPromotion()){
+				if (board.nextMove == WHITE_MOVE) {
+					score -= 50;
+				} else {
+					score += 50;
+				}
+		}
+	}
+	
 	return score;
 
 }
@@ -1750,13 +1762,20 @@ double Board::evalJLD(double pa1, double pa2, double pa3, double pa4, int pIndex
 	score = 0;
 	bool isDrawScore;
 	
-	/*score = evalMaterial(isDrawScore);
+	score = evalMaterial(isDrawScore);
 
-	if(!isDrawScore){*/
+	if(!isDrawScore){
 		score = pa1*score;
 		score += pa2*evalEspacial(pIndexMoveBufLen);
-	//	score += pa3*evalDinamica(pIndexMoveBufLen);
-	//	score += pa4*evalPosicionDiff();
-	//}
-	return score; // return the score relative to the side to move
+		score += pa3*evalDinamica(pIndexMoveBufLen);
+		score += pa4*evalPosicionDiff();
+	}
+	
+	// return the score relative to the side to move
+	if (board.nextMove == BLACK_MOVE){
+		return -score;
+	} else {
+		return score;
+	}
+	
 }
