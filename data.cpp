@@ -886,6 +886,7 @@ BOOLTYPE doIniCommand(const char *buf)
 	{
 		sscanf(buf+19, "%d", &PARAM_EVAL_MATERIAL);
 		CMD_BUFF_COUNT = '\0';
+		std::cout << "PARAM_EVAL_MATERIAL: " << PARAM_EVAL_MATERIAL << std::endl; 
 		return true;
 	}
 
@@ -901,6 +902,7 @@ BOOLTYPE doIniCommand(const char *buf)
 	{
 		sscanf(buf+19, "%d", &PARAM_EVAL_ESPACIAL);
 		CMD_BUFF_COUNT = '\0';
+		std::cout << "PARAM_EVAL_ESPACIAL: " << PARAM_EVAL_ESPACIAL << std::endl; 
 		return true;
 	}
 
@@ -916,6 +918,7 @@ BOOLTYPE doIniCommand(const char *buf)
 	{
 		sscanf(buf+19, "%d", &PARAM_EVAL_DINAMICA);
 		CMD_BUFF_COUNT = '\0';
+		std::cout << "PARAM_EVAL_DINAMICA: " << PARAM_EVAL_DINAMICA << std::endl; 
 		return true;
 	}
 
@@ -931,6 +934,7 @@ BOOLTYPE doIniCommand(const char *buf)
 	{
 		sscanf(buf+22, "%d", &PARAM_EVAL_POS_TABLERO);
 		CMD_BUFF_COUNT = '\0';
+		std::cout << "PARAM_EVAL_POS_TABLERO: " << PARAM_EVAL_POS_TABLERO << std::endl; 
 		return true;
 	}
 
@@ -939,7 +943,7 @@ BOOLTYPE doIniCommand(const char *buf)
 		sscanf(buf+10, "%d", &DEPTH_MATE);
 		//DEPTH_MATE = (int)(number);
 		CMD_BUFF_COUNT = '\0';
-
+		std::cout << "DEPTH_MATE: " << DEPTH_MATE << std::endl; 
 		return true;
 	}
 
@@ -948,15 +952,17 @@ BOOLTYPE doIniCommand(const char *buf)
 		sscanf(buf+10, "%d", &number);
 		TIMER_MATE = (U64)(number);
 		CMD_BUFF_COUNT = '\0';
+		std::cout << "TIMER_MATE: " << TIMER_MATE << std::endl; 
 		return true;
 	}
 
 	
-	if (!strncmp(buf, "EVAL_FUNC", 10))
+	if (!strncmp(buf, "EVAL_FUNC", 9))
 	{
-		sscanf(buf+10, "%d", &EVAL_FUNC);
+		sscanf(buf+9, "%d", &EVAL_FUNC);
 		//EVAL_FUNC = (int)(number);
 		CMD_BUFF_COUNT = '\0';
+		std::cout << "EVAL_FUNC: " << EVAL_FUNC << std::endl; 
 		return true;
 	}
 
